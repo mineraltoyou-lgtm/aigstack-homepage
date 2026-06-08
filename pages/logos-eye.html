@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>로고스 아이 — AIGSTACK</title>
+<style>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --em:#0071e3;
+  --bg:#f5f5f7;
+  --bg2:#ffffff;
+  --br:rgba(0,0,0,.08);
+  --br2:rgba(0,113,227,.2);
+  --t1:#1d1d1f;
+  --t2:#515154;
+  --t3:#86868b;
+}
+body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;color:var(--t1)}
+h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* NAV — 반응형 멀티라인 */
+nav{
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:.5px solid rgba(0,0,0,0.08);
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+}
+.nav-inner{
+  display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;
+  padding:0 16px 0 2px;height:48px;max-width:1280px;margin:0 auto;
+}
+.logo{display:flex;align-items:center;cursor:pointer;margin-right:8px;flex-shrink:0;}
+.logo-main{font-size:13px;font-weight:700;letter-spacing:2.5px;color:#1d1d1f;line-height:1}
+.logo-sub{font-size:8px;font-weight:300;letter-spacing:1px;color:rgba(0,0,0,0.4);text-transform:uppercase;margin-left:6px}
+.nav-menu{display:flex;align-items:center;gap:3px;flex-wrap:nowrap;}
+.nav-item{position:relative}
+.nav-btn{
+  background:none;border:none;
+  color:#1d1d1f;
+  font-size:11.5px;font-weight:400;
+  padding:4px 9px;cursor:pointer;
+  transition:color .2s,background .2s;
+  font-family:inherit;letter-spacing:.2px;
+  display:flex;align-items:center;white-space:nowrap;
+  border-radius:6px;
+}
+.nav-btn:hover{color:#0071e3;background:rgba(0,113,227,0.06)}
+.cpill{display:none}
+.nav-contact{display:none}
+/* 모바일 — 더 작게 */
+@media(max-width:480px){
+  .nav-btn{font-size:11px;padding:3px 7px;}
+  .nav-inner{padding:6px 12px 5px;}
+}
+/* 도입 규모별 — 반응형 */
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:32px;}
+@media(max-width:600px){
+  .pricing-grid{grid-template-columns:1fr;}
+}
+/* 도입 효과 — 반응형 메트릭 */
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.metric-card{background:#fff;border:.5px solid rgba(0,0,0,.08);border-radius:12px;padding:18px 20px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.metric-num{font-size:36px;font-weight:700;color:#0071e3;letter-spacing:-1px;line-height:1;flex-shrink:0;min-width:56px;text-align:center;}
+.metric-unit{font-size:18px;font-weight:600;}
+.metric-body{flex:1;}
+.metric-title{font-size:12px;font-weight:600;color:#1d1d1f;margin-bottom:4px;}
+.metric-desc{font-size:11px;color:#86868b;line-height:1.55;}
+/* 모바일: 1열 가로 레이아웃 */
+@media(max-width:600px){
+  .metrics-grid{grid-template-columns:1fr;}
+  .metric-card{padding:14px 16px;gap:14px;}
+  .metric-num{font-size:32px;min-width:52px;}
+}
+
+/* BODY */
+.body{padding:20px 14px 28px;max-width:800px;margin:0 auto}
+.top-label{text-align:center;margin-bottom:18px}
+.el{font-size:10px;letter-spacing:3px;color:var(--em);text-transform:uppercase;opacity:.75;margin-bottom:7px}
+.etitle{font-size:20px;font-weight:200;color:var(--t1);letter-spacing:-.4px}
+.etitle strong{font-weight:500}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:.5px solid rgba(0,0,0,.08);border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.05)}
+.col{position:relative;overflow:hidden}
+.col:not(:last-child){border-right:.5px solid rgba(0,0,0,.08)}
+canvas.vc{display:block;width:100%}
+.zone-top{position:absolute;top:0;left:0;right:0;padding:9px 8px 0;text-align:center;pointer-events:none}
+.zt-n{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:500;opacity:.85}
+.zone-bot{position:absolute;bottom:0;left:0;right:0;padding:8px 8px 10px;background:linear-gradient(transparent,rgba(255,255,255,.95));text-align:center;pointer-events:none}
+.zb-pct{font-size:15px;font-weight:200;font-family:'SF Mono',monospace;line-height:1;margin-bottom:2px}
+.zb-txt{font-size:9px;font-weight:300;line-height:1.4;color:var(--t2)}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:9px}
+.st{background:#ffffff;border:.5px solid rgba(0,0,0,.08);border-radius:10px;padding:9px 10px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.sv{font-size:17px;font-weight:200;font-family:'SF Mono',monospace}
+.sl{font-size:10px;color:var(--t3);margin-top:2px;font-weight:300}
+.hfooter{margin-top:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;padding:0 4px}
+.ft{font-size:10px;color:var(--t3);display:flex;align-items:center;gap:5px;letter-spacing:.3px}
+.ftd{width:4px;height:4px;border-radius:50%;background:var(--em);opacity:.55;flex-shrink:0}
+.cta{padding:9px 18px;border-radius:24px;border:.5px solid var(--em);background:rgba(0,113,227,.06);color:var(--em);font-size:12px;cursor:pointer;transition:all .22s;font-family:inherit;text-decoration:none;white-space:nowrap}
+.cta:hover{background:var(--em);color:#fff}
+
+/* SECTIONS — 흰 배경 라이트 테마 */
+.sec{padding:40px 14px;max-width:800px;margin:0 auto}
+.sec-label{font-size:9px;letter-spacing:3px;color:var(--em);text-transform:uppercase;opacity:.7;margin-bottom:8px}
+.sec-title{font-size:22px;font-weight:200;color:var(--t1);letter-spacing:-.5px;margin-bottom:6px}
+.sec-title strong{font-weight:600;color:var(--t1)}
+.sec-sub{font-size:13px;color:var(--t2);font-weight:300;line-height:1.65;margin-bottom:24px;max-width:560px}
+.divider{height:.5px;background:var(--br);margin:0 14px}
+
+/* 철학 카드 — 흰 배경 */
+.philosophy-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.philosophy-grid{grid-template-columns:1fr}}
+.ph-card{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:16px 18px;
+  position:relative;overflow:hidden;
+  transition:border-color .2s,box-shadow .2s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.ph-card:hover{border-color:rgba(0,113,227,.25);box-shadow:0 4px 16px rgba(0,113,227,0.08)}
+.ph-name{font-size:11px;font-weight:600;letter-spacing:1px;color:var(--em);text-transform:uppercase;margin-bottom:6px}
+.ph-desc{font-size:12px;color:var(--t2);line-height:1.6;font-weight:300}
+
+/* 플랫폼 목록 — 흰 배경 */
+.sf-list{display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;gap:8px}
+.sf-item{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:14px 16px;
+  display:flex;align-items:flex-start;gap:14px;
+  transition:border-color .2s,box-shadow .2s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.03);
+}
+.sf-item:hover{border-color:rgba(0,113,227,.2);box-shadow:0 4px 16px rgba(0,113,227,0.07)}
+.sf-num{font-size:11px;font-family:'SF Mono',monospace;color:var(--em);opacity:.7;min-width:24px;padding-top:2px}
+.sf-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:3px}
+.sf-meta{font-size:11px;color:var(--t2);font-weight:300;line-height:1.5;margin-bottom:4px;}
+.sf-tag{display:inline-block;font-size:9px;letter-spacing:.8px;padding:2px 6px;border-radius:4px;margin-right:5px;margin-bottom:4px;font-weight:500}
+
+/* 특허 카드 — 흰 배경 */
+.pat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.pat-grid{grid-template-columns:1fr}}
+.pat-card{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:16px 18px;
+  transition:border-color .2s,box-shadow .2s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.pat-card:hover{border-color:rgba(0,113,227,.2);box-shadow:0 4px 16px rgba(0,113,227,0.07)}
+.pat-num{font-size:9px;letter-spacing:2px;color:var(--em);opacity:.6;text-transform:uppercase;margin-bottom:6px;font-family:'SF Mono',monospace}
+.pat-name{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:6px}
+.pat-desc{font-size:11px;color:var(--t2);line-height:1.6;font-weight:300}
+.pat-status{display:inline-flex;align-items:center;gap:4px;font-size:9px;margin-top:10px;padding:3px 8px;border-radius:20px}
+.pat-filed{background:rgba(0,113,227,.08);border:.5px solid rgba(0,113,227,.25);color:var(--em)}
+.pat-pending{background:rgba(255,159,10,.08);border:.5px solid rgba(255,159,10,.25);color:#ff9f0a}
+
+/* 인프라 카드 — 흰 배경 */
+.infra-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+@media(max-width:480px){.infra-grid{grid-template-columns:1fr}}
+.inf-card{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:14px 16px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.inf-label{font-size:9px;letter-spacing:1.5px;color:var(--t3);text-transform:uppercase;margin-bottom:8px}
+.inf-items{display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;gap:5px}
+.inf-row{display:flex;justify-content:space-between;align-items:center;font-size:11px}
+.inf-key{color:var(--t2);font-weight:300}
+.inf-val{color:var(--em);font-family:'SF Mono',monospace;font-size:10px}
+
+/* CTA 박스 — 흰 배경 */
+.ir-box{
+  background:#f5f5f7;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:16px;padding:28px 24px;
+  text-align:center;margin-top:0;
+}
+.ir-title{font-size:18px;font-weight:200;color:var(--t1);margin-bottom:8px}
+.ir-title strong{font-weight:600;color:var(--em)}
+.ir-sub{font-size:12px;color:var(--t2);margin-bottom:20px;line-height:1.6}
+.ir-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.ir-btn-main{
+  padding:10px 24px;border-radius:24px;
+  border:.5px solid var(--em);
+  background:var(--em);color:#fff;
+  font-size:12px;cursor:pointer;
+  transition:all .22s;font-family:inherit;text-decoration:none;
+}
+.ir-btn-main:hover{background:#005ec7}
+.ir-btn-sub{
+  padding:10px 24px;border-radius:24px;
+  border:.5px solid var(--br);
+  background:#ffffff;color:var(--t2);
+  font-size:12px;cursor:pointer;
+  transition:all .22s;font-family:inherit;text-decoration:none;
+}
+.ir-btn-sub:hover{border-color:var(--t2);color:var(--t1)}
+
+/* 검증 섹션 — 흰 배경 */
+.vf-section{padding:40px 14px;max-width:800px;margin:0 auto}
+.vf-hero{text-align:center;margin-bottom:28px}
+.vf-eyebrow{font-size:9px;letter-spacing:3px;color:var(--em);text-transform:uppercase;opacity:.7;margin-bottom:10px}
+.vf-headline{font-size:22px;font-weight:200;color:var(--t1);letter-spacing:-.5px;margin-bottom:8px}
+.vf-headline strong{font-weight:600;color:var(--em)}
+.vf-sub{font-size:13px;color:var(--t2);font-weight:300;line-height:1.65;max-width:540px;margin:0 auto}
+.vf-banner{
+  background:rgba(0,113,227,0.04);
+  border:.5px solid rgba(0,113,227,.15);
+  border-radius:12px;padding:16px 20px;margin-bottom:24px;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.vf-banner-text{font-size:12px;color:var(--t2);line-height:1.65;font-weight:300}
+.vf-banner-text strong{color:var(--em);font-weight:500}
+.vf-matrix-label{font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;margin-bottom:10px}
+.vf-models{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px}
+@media(max-width:480px){.vf-models{grid-template-columns:1fr}}
+.vf-model-card{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:14px 16px;
+  transition:border-color .2s,box-shadow .2s;cursor:default;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.vf-model-card:hover{border-color:rgba(0,113,227,.2);box-shadow:0 4px 16px rgba(0,113,227,0.07)}
+.vf-model-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.vf-model-name{font-size:12px;font-weight:600;letter-spacing:.3px}
+.vf-model-badge{font-size:8px;letter-spacing:.8px;padding:2px 7px;border-radius:20px;font-weight:500}
+.vf-model-org{font-size:10px;color:var(--t3);font-weight:300;margin-bottom:6px;font-family:'SF Mono',monospace}
+.vf-model-method{font-size:10px;color:var(--t2);font-weight:300;line-height:1.5}
+.vf-model-method span{color:var(--em);font-weight:500}
+.vf-verified-stamp{font-size:9px;letter-spacing:1px;color:var(--em);opacity:.6;margin-top:8px;display:flex;align-items:center;gap:4px}
+.vf-verified-stamp::before{content:'✓';font-size:10px;opacity:.8}
+.vf-consensus{margin-bottom:24px}
+.vf-consensus-title{font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;margin-bottom:10px}
+.vf-consensus-items{display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;gap:6px}
+.vf-ci{
+  display:flex;align-items:center;gap:10px;
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:8px;padding:9px 12px;
+  transition:border-color .15s;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
+}
+.vf-ci:hover{border-color:rgba(0,113,227,.2)}
+.vf-ci-score{font-size:10px;font-family:'SF Mono',monospace;color:var(--em);min-width:32px;font-weight:600}
+.vf-ci-bar-wrap{flex:1;height:2px;background:rgba(0,0,0,.06);border-radius:2px;overflow:hidden}
+.vf-ci-bar{height:100%;background:linear-gradient(90deg,var(--em),rgba(0,113,227,.4));border-radius:2px}
+.vf-ci-label{font-size:11px;color:var(--t2);font-weight:300;min-width:160px;text-align:right}
+.vf-meta{
+  background:rgba(0,113,227,0.04);
+  border:.5px solid rgba(0,113,227,.12);
+  border-left:2px solid var(--em);
+  border-radius:0 10px 10px 0;padding:14px 18px;margin-bottom:24px;
+}
+.vf-meta-label{font-size:9px;letter-spacing:2px;color:var(--em);text-transform:uppercase;margin-bottom:6px}
+.vf-meta-text{font-size:12px;color:var(--t2);line-height:1.7;font-weight:300}
+.vf-meta-text strong{color:var(--t1);font-weight:500}
+.vf-date{text-align:center;font-size:10px;color:var(--t3);font-family:'SF Mono',monospace;letter-spacing:.5px}
+</style>
+
+<style>
+/* 자아 투영실 — tt.md 라이트 테마 */
+#projection-portal {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 48px);
+  background: #f5f5f7;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #1d1d1f;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+}
+#projection-portal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+#projection-canvas {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 1; pointer-events: none; opacity: 0.15;
+}
+.portal-header {
+  position: relative; z-index: 10;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 24px; height: 52px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid rgba(0,0,0,0.08);
+}
+.portal-title-area { display: flex; align-items: baseline; gap: 10px; }
+.portal-title { font-size: 14px; font-weight: 700; letter-spacing: 2px; color: #1d1d1f; }
+.portal-subtitle { font-size: 9px; letter-spacing: 0.8px; color: rgba(0,0,0,0.4); font-weight: 300; }
+.portal-close-btn {
+  background: none; border: 0.5px solid rgba(0,0,0,0.15);
+  color: #515154; font-size: 11px; padding: 5px 14px;
+  border-radius: 20px; cursor: pointer; transition: all 0.2s; font-family: inherit;
+}
+.portal-close-btn:hover { border-color: #0071e3; color: #0071e3; background: rgba(0,113,227,0.05); }
+.portal-content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 310px 1fr 310px;
+  gap: 20px;
+  padding: 20px 24px;
+  height: calc(100vh - 108px);
+  box-sizing: border-box;
+}
+@media (max-width: 950px) {
+  .portal-content {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+    gap: 16px;
+    height: auto;
+  }
+}
+/* 유리의 벽 (Glassmorphism Panels) */
+.glass-panel {
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  position: relative;
+  box-sizing: border-box;
+}
+.glass-panel::before {
+  display: none;
+}
+.panel-h {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #1d1d1f;
+  font-weight: 600;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: 8px;
+}
+.panel-sec {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.panel-label{font-size:10px;color:#86868b;font-weight:400;letter-spacing:.5px}
+.freq-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.freq-btn{background:#fff;border:.5px solid rgba(0,0,0,.1);color:#515154;padding:8px 6px;border-radius:8px;font-size:11px;cursor:pointer;transition:all .2s;text-align:center;font-family:inherit;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.freq-btn:hover,.freq-btn.active{background:rgba(0,113,227,.06);border-color:#0071e3;color:#0071e3;box-shadow:0 2px 8px rgba(0,113,227,.12)}
+.thought-input-wrap{display:flex;gap:6px;background:#fff;border:.5px solid rgba(0,0,0,.1);border-radius:8px;padding:4px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.thought-input{background:none;border:none;color:#1d1d1f;font-size:11px;padding:6px;flex:1;outline:none;font-family:inherit}
+.thought-submit-btn{background:#0071e3;border:none;color:#fff;padding:0 12px;border-radius:6px;cursor:pointer;font-size:10px;transition:all .2s;font-family:inherit}
+.thought-submit-btn:hover{background:#0077ed}
+.log-list{flex:1;overflow-y:auto;display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;gap:6px;max-height:240px}
+.log-item{background:#fff;border:.5px solid rgba(0,0,0,.07);border-left:2.5px solid #0071e3;padding:8px 10px;border-radius:0 8px 8px 0;font-size:11px;color:#1d1d1f;line-height:1.5;animation:slideIn .3s ease-out;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.log-time{font-family:'SF Mono',monospace;font-size:8.5px;color:#86868b;margin-bottom:4px}
+@keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+.center-core-wrap{display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;justify-content:center;align-items:center;position:relative}
+.mirror-core{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,#f0f4ff 0%,#ffffff 70%);border:1.5px solid rgba(0,113,227,.25);box-shadow:0 8px 40px rgba(0,113,227,.12);display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;justify-content:center;align-items:center;position:relative;cursor:pointer;transition:transform .35s cubic-bezier(.165,.84,.44,1),box-shadow .3s}
+.mirror-core:hover{transform:scale(1.04);box-shadow:0 12px 50px rgba(0,113,227,.2)}
+.mirror-core-pulse{position:absolute;top:-8px;left:-8px;width:216px;height:216px;border-radius:50%;border:.5px solid rgba(0,113,227,.18);animation:corePulse 3s infinite ease-in-out;pointer-events:none}
+@keyframes corePulse{0%{transform:scale(1);opacity:.8}50%{transform:scale(1.07);opacity:.2}100%{transform:scale(1);opacity:.8}}
+.mirror-identity{font-size:10px;letter-spacing:3px;color:#86868b;font-weight:300;margin-bottom:6px;text-transform:uppercase}
+.mirror-name{font-size:15px;font-weight:700;letter-spacing:3px;color:#0071e3}
+.mirror-state{font-size:9px;color:#515154;margin-top:8px;background:#f5f5f7;padding:3px 10px;border-radius:12px;font-family:'SF Mono',monospace}
+.synth-toggle-btn{margin-top:24px;background:#fff;border:.5px solid rgba(0,113,227,.3);color:#0071e3;font-size:11px;padding:9px 20px;border-radius:24px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;z-index:10;font-family:inherit;letter-spacing:.3px;box-shadow:0 2px 8px rgba(0,113,227,.08)}
+.synth-toggle-btn:hover{background:#0071e3;color:#fff;box-shadow:0 4px 16px rgba(0,113,227,.25)}
+.synth-active-dot{width:6px;height:6px;border-radius:50%;background:#86868b;display:inline-block}
+.synth-active-dot.active{background:#34c759;box-shadow:0 0 6px #34c759;animation:dotBlink 1s infinite alternate}
+@keyframes dotBlink{from{opacity:.4}to{opacity:1}}
+.telemetry-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;background:#fff;border:.5px solid rgba(0,0,0,.07);padding:8px 12px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.telemetry-key{color:#515154;font-weight:300}
+.telemetry-val{font-family:'SF Mono',monospace;color:#0071e3;font-size:10.5px}
+.status-pill{font-size:9px;padding:2px 7px;border-radius:4px;font-weight:500}
+.status-active{background:rgba(52,199,89,.08);border:.5px solid rgba(52,199,89,.3);color:#34c759}
+</style>
+
+<style>
+
+.filter-tab {
+  background: none;
+  border: none;
+  color: #86868b;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: color 0.18s;
+  white-space: nowrap;
+  font-family: inherit;
+  letter-spacing: 0.2px;
+}
+.filter-tab:hover {
+  color: #1d1d1f;
+}
+.filter-tab.active {
+  color: #0071e3;
+  font-weight: 600;
+}
+/* logos 카드 — 흰 배경 */
+.logos-card {
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+.logos-card:hover {
+  border-color: rgba(0, 113, 227, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.1);
+}
+.logos-card.active {
+  border-color: #0071e3;
+  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.15);
+  background: rgba(0, 113, 227, 0.04);
+}
+.logos-card.active::before {
+  content: '선택됨';
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #0071e3;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 0 0 0 8px;
+}
+.card-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-cat {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 113, 227, 0.08);
+  border: 0.5px solid rgba(0, 113, 227, 0.2);
+  color: #0071e3;
+  font-weight: 600;
+  font-family: 'SF Mono', monospace;
+}
+.card-period {
+  font-size: 9px;
+  font-family: 'SF Mono', monospace;
+  color: #86868b;
+}
+.card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d1d1f;
+  line-height: 1.4;
+}
+.card-summary {
+  font-size: 11px;
+  color: #515154;
+  line-height: 1.5;
+  font-weight: 300;
+}
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+
+.page-portal{display:flex;flex-direction:column;margin-top:48px;height:calc(100vh - 48px);background:#f5f5f7;color:#1d1d1f;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;}
+.page-portal .portal-header{flex-shrink:0;}
+.page-portal .portal-content{flex:1;overflow:hidden;}
+
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <div class="logo" onclick="location.href='/'"><span class="logo-main">AIGSTACK</span><span class="logo-sub">INTEGRITY INFRASTRUCTURE</span></div>
+    <div class="nav-menu">
+      <div class="nav-item"><a href="https://aigstack.kr/docs/logos_eye_onepager.html" target="_blank" style="text-decoration:none;"><button class="nav-btn" style="background:#0071e3;color:#fff;font-weight:600;padding:4px 14px;border-radius:6px;letter-spacing:.5px;">자료PRINT</button></a></div>
+      <div class="nav-item"><a href="/pages/logos.html" style="text-decoration:none;"><button class="nav-btn">로고스 엔진</button></a></div>
+      <div class="nav-item"><a href="/pages/logos-eye.html" style="text-decoration:none;"><button class="nav-btn">로고스 아이</button></a></div>
+      <div class="nav-item"><a href="/pages/logos-forest.html" style="text-decoration:none;"><button class="nav-btn">로고스 포레스트</button></a></div>
+      <div class="nav-item"><a href="/pages/factory.html" style="text-decoration:none;"><button class="nav-btn">S/W개발중</button></a></div>
+      <div class="nav-item"><a href="/pages/saas.html" style="text-decoration:none;"><button class="nav-btn">S/W 허브</button></a></div>
+      <div class="nav-item"><a href="/pages/dashboard.html" style="text-decoration:none;"><button class="nav-btn" style="background:#1d1d1f;color:#fff;font-weight:600;padding:4px 14px;border-radius:6px;">중앙관제</button></a></div>
+      <div class="nav-item" style="position:relative;">
+        <button class="nav-btn" onclick="toggleDD('internal-dropdown',event)" style="color:#c07800;">내부자료 ▾</button>
+        <div id="internal-dropdown" style="display:none;position:fixed;top:0;left:0;background:#fff;border:.5px solid rgba(0,0,0,.12);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.12);min-width:150px;z-index:99999;overflow:hidden;">
+          <a href="/schedule/" target="_blank" style="text-decoration:none;display:block;padding:11px 16px;font-size:13px;color:#c07800;font-weight:600;border-bottom:.5px solid rgba(0,0,0,.06);" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''">🗓️ 일정관리</a>
+          <a href="/pages/internal.html" style="text-decoration:none;display:block;padding:11px 16px;font-size:13px;color:#1d1d1f;border-bottom:.5px solid rgba(0,0,0,.06);" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''">로고스_아이 시연</a>
+          <a href="https://aigstack.kr/content/" target="_blank" style="text-decoration:none;display:block;padding:11px 16px;font-size:13px;color:#1d1d1f;" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''">광고카피</a>
+        </div>
+      </div>
+      <div class="nav-item" style="margin-left:auto;position:relative;">
+        <button class="nav-btn" style="color:#86868b;font-size:11px;" onclick="toggleDD('dev-dropdown',event)">🔒 비공개 개발중 ▾</button>
+        <div id="dev-dropdown" style="display:none;position:fixed;top:0;left:0;background:#fff;border:.5px solid rgba(0,0,0,.12);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.1);padding:6px;min-width:160px;z-index:99999;">
+          <a href="/pages/dashboard.html" style="text-decoration:none;display:block;padding:8px 12px;border-radius:6px;font-size:12px;color:#1d1d1f;" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''"><div style="font-weight:600;">중앙관제</div><div style="font-size:10px;color:#86868b;margin-top:1px;">중앙 관제 허브</div></a>
+          <a href="/jarvis/" target="_blank" style="text-decoration:none;display:block;padding:8px 12px;border-radius:6px;font-size:12px;color:#1d1d1f;" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''"><div style="font-weight:600;">JARVIS Dev</div><div style="font-size:10px;color:#86868b;margin-top:1px;">개발자 JARVIS UI</div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<script>
+var _ddBtns={};function toggleDD(id,e){e.stopPropagation();var d=document.getElementById(id);_ddBtns[id]=e.currentTarget;if(d.style.display==="block"){d.style.display="none";return;}["internal-dropdown","dev-dropdown"].forEach(function(oid){if(oid!==id){var od=document.getElementById(oid);if(od)od.style.display="none";}});var rect=e.currentTarget.getBoundingClientRect();d.style.display="block";d.style.top=(rect.bottom+6)+"px";if(id==="dev-dropdown"){d.style.left="auto";d.style.right=(window.innerWidth-rect.right)+"px";}else{d.style.left=rect.left+"px";d.style.right="auto";}}
+document.addEventListener('click',function(e){if(e.target.closest('nav'))return;['internal-dropdown','dev-dropdown'].forEach(function(id){var d=document.getElementById(id);if(d)d.style.display='none';});});
+</script>
+<div class="page-portal">
+    <div class="portal-title-area">
+      <span class="portal-title" style="color:#1d1d1f; font-size:14px; font-weight:600; letter-spacing:.3px;">로고스 아이 — 비식별화 엔진</span>
+      <span class="portal-subtitle" style="color:#515154;">GVM 특허 기반 CCTV 개인정보 비식별화 솔루션 아키텍처</span>
+    </div>
+    <button class="portal-close-btn" onclick="location.href='/'" style="border-color:rgba(0,0,0,0.15); color:#515154; background:#fff;">홈으로</button>
+  </div>
+
+  <div class="portal-content" style="grid-template-columns:260px 1fr; gap:12px; padding:12px; background:#f5f5f7;">
+
+    <!-- 좌측: 모듈 목록 -->
+    <div style="background: rgb(255, 255, 255); border: 0.5px solid rgba(0, 0, 0, 0.08); border-radius: 12px; display: flex; flex-direction: column; height: calc(-119px + 100vh); overflow: hidden; box-shadow: rgba(0, 0, 0, 0.04) 0px 2px 8px;">
+      <div style="padding:14px 16px; border-bottom:.5px solid rgba(0,0,0,0.08); flex-shrink:0;">
+        <div style="font-size:9px; letter-spacing:2px; color:#86868b; text-transform:uppercase; font-weight:500; margin-bottom:4px;">MODULES</div>
+        <div style="font-size:13px; font-weight:600; color:#1d1d1f;">비식별화 솔루션 목록</div>
+      </div>
+      <div id="logos-eye-cards" style="flex:1; overflow-y:auto; padding:10px; display:flex; flex-direction:column; gap:8px;"><div class="logos-card active" id="le-card-le_01">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25);color:#0071e3;background:rgba(0,113,227,0.08);">운영 중</span>
+        <span class="card-period" style="color:#86868b;font-size:9px;font-family:'SF Mono',monospace;">logos_eye_core.py</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f;font-size:12px;">GVM 코어 엔진</div>
+      <div style="font-size:10px;color:#86868b;margin-top:3px;font-weight:300;">YuNet ONNX SSD + HOG</div>
+    </div><div class="logos-card " id="le-card-le_02">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25);color:#0071e3;background:rgba(0,113,227,0.08);">운영 중</span>
+        <span class="card-period" style="color:#86868b;font-size:9px;font-family:'SF Mono',monospace;">shorts_masker.py</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f;font-size:12px;">Shorts 비식별화 플랫폼</div>
+      <div style="font-size:10px;color:#86868b;margin-top:3px;font-weight:300;">yt-dlp + Logos Eye Core</div>
+    </div><div class="logos-card " id="le-card-le_03">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25);color:#0071e3;background:rgba(0,113,227,0.08);">운영 중</span>
+        <span class="card-period" style="color:#86868b;font-size:9px;font-family:'SF Mono',monospace;">dashboard.py</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f;font-size:12px;">B2B 공간 분석 대시보드</div>
+      <div style="font-size:10px;color:#86868b;margin-top:3px;font-weight:300;">Streamlit</div>
+    </div><div class="logos-card " id="le-card-le_04">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25);color:#0071e3;background:rgba(0,113,227,0.08);">운영 중</span>
+        <span class="card-period" style="color:#86868b;font-size:9px;font-family:'SF Mono',monospace;">face_mask_demo.py</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f;font-size:12px;">페이스 마스크 데모</div>
+      <div style="font-size:10px;color:#86868b;margin-top:3px;font-weight:300;">OpenCV</div>
+    </div></div>
+    </div>
+
+    <!-- 우측: 상세 -->
+    <div style="background: rgb(255, 255, 255); border: 0.5px solid rgba(0, 0, 0, 0.08); border-radius: 12px; display: flex; flex-direction: column; height: calc(-119px + 100vh); overflow: hidden; box-shadow: rgba(0, 0, 0, 0.04) 0px 2px 8px;">
+      <div style="padding:14px 16px; border-bottom:.5px solid rgba(0,0,0,0.08); flex-shrink:0;">
+        <div style="font-size:9px; letter-spacing:2px; color:#86868b; text-transform:uppercase; font-weight:500; margin-bottom:4px;">TECHNICAL DETAIL</div>
+        <div id="le-title" style="font-size:13px; font-weight:600; color:#1d1d1f;">GVM 코어 엔진</div>
+      </div>
+      <div style="flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:14px;">
+        <div>
+          <div id="le-type" style="font-size:10px; color:#0071e3; font-family:'SF Mono',monospace; letter-spacing:.8px; margin-bottom:4px;">파일: sessions/s502-001/logos_eye_core.py</div>
+          <div id="le-spec" style="font-size:11px; color:#515154; font-weight:300; line-height:1.5;">스택: YuNet ONNX SSD + HOG · Python 3.14 · PII 0.0%</div>
+        </div>
+        <div>
+          <div style="font-size:9px; letter-spacing:1.5px; color:#86868b; text-transform:uppercase; font-weight:600; margin-bottom:6px;">모듈 설명</div>
+          <div id="le-desc" style="font-size:12.5px; color:#1d1d1f; line-height:1.75; font-weight:300; background:#f5f5f7; border:.5px solid rgba(0,0,0,0.06); padding:12px 14px; border-radius:8px;">Logos
+ Eye의 핵심 비식별화 엔진입니다. YuNet ONNX SSD와 HOG 하이브리드 방식으로 얼굴·신체를 감지하고 GVM(기하학적
+ 벡터 마스킹)으로 즉시 비식별화합니다. 픽셀 원본은 메모리에서 즉시 파기되어 PII 누수율 0.0%를 수학적으로 보장합니다. 
+Kalman 모션 예측으로 가림(Occlusion) 상황에서도 추적이 유지됩니다.</div>
+        </div>
+        <div>
+          <div style="font-size:9px; letter-spacing:1.5px; color:#0071e3; text-transform:uppercase; font-weight:600; margin-bottom:8px; display:flex; align-items:center; gap:6px;">실제 사용 예시 <span style="font-size:8px; background:rgba(0,113,227,0.08); border:.5px solid rgba(0,113,227,0.2); color:#0071e3; padding:2px 7px; border-radius:10px; text-transform:none; font-weight:500;">USE CASES</span></div>
+          <div id="le-usage" style="font-size:12px; color:#1d1d1f; line-height:1.8; font-weight:300; background:#fff; border:.5px solid rgba(0,113,227,0.12); border-left:2px solid #0071e3; padding:14px 16px; border-radius:0 8px 8px 0;"><b>시나리오 1 — 실시간 CCTV 스트림 비식별화</b><br>RTSP 스트림을 입력으로 받아 초당 28프레임으로 얼굴·신체를 감지하고 파란색 마스크를 씌웁니다. 처리된 프레임은 감사 인장이 찍혀 법적 증거로 활용 가능합니다.<br><br><b>실행 방법:</b><br>  python sessions/s502-001/logos_eye_core.py --input cctv.mp4 --output masked.mp4<br>  python sessions/s502-001/test_logos_eye.py  # K-Pop 댄스 벤치마크<br><br><b>시나리오 2 — 하드웨어 핑거프린트 라이선싱</b><br>MAC/CPU ID 기반 암호화 서명으로 라이선스 없는 서버에서 실행 시 자동 차단. B2B 납품 시 불법 복제 방지.</div>
+        </div>
+        <div>
+          <div style="font-size:9px; letter-spacing:1.5px; color:#86868b; text-transform:uppercase; font-weight:600; margin-bottom:6px;">아키텍처 다이어그램</div>
+          <pre id="le-diagram" style="background:#1d1d1f; border:.5px solid rgba(0,0,0,0.08); border-radius:8px; padding:12px; font-family:'SF Mono',monospace; font-size:9.5px; color:#00d68f; line-height:1.5; overflow-x:auto; white-space:pre-wrap; word-break:break-all;">[RTSP/MP4 입력 스트림]<br>         |<br>         v<br>+----------------------------------+<br>|  YuNet ONNX SSD 얼굴 감지         |<br>|  HOG 신체 감지 (뒷모습/측면)       |<br>+----------------------------------+<br>         |<br>         v<br>+----------------------------------+<br>|  GVM 비대칭 동적 마스킹 행렬       |<br>|  Pitch/Yaw/Roll 헤드포즈 연동      |<br>+----------------------------------+<br>         |<br>         v<br>+----------------------------------+<br>|  픽셀 원본 즉시 파기 (memset 0)   |<br>|  감사 인장 자동 부착               |<br>+----------------------------------+<br>         |<br>         v<br>[비식별 출력 + audit_trail.log]</pre>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px; flex:1;">
+          <div style="font-size:9px; letter-spacing:1.5px; color:#86868b; text-transform:uppercase; font-weight:600;">실시간 런타임 시연</div>
+          <div id="le-sim" style="height:1040px; border-radius:8px; overflow:hidden; background:#f5f5f7; border:.5px solid rgba(0,0,0,0.06);"><iframe src="index_bback_up_files/a.html" style="width: 100%; height: 1040px; border: medium; border-radius: 0px; background: rgb(255, 255, 255);"></iframe></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+</div>
+<script>
+let activeLeId = null;
+<script>
+const LOGOS_EYE_MODULES = [
+  {
+    id: "le_01",
+    title: "GVM 코어 엔진",
+    file: "sessions/s502-001/logos_eye_core.py",
+    status: "운영 중",
+    spec: "YuNet ONNX SSD + HOG · Python 3.14 · PII 0.0%",
+    desc: "Logos Eye의 핵심 비식별화 엔진입니다. YuNet ONNX SSD와 HOG 하이브리드 방식으로 얼굴·신체를 감지하고 GVM(기하학적 벡터 마스킹)으로 즉시 비식별화합니다. 픽셀 원본은 메모리에서 즉시 파기되어 PII 누수율 0.0%를 수학적으로 보장합니다. Kalman 모션 예측으로 가림(Occlusion) 상황에서도 추적이 유지됩니다.",
+    usage: `<b>시나리오 1 — 실시간 CCTV 스트림 비식별화</b>
+RTSP 스트림을 입력으로 받아 초당 28프레임으로 얼굴·신체를 감지하고 파란색 마스크를 씌웁니다. 처리된 프레임은 감사 인장이 찍혀 법적 증거로 활용 가능합니다.
+
+<b>실행 방법:</b>
+  python sessions/s502-001/logos_eye_core.py --input cctv.mp4 --output masked.mp4
+  python sessions/s502-001/test_logos_eye.py  # K-Pop 댄스 벤치마크
+
+<b>시나리오 2 — 하드웨어 핑거프린트 라이선싱</b>
+MAC/CPU ID 기반 암호화 서명으로 라이선스 없는 서버에서 실행 시 자동 차단. B2B 납품 시 불법 복제 방지.`,
+    diagram: `
+[RTSP/MP4 입력 스트림]
+         |
+         v
++----------------------------------+
+|  YuNet ONNX SSD 얼굴 감지         |
+|  HOG 신체 감지 (뒷모습/측면)       |
++----------------------------------+
+         |
+         v
++----------------------------------+
+|  GVM 비대칭 동적 마스킹 행렬       |
+|  Pitch/Yaw/Roll 헤드포즈 연동      |
++----------------------------------+
+         |
+         v
++----------------------------------+
+|  픽셀 원본 즉시 파기 (memset 0)   |
+|  감사 인장 자동 부착               |
++----------------------------------+
+         |
+         v
+[비식별 출력 + audit_trail.log]`,
+    sim_url: "/spatial/?view=gvm"
+  },
+  {
+    id: "le_02",
+    title: "Shorts 비식별화 플랫폼",
+    file: "sessions/s502-002/shorts_masker.py",
+    status: "운영 중",
+    spec: "yt-dlp + Logos Eye Core · WebM 출력 · 3-Way 비교",
+    desc: "YouTube Shorts 영상을 yt-dlp로 자동 다운로드하고 Logos Eye 코어 엔진을 통해 비식별화합니다. 원본/추적/비식별 3-Way 비교 영상을 자동 생성하여 B2B 데모 및 감사 자료로 활용합니다. 한국 K-Pop 댄스 고난도 영상에서 0.0% 누수율 검증 완료.",
+    usage: `<b>시나리오 1 — YouTube 쇼츠 자동 비식별화</b>
+URL 하나만 입력하면 다운로드→비식별화→저장까지 완전 자동 처리됩니다.
+
+<b>실행 방법:</b>
+  python sessions/s502-002/shorts_masker.py \\
+    --url "https://youtube.com/shorts/XXXXX" \\
+    --output masked_shorts.mp4
+
+<b>시나리오 2 — 디렉토리 일괄 처리</b>
+  python sessions/s502-002/shorts_masker.py \\
+    --input-dir ./raw_videos/ \\
+    --output-dir ./masked_videos/
+
+출력: 원본/추적/비식별 3-Way 비교 영상 자동 생성`,
+    diagram: `
+[YouTube URL 입력]
+         |
+         v
++------------------------------+
+|  yt-dlp 자동 다운로드         |
+|  MP4/WebM 로컬 저장           |
++------------------------------+
+         |
+         v
++------------------------------+
+|  Logos Eye Core 비식별화     |
+|  seen_densities 누락 방지     |
++------------------------------+
+         |
+         v
++------------------------------+
+|  3-Way 비교 영상 생성         |
+|  원본 | 추적 | 비식별          |
++------------------------------+
+         |
+         v
+[masked_video.webm + audit_log]`,
+    sim_url: null
+  },
+  {
+    id: "le_03",
+    title: "B2B 공간 분석 대시보드",
+    file: "sessions/s401-001/platforms/022_spatial_dashboard/dashboard.py",
+    status: "운영 중",
+    spec: "Streamlit · Plotly · 500명 시뮬레이션 · 포트 8015",
+    desc: "Logos Eye와 연동된 B2B 매장 분석 대시보드입니다. 비식별화된 고객 동선을 분석하여 층별 유동인구·체류 시간·혼잡도 열지도를 시각화합니다. 5시간 시뮬레이션 재생과 실시간 라이브 스트림 두 가지 모드를 지원하며, 롯데/신세계/현대 브랜드 스위처 내장.",
+    usage: `<b>시나리오 1 — 백화점 고객 동선 분석</b>
+5시간 × 500명 시뮬레이션 데이터를 슬라이더로 재생하며 층별 혼잡도·동선 패턴을 확인합니다. 입점 브랜드별 매장 방문율 분석 리포트 자동 생성.
+
+<b>실행 방법:</b>
+  bash sessions/s401-001/run_spatial.sh
+  # 또는
+  streamlit run sessions/s401-001/platforms/022_spatial_dashboard/dashboard.py \\
+    --server.port 8015 --server.baseUrlPath=/spatial
+
+<b>시나리오 2 — 브랜드 스위처 데모</b>
+사이드바에서 롯데(Red)/신세계(Plum)/현대(Green) 테마를 전환하여 각 고객사 맞춤 시연 가능.
+
+접속: http://aigstack.kr/spatial/`,
+    diagram: `
+[CCTV 비식별 스트림 / 시뮬레이션 데이터]
+              |
+              v
++----------------------------------+
+|  500명 동선 시뮬레이터            |
+|  Hour 1~5 슬라이더 재생           |
++----------------------------------+
+     |           |          |
+     v           v          v
+[KPI 메트릭]  [궤적 맵] [열지도]
+              |
+              v
++----------------------------------+
+|  브랜드 스위처 (롯데/신세계/현대)  |
+|  B2B Tenant 모바일 앱 시뮬레이터  |
++----------------------------------+`,
+    sim_url: "/spatial/?view=b2b"
+  },
+  {
+    id: "le_04",
+    title: "페이스 마스크 데모",
+    file: "sessions/s401-001/face_mask_demo.py",
+    status: "운영 중",
+    spec: "OpenCV · PIL · seen_densities 알고리즘 · 시부야 교차로 벤치마크",
+    desc: "실제 군중 영상(시부야 교차로)에서 Logos Eye 비식별화를 시연하는 데모 모듈입니다. seen_densities 세트 기법으로 1~4인 군중 밀도 단계별 비식별 이미지를 누락 없이 수집합니다. 비즈니스 미팅 현장 시연용. 실제 영상 재생은 내부자료에서 확인하세요.",
+    usage: `<b>시나리오 1 — 군중 밀도 타임라인 시연</b>
+실제 군중 영상에서 1명→2명→3명→4명 단계별 비식별 처리 과정을 타임라인으로 보여줍니다. B2B 미팅에서 "이게 실제로 작동하는 거예요?" 질문에 즉각 시연 가능.
+
+<b>실행 방법:</b>
+  python sessions/s401-001/face_mask_demo.py \\
+    --input shibuya.mp4 \\
+    --output masked_output.webm
+
+<b>출력물:</b>
+  - masked_video.webm (비식별 완성 영상)
+  - anonymized_hour1~5.png (밀도별 프레임)
+  - 대시보드 자동 연동
+
+<b>🔒 원본 영상 재생:</b> 상단 메뉴 → 내부자료에서 확인`,
+    diagram: `
+[시부야 교차로 영상 입력 (299프레임)]
+              |
+              v
++----------------------------------+
+|  프레임별 얼굴 감지               |
+|  seen_densities = set() 추적      |
++----------------------------------+
+              |
+    +---------+---------+
+    |    밀도별 분기     |
+    v         v         v
+  [1인]     [2인]     [3~4인]
+프레임 저장  프레임저장  프레임저장
+              |
+              v
++----------------------------------+
+|  오름차순 정렬 타임라인 출력       |
+|  anonymized_hour1~5.png           |
++----------------------------------+`,
+    sim_url: null
+  }
+];
+
+let activeLeId = null;
+
+
+document.addEventListener("DOMContentLoaded", function() { leSelectModule("le_01"); });
+</script>
+</body></html>

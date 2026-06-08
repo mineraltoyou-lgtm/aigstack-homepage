@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>로고스 엔진 분석실 — AIGSTACK</title>
+<style>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --em:#0071e3;
+  --bg:#f5f5f7;
+  --bg2:#ffffff;
+  --br:rgba(0,0,0,.08);
+  --br2:rgba(0,113,227,.2);
+  --t1:#1d1d1f;
+  --t2:#515154;
+  --t3:#86868b;
+}
+body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;color:var(--t1)}
+h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* NAV — 반응형 멀티라인 */
+nav{
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:.5px solid rgba(0,0,0,0.08);
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+}
+.nav-inner{
+  display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;
+  padding:0 16px 0 2px;height:48px;max-width:1280px;margin:0 auto;
+}
+.logo{display:flex;align-items:center;cursor:pointer;margin-right:8px;flex-shrink:0;}
+.logo-main{font-size:13px;font-weight:700;letter-spacing:2.5px;color:#1d1d1f;line-height:1}
+.logo-sub{font-size:8px;font-weight:300;letter-spacing:1px;color:rgba(0,0,0,0.4);text-transform:uppercase;margin-left:6px}
+.nav-menu{display:flex;align-items:center;gap:3px;flex-wrap:nowrap;}
+.nav-item{position:relative}
+.nav-btn{
+  background:none;border:none;
+  color:#1d1d1f;
+  font-size:11.5px;font-weight:400;
+  padding:4px 9px;cursor:pointer;
+  transition:color .2s,background .2s;
+  font-family:inherit;letter-spacing:.2px;
+  display:flex;align-items:center;white-space:nowrap;
+  border-radius:6px;
+}
+.nav-btn:hover{color:#0071e3;background:rgba(0,113,227,0.06)}
+.cpill{display:none}
+.nav-contact{display:none}
+/* 모바일 — 더 작게 */
+@media(max-width:480px){
+  .nav-btn{font-size:11px;padding:3px 7px;}
+  .nav-inner{padding:6px 12px 5px;}
+}
+/* 도입 규모별 — 반응형 */
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:32px;}
+@media(max-width:600px){
+  .pricing-grid{grid-template-columns:1fr;}
+}
+/* 도입 효과 — 반응형 메트릭 */
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.metric-card{background:#fff;border:.5px solid rgba(0,0,0,.08);border-radius:12px;padding:18px 20px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.metric-num{font-size:36px;font-weight:700;color:#0071e3;letter-spacing:-1px;line-height:1;flex-shrink:0;min-width:56px;text-align:center;}
+.metric-unit{font-size:18px;font-weight:600;}
+.metric-body{flex:1;}
+.metric-title{font-size:12px;font-weight:600;color:#1d1d1f;margin-bottom:4px;}
+.metric-desc{font-size:11px;color:#86868b;line-height:1.55;}
+/* 모바일: 1열 가로 레이아웃 */
+@media(max-width:600px){
+  .metrics-grid{grid-template-columns:1fr;}
+  .metric-card{padding:14px 16px;gap:14px;}
+  .metric-num{font-size:32px;min-width:52px;}
+}
+
+/* BODY */
+.body{padding:20px 14px 28px;max-width:800px;margin:0 auto}
+.top-label{text-align:center;margin-bottom:18px}
+.el{font-size:10px;letter-spacing:3px;color:var(--em);text-transform:uppercase;opacity:.75;margin-bottom:7px}
+.etitle{font-size:20px;font-weight:200;color:var(--t1);letter-spacing:-.4px}
+.etitle strong{font-weight:500}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:.5px solid rgba(0,0,0,.08);border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.05)}
+.col{position:relative;overflow:hidden}
+.col:not(:last-child){border-right:.5px solid rgba(0,0,0,.08)}
+canvas.vc{display:block;width:100%}
+.zone-top{position:absolute;top:0;left:0;right:0;padding:9px 8px 0;text-align:center;pointer-events:none}
+.zt-n{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:500;opacity:.85}
+.zone-bot{position:absolute;bottom:0;left:0;right:0;padding:8px 8px 10px;background:linear-gradient(transparent,rgba(255,255,255,.95));text-align:center;pointer-events:none}
+.zb-pct{font-size:15px;font-weight:200;font-family:'SF Mono',monospace;line-height:1;margin-bottom:2px}
+.zb-txt{font-size:9px;font-weight:300;line-height:1.4;color:var(--t2)}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:9px}
+.st{background:#ffffff;border:.5px solid rgba(0,0,0,.08);border-radius:10px;padding:9px 10px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.sv{font-size:17px;font-weight:200;font-family:'SF Mono',monospace}
+.sl{font-size:10px;color:var(--t3);margin-top:2px;font-weight:300}
+.hfooter{margin-top:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;padding:0 4px}
+.ft{font-size:10px;color:var(--t3);display:flex;align-items:center;gap:5px;letter-spacing:.3px}
+.ftd{width:4px;height:4px;border-radius:50%;background:var(--em);opacity:.55;flex-shrink:0}
+.cta{padding:9px 18px;border-radius:24px;border:.5px solid var(--em);background:rgba(0,113,227,.06);color:var(--em);font-size:12px;cursor:pointer;transition:all .22s;font-family:inherit;text-decoration:none;white-space:nowrap}
+.cta:hover{background:var(--em);color:#fff}
+
+/* SECTIONS — 흰 배경 라이트 테마 */
+.sec{padding:40px 14px;max-width:800px;margin:0 auto}
+.sec-label{font-size:9px;letter-spacing:3px;color:var(--em);text-transform:uppercase;opacity:.7;margin-bottom:8px}
+.sec-title{font-size:22px;font-weight:200;color:var(--t1);letter-spacing:-.5px;margin-bottom:6px}
+.sec-title strong{font-weight:600;color:var(--t1)}
+.sec-sub{font-size:13px;color:var(--t2);font-weight:300;line-height:1.65;margin-bottom:24px;max-width:560px}
+.divider{height:.5px;background:var(--br);margin:0 14px}
+
+/* 철학 카드 — 흰 배경 */
+.philosophy-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.philosophy-grid{grid-template-columns:1fr}}
+.ph-card{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:16px 18px;
+  position:relative;overflow:hidden;
+  transition:border-color .2s,box-shadow .2s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.ph-card:hover{border-color:rgba(0,113,227,.25);box-shadow:0 4px 16px rgba(0,113,227,0.08)}
+.ph-name{font-size:11px;font-weight:600;letter-spacing:1px;color:var(--em);text-transform:uppercase;margin-bottom:6px}
+.ph-desc{font-size:12px;color:var(--t2);line-height:1.6;font-weight:300}
+
+/* 플랫폼 목록 — 흰 배경 */
+.sf-list{display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;gap:8px}
+.sf-item{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:14px 16px;
+  display:flex;align-items:flex-start;gap:14px;
+  transition:border-color .2s,box-shadow .2s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.03);
+}
+.sf-item:hover{border-color:rgba(0,113,227,.2);box-shadow:0 4px 16px rgba(0,113,227,0.07)}
+.sf-num{font-size:11px;font-family:'SF Mono',monospace;color:var(--em);opacity:.7;min-width:24px;padding-top:2px}
+.sf-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:3px}
+.sf-meta{font-size:11px;color:var(--t2);font-weight:300;line-height:1.5;margin-bottom:4px;}
+.sf-tag{display:inline-block;font-size:9px;letter-spacing:.8px;padding:2px 6px;border-radius:4px;margin-right:5px;margin-bottom:4px;font-weight:500}
+
+/* 특허 카드 — 흰 배경 */
+.pat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.pat-grid{grid-template-columns:1fr}}
+.pat-card{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:16px 18px;
+  transition:border-color .2s,box-shadow .2s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.pat-card:hover{border-color:rgba(0,113,227,.2);box-shadow:0 4px 16px rgba(0,113,227,0.07)}
+.pat-num{font-size:9px;letter-spacing:2px;color:var(--em);opacity:.6;text-transform:uppercase;margin-bottom:6px;font-family:'SF Mono',monospace}
+.pat-name{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:6px}
+.pat-desc{font-size:11px;color:var(--t2);line-height:1.6;font-weight:300}
+.pat-status{display:inline-flex;align-items:center;gap:4px;font-size:9px;margin-top:10px;padding:3px 8px;border-radius:20px}
+.pat-filed{background:rgba(0,113,227,.08);border:.5px solid rgba(0,113,227,.25);color:var(--em)}
+.pat-pending{background:rgba(255,159,10,.08);border:.5px solid rgba(255,159,10,.25);color:#ff9f0a}
+
+/* 인프라 카드 — 흰 배경 */
+.infra-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+@media(max-width:480px){.infra-grid{grid-template-columns:1fr}}
+.inf-card{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:14px 16px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.inf-label{font-size:9px;letter-spacing:1.5px;color:var(--t3);text-transform:uppercase;margin-bottom:8px}
+.inf-items{display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;gap:5px}
+.inf-row{display:flex;justify-content:space-between;align-items:center;font-size:11px}
+.inf-key{color:var(--t2);font-weight:300}
+.inf-val{color:var(--em);font-family:'SF Mono',monospace;font-size:10px}
+
+/* CTA 박스 — 흰 배경 */
+.ir-box{
+  background:#f5f5f7;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:16px;padding:28px 24px;
+  text-align:center;margin-top:0;
+}
+.ir-title{font-size:18px;font-weight:200;color:var(--t1);margin-bottom:8px}
+.ir-title strong{font-weight:600;color:var(--em)}
+.ir-sub{font-size:12px;color:var(--t2);margin-bottom:20px;line-height:1.6}
+.ir-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.ir-btn-main{
+  padding:10px 24px;border-radius:24px;
+  border:.5px solid var(--em);
+  background:var(--em);color:#fff;
+  font-size:12px;cursor:pointer;
+  transition:all .22s;font-family:inherit;text-decoration:none;
+}
+.ir-btn-main:hover{background:#005ec7}
+.ir-btn-sub{
+  padding:10px 24px;border-radius:24px;
+  border:.5px solid var(--br);
+  background:#ffffff;color:var(--t2);
+  font-size:12px;cursor:pointer;
+  transition:all .22s;font-family:inherit;text-decoration:none;
+}
+.ir-btn-sub:hover{border-color:var(--t2);color:var(--t1)}
+
+/* 검증 섹션 — 흰 배경 */
+.vf-section{padding:40px 14px;max-width:800px;margin:0 auto}
+.vf-hero{text-align:center;margin-bottom:28px}
+.vf-eyebrow{font-size:9px;letter-spacing:3px;color:var(--em);text-transform:uppercase;opacity:.7;margin-bottom:10px}
+.vf-headline{font-size:22px;font-weight:200;color:var(--t1);letter-spacing:-.5px;margin-bottom:8px}
+.vf-headline strong{font-weight:600;color:var(--em)}
+.vf-sub{font-size:13px;color:var(--t2);font-weight:300;line-height:1.65;max-width:540px;margin:0 auto}
+.vf-banner{
+  background:rgba(0,113,227,0.04);
+  border:.5px solid rgba(0,113,227,.15);
+  border-radius:12px;padding:16px 20px;margin-bottom:24px;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.vf-banner-text{font-size:12px;color:var(--t2);line-height:1.65;font-weight:300}
+.vf-banner-text strong{color:var(--em);font-weight:500}
+.vf-matrix-label{font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;margin-bottom:10px}
+.vf-models{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px}
+@media(max-width:480px){.vf-models{grid-template-columns:1fr}}
+.vf-model-card{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:14px 16px;
+  transition:border-color .2s,box-shadow .2s;cursor:default;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.vf-model-card:hover{border-color:rgba(0,113,227,.2);box-shadow:0 4px 16px rgba(0,113,227,0.07)}
+.vf-model-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.vf-model-name{font-size:12px;font-weight:600;letter-spacing:.3px}
+.vf-model-badge{font-size:8px;letter-spacing:.8px;padding:2px 7px;border-radius:20px;font-weight:500}
+.vf-model-org{font-size:10px;color:var(--t3);font-weight:300;margin-bottom:6px;font-family:'SF Mono',monospace}
+.vf-model-method{font-size:10px;color:var(--t2);font-weight:300;line-height:1.5}
+.vf-model-method span{color:var(--em);font-weight:500}
+.vf-verified-stamp{font-size:9px;letter-spacing:1px;color:var(--em);opacity:.6;margin-top:8px;display:flex;align-items:center;gap:4px}
+.vf-verified-stamp::before{content:'✓';font-size:10px;opacity:.8}
+.vf-consensus{margin-bottom:24px}
+.vf-consensus-title{font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;margin-bottom:10px}
+.vf-consensus-items{display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;gap:6px}
+.vf-ci{
+  display:flex;align-items:center;gap:10px;
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:8px;padding:9px 12px;
+  transition:border-color .15s;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
+}
+.vf-ci:hover{border-color:rgba(0,113,227,.2)}
+.vf-ci-score{font-size:10px;font-family:'SF Mono',monospace;color:var(--em);min-width:32px;font-weight:600}
+.vf-ci-bar-wrap{flex:1;height:2px;background:rgba(0,0,0,.06);border-radius:2px;overflow:hidden}
+.vf-ci-bar{height:100%;background:linear-gradient(90deg,var(--em),rgba(0,113,227,.4));border-radius:2px}
+.vf-ci-label{font-size:11px;color:var(--t2);font-weight:300;min-width:160px;text-align:right}
+.vf-meta{
+  background:rgba(0,113,227,0.04);
+  border:.5px solid rgba(0,113,227,.12);
+  border-left:2px solid var(--em);
+  border-radius:0 10px 10px 0;padding:14px 18px;margin-bottom:24px;
+}
+.vf-meta-label{font-size:9px;letter-spacing:2px;color:var(--em);text-transform:uppercase;margin-bottom:6px}
+.vf-meta-text{font-size:12px;color:var(--t2);line-height:1.7;font-weight:300}
+.vf-meta-text strong{color:var(--t1);font-weight:500}
+.vf-date{text-align:center;font-size:10px;color:var(--t3);font-family:'SF Mono',monospace;letter-spacing:.5px}
+</style>
+
+<style>
+/* 자아 투영실 — tt.md 라이트 테마 */
+#projection-portal {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 48px);
+  background: #f5f5f7;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #1d1d1f;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+}
+#projection-portal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+#projection-canvas {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 1; pointer-events: none; opacity: 0.15;
+}
+.portal-header {
+  position: relative; z-index: 10;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 24px; height: 52px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid rgba(0,0,0,0.08);
+}
+.portal-title-area { display: flex; align-items: baseline; gap: 10px; }
+.portal-title { font-size: 14px; font-weight: 700; letter-spacing: 2px; color: #1d1d1f; }
+.portal-subtitle { font-size: 9px; letter-spacing: 0.8px; color: rgba(0,0,0,0.4); font-weight: 300; }
+.portal-close-btn {
+  background: none; border: 0.5px solid rgba(0,0,0,0.15);
+  color: #515154; font-size: 11px; padding: 5px 14px;
+  border-radius: 20px; cursor: pointer; transition: all 0.2s; font-family: inherit;
+}
+.portal-close-btn:hover { border-color: #0071e3; color: #0071e3; background: rgba(0,113,227,0.05); }
+.portal-content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 310px 1fr 310px;
+  gap: 20px;
+  padding: 20px 24px;
+  height: calc(100vh - 108px);
+  box-sizing: border-box;
+}
+@media (max-width: 950px) {
+  .portal-content {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+    gap: 16px;
+    height: auto;
+  }
+}
+/* 유리의 벽 (Glassmorphism Panels) */
+.glass-panel {
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  position: relative;
+  box-sizing: border-box;
+}
+.glass-panel::before {
+  display: none;
+}
+.panel-h {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #1d1d1f;
+  font-weight: 600;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: 8px;
+}
+.panel-sec {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.panel-label{font-size:10px;color:#86868b;font-weight:400;letter-spacing:.5px}
+.freq-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.freq-btn{background:#fff;border:.5px solid rgba(0,0,0,.1);color:#515154;padding:8px 6px;border-radius:8px;font-size:11px;cursor:pointer;transition:all .2s;text-align:center;font-family:inherit;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.freq-btn:hover,.freq-btn.active{background:rgba(0,113,227,.06);border-color:#0071e3;color:#0071e3;box-shadow:0 2px 8px rgba(0,113,227,.12)}
+.thought-input-wrap{display:flex;gap:6px;background:#fff;border:.5px solid rgba(0,0,0,.1);border-radius:8px;padding:4px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.thought-input{background:none;border:none;color:#1d1d1f;font-size:11px;padding:6px;flex:1;outline:none;font-family:inherit}
+.thought-submit-btn{background:#0071e3;border:none;color:#fff;padding:0 12px;border-radius:6px;cursor:pointer;font-size:10px;transition:all .2s;font-family:inherit}
+.thought-submit-btn:hover{background:#0077ed}
+.log-list{flex:1;overflow-y:auto;display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;gap:6px;max-height:240px}
+.log-item{background:#fff;border:.5px solid rgba(0,0,0,.07);border-left:2.5px solid #0071e3;padding:8px 10px;border-radius:0 8px 8px 0;font-size:11px;color:#1d1d1f;line-height:1.5;animation:slideIn .3s ease-out;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.log-time{font-family:'SF Mono',monospace;font-size:8.5px;color:#86868b;margin-bottom:4px}
+@keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+.center-core-wrap{display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;justify-content:center;align-items:center;position:relative}
+.mirror-core{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,#f0f4ff 0%,#ffffff 70%);border:1.5px solid rgba(0,113,227,.25);box-shadow:0 8px 40px rgba(0,113,227,.12);display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;justify-content:center;align-items:center;position:relative;cursor:pointer;transition:transform .35s cubic-bezier(.165,.84,.44,1),box-shadow .3s}
+.mirror-core:hover{transform:scale(1.04);box-shadow:0 12px 50px rgba(0,113,227,.2)}
+.mirror-core-pulse{position:absolute;top:-8px;left:-8px;width:216px;height:216px;border-radius:50%;border:.5px solid rgba(0,113,227,.18);animation:corePulse 3s infinite ease-in-out;pointer-events:none}
+@keyframes corePulse{0%{transform:scale(1);opacity:.8}50%{transform:scale(1.07);opacity:.2}100%{transform:scale(1);opacity:.8}}
+.mirror-identity{font-size:10px;letter-spacing:3px;color:#86868b;font-weight:300;margin-bottom:6px;text-transform:uppercase}
+.mirror-name{font-size:15px;font-weight:700;letter-spacing:3px;color:#0071e3}
+.mirror-state{font-size:9px;color:#515154;margin-top:8px;background:#f5f5f7;padding:3px 10px;border-radius:12px;font-family:'SF Mono',monospace}
+.synth-toggle-btn{margin-top:24px;background:#fff;border:.5px solid rgba(0,113,227,.3);color:#0071e3;font-size:11px;padding:9px 20px;border-radius:24px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;z-index:10;font-family:inherit;letter-spacing:.3px;box-shadow:0 2px 8px rgba(0,113,227,.08)}
+.synth-toggle-btn:hover{background:#0071e3;color:#fff;box-shadow:0 4px 16px rgba(0,113,227,.25)}
+.synth-active-dot{width:6px;height:6px;border-radius:50%;background:#86868b;display:inline-block}
+.synth-active-dot.active{background:#34c759;box-shadow:0 0 6px #34c759;animation:dotBlink 1s infinite alternate}
+@keyframes dotBlink{from{opacity:.4}to{opacity:1}}
+.telemetry-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;background:#fff;border:.5px solid rgba(0,0,0,.07);padding:8px 12px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.telemetry-key{color:#515154;font-weight:300}
+.telemetry-val{font-family:'SF Mono',monospace;color:#0071e3;font-size:10.5px}
+.status-pill{font-size:9px;padding:2px 7px;border-radius:4px;font-weight:500}
+.status-active{background:rgba(52,199,89,.08);border:.5px solid rgba(52,199,89,.3);color:#34c759}
+</style>
+
+<style>
+
+.filter-tab {
+  background: none;
+  border: none;
+  color: #86868b;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: color 0.18s;
+  white-space: nowrap;
+  font-family: inherit;
+  letter-spacing: 0.2px;
+}
+.filter-tab:hover {
+  color: #1d1d1f;
+}
+.filter-tab.active {
+  color: #0071e3;
+  font-weight: 600;
+}
+/* logos 카드 — 흰 배경 */
+.logos-card {
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+.logos-card:hover {
+  border-color: rgba(0, 113, 227, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.1);
+}
+.logos-card.active {
+  border-color: #0071e3;
+  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.15);
+  background: rgba(0, 113, 227, 0.04);
+}
+.logos-card.active::before {
+  content: '선택됨';
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #0071e3;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 0 0 0 8px;
+}
+.card-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-cat {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 113, 227, 0.08);
+  border: 0.5px solid rgba(0, 113, 227, 0.2);
+  color: #0071e3;
+  font-weight: 600;
+  font-family: 'SF Mono', monospace;
+}
+.card-period {
+  font-size: 9px;
+  font-family: 'SF Mono', monospace;
+  color: #86868b;
+}
+.card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d1d1f;
+  line-height: 1.4;
+}
+.card-summary {
+  font-size: 11px;
+  color: #515154;
+  line-height: 1.5;
+  font-weight: 300;
+}
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+
+.page-portal{display:flex;flex-direction:column;margin-top:48px;height:calc(100vh - 48px);background:#f5f5f7;color:#1d1d1f;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;}
+.page-portal .portal-header{flex-shrink:0;}
+.page-portal .portal-content{flex:1;overflow:hidden;}
+.card-cat {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 113, 227, 0.08);
+  border: 0.5px solid rgba(0, 113, 227, 0.2);
+  color: #0071e3;
+  font-weight: 600;
+  font-family: 'SF Mono', monospace;
+}
+.card-period {
+  font-size: 9px;
+  font-family: 'SF Mono', monospace;
+  color: #86868b;
+}
+.card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d1d1f;
+  line-height: 1.4;
+}
+.card-summary {
+  font-size: 11px;
+  color: #515154;
+  line-height: 1.5;
+  font-weight: 300;
+}
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* 자율 소프트웨어 생산 포털 전용 추가 스타일 — 라이트 테마 */
+#factory-portal {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 48px);
+  background: #f5f5f7;
+  z-index: 1999;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #1d1d1f;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+}
+#factory-portal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 🌳 로고스 포레스트 B2B 시뮬레이터 전용 추가 스타일 (Apple 라이트 테마 최적화) */
+#logos-forest-portal {
+  position: fixed;
+  top: 48px;
+  left: 0;
+
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <div class="logo" onclick="location.href='/'"><span class="logo-main">AIGSTACK</span><span class="logo-sub">INTEGRITY INFRASTRUCTURE</span></div>
+    <div class="nav-menu">
+      <div class="nav-item"><a href="https://aigstack.kr/docs/logos_eye_onepager.html" target="_blank" style="text-decoration:none;"><button class="nav-btn" style="background:#0071e3;color:#fff;font-weight:600;padding:4px 14px;border-radius:6px;letter-spacing:.5px;">자료PRINT</button></a></div>
+      <div class="nav-item"><a href="/pages/logos.html" style="text-decoration:none;"><button class="nav-btn">로고스 엔진</button></a></div>
+      <div class="nav-item"><a href="/pages/logos-eye.html" style="text-decoration:none;"><button class="nav-btn">로고스 아이</button></a></div>
+      <div class="nav-item"><a href="/pages/logos-forest.html" style="text-decoration:none;"><button class="nav-btn">로고스 포레스트</button></a></div>
+      <div class="nav-item"><a href="/pages/factory.html" style="text-decoration:none;"><button class="nav-btn">S/W개발중</button></a></div>
+      <div class="nav-item"><a href="/pages/saas.html" style="text-decoration:none;"><button class="nav-btn">S/W 허브</button></a></div>
+      <div class="nav-item"><a href="/pages/dashboard.html" style="text-decoration:none;"><button class="nav-btn" style="background:#1d1d1f;color:#fff;font-weight:600;padding:4px 14px;border-radius:6px;">중앙관제</button></a></div>
+      <div class="nav-item" style="position:relative;">
+        <button class="nav-btn" onclick="toggleDD('internal-dropdown',event)" style="color:#c07800;">내부자료 ▾</button>
+        <div id="internal-dropdown" style="display:none;position:fixed;top:0;left:0;background:#fff;border:.5px solid rgba(0,0,0,.12);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.12);min-width:150px;z-index:99999;overflow:hidden;">
+          <a href="/schedule/" target="_blank" style="text-decoration:none;display:block;padding:11px 16px;font-size:13px;color:#c07800;font-weight:600;border-bottom:.5px solid rgba(0,0,0,.06);" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''">🗓️ 일정관리</a>
+          <a href="/pages/internal.html" style="text-decoration:none;display:block;padding:11px 16px;font-size:13px;color:#1d1d1f;border-bottom:.5px solid rgba(0,0,0,.06);" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''">로고스_아이 시연</a>
+          <a href="https://aigstack.kr/content/" target="_blank" style="text-decoration:none;display:block;padding:11px 16px;font-size:13px;color:#1d1d1f;" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''">광고카피</a>
+        </div>
+      </div>
+      <div class="nav-item" style="margin-left:auto;position:relative;">
+        <button class="nav-btn" style="color:#86868b;font-size:11px;" onclick="toggleDD('dev-dropdown',event)">🔒 비공개 개발중 ▾</button>
+        <div id="dev-dropdown" style="display:none;position:fixed;top:0;left:0;background:#fff;border:.5px solid rgba(0,0,0,.12);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.1);padding:6px;min-width:160px;z-index:99999;">
+          <a href="/pages/dashboard.html" style="text-decoration:none;display:block;padding:8px 12px;border-radius:6px;font-size:12px;color:#1d1d1f;" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''"><div style="font-weight:600;">중앙관제</div><div style="font-size:10px;color:#86868b;margin-top:1px;">중앙 관제 허브</div></a>
+          <a href="/jarvis/" target="_blank" style="text-decoration:none;display:block;padding:8px 12px;border-radius:6px;font-size:12px;color:#1d1d1f;" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''"><div style="font-weight:600;">JARVIS Dev</div><div style="font-size:10px;color:#86868b;margin-top:1px;">개발자 JARVIS UI</div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<script>
+var _ddBtns={};function toggleDD(id,e){e.stopPropagation();var d=document.getElementById(id);_ddBtns[id]=e.currentTarget;if(d.style.display==="block"){d.style.display="none";return;}["internal-dropdown","dev-dropdown"].forEach(function(oid){if(oid!==id){var od=document.getElementById(oid);if(od)od.style.display="none";}});var rect=e.currentTarget.getBoundingClientRect();d.style.display="block";d.style.top=(rect.bottom+6)+"px";if(id==="dev-dropdown"){d.style.left="auto";d.style.right=(window.innerWidth-rect.right)+"px";}else{d.style.left=rect.left+"px";d.style.right="auto";}}
+document.addEventListener('click',function(e){if(e.target.closest('nav'))return;['internal-dropdown','dev-dropdown'].forEach(function(id){var d=document.getElementById(id);if(d)d.style.display='none';});});
+</script>
+<div class="page-portal">
+  <!-- 상단 제어 바 — 흰 배경, 검은 글씨 -->
+  <div class="portal-header" style="border-bottom:.5px solid rgba(0,0,0,0.08); background:rgba(255,255,255,0.95); backdrop-filter:blur(20px);">
+    <div class="portal-title-area">
+      <span class="portal-title" style="color:#1d1d1f; font-size:14px; font-weight:600; letter-spacing:.3px;">로고스 엔진 분석실</span>
+      <span class="portal-subtitle" style="color:#515154;">핵심 특허 4대 기술 구조 및 사용 환경별 아키텍처 매핑</span>
+    </div>
+    <button class="portal-close-btn" onclick="location.href='/'" style="border-color:rgba(0,0,0,0.15); color:#515154; background:#fff;">홈으로</button>
+  </div>
+  
+  <!-- 2단 레이아웃: 좌측 목록 | 우측 상세 -->
+  <div class="portal-content" style="grid-template-columns: 260px 1fr; gap:12px; padding:12px; background:#f5f5f7;">
+    
+    <!-- 1단 좌측: 특허 목록 — 텍스트 버튼 스타일 -->
+    <div style="background: rgb(255, 255, 255); border: 0.5px solid rgba(0, 0, 0, 0.08); border-radius: 12px; display: flex; flex-direction: column; height: calc(-119px + 100vh); overflow: hidden; box-shadow: rgba(0, 0, 0, 0.04) 0px 2px 8px;">
+      <!-- 헤더 -->
+      <div style="padding:14px 16px; border-bottom:.5px solid rgba(0,0,0,0.08); flex-shrink:0;">
+        <div style="font-size:9px; letter-spacing:2px; color:#86868b; text-transform:uppercase; font-weight:500; margin-bottom:4px;">PATENT MODULES</div>
+        <div style="font-size:13px; font-weight:600; color:#1d1d1f; margin-bottom:10px;">특허 기술 목록</div>
+        <!-- 필터 버튼 — 테두리/배경 없이 텍스트만 -->
+        <div style="display:flex; gap:0; align-items:center;">
+          <button class="filter-tab active" onclick="filterLogosComponents('전체')">전체</button>
+          <span style="color:rgba(0,0,0,0.15); font-size:11px; padding:0 2px;">|</span>
+          <button class="filter-tab" onclick="filterLogosComponents('에지')">에지</button>
+          <span style="color:rgba(0,0,0,0.15); font-size:11px; padding:0 2px;">|</span>
+          <button class="filter-tab" onclick="filterLogosComponents('서버')">서버</button>
+        </div>
+      </div>
+      <!-- 카드 목록 -->
+      <div id="logos-cards-container" style="flex:1; overflow-y:auto; padding:10px; display:flex; flex-direction:column; gap:8px;"><div class="logos-card active" id="logos-card-pat_01">
+      <div class="card-meta-row">
+        <span class="card-cat">에지</span>
+        <span class="card-period">출원 완료</span>
+      </div>
+      <div class="card-title">특허 01: 안테나 엔진 (Antenna Engine)</div>
+      <div class="card-summary">vLLM / EXAONE 3.0 🇰🇷 / Python 3.10</div>
+    </div><div class="logos-card " id="logos-card-pat_02">
+      <div class="card-meta-row">
+        <span class="card-cat">서버</span>
+        <span class="card-period">출원 완료</span>
+      </div>
+      <div class="card-title">특허 02: 보라매 엔진 (Boramae Engine)</div>
+      <div class="card-summary">FastAPI / Llama-3-8B 🇺🇸 / Docker Stack</div>
+    </div><div class="logos-card " id="logos-card-pat_03">
+      <div class="card-meta-row">
+        <span class="card-cat">서버</span>
+        <span class="card-period">출원 완료</span>
+      </div>
+      <div class="card-title">특허 03: 마린즈 엔진 (Marines Engine)</div>
+      <div class="card-summary">ChromaDB / Mistral 7B 🇫🇷 / PyTorch 2.1</div>
+    </div><div class="logos-card " id="logos-card-pat_04">
+      <div class="card-meta-row">
+        <span class="card-cat">전체</span>
+        <span class="card-period">출원 준비중</span>
+      </div>
+      <div class="card-title">특허 04: LOGOS ENGINE (통합 오케스트레이션)</div>
+      <div class="card-summary">Federated Framework / Raft Consensus WAL</div>
+    </div></div>
+    </div>
+    
+    <!-- 2단 우측: 상세 설명 + 구조도 + 시뮬레이션 — 흰 배경, 검은 글씨 -->
+    <div style="background: rgb(255, 255, 255); border: 0.5px solid rgba(0, 0, 0, 0.08); border-radius: 12px; display: flex; flex-direction: column; height: calc(-119px + 100vh); overflow: hidden; box-shadow: rgba(0, 0, 0, 0.04) 0px 2px 8px;">
+      
+      <!-- 타이틀 헤더 -->
+      <div style="padding:14px 16px; border-bottom:.5px solid rgba(0,0,0,0.08); flex-shrink:0;">
+        <div style="font-size:9px; letter-spacing:2px; color:#86868b; text-transform:uppercase; font-weight:500; margin-bottom:4px;">TECHNICAL DETAIL</div>
+        <div id="logos-desc-title" style="font-size:13px; font-weight:600; color:#1d1d1f;">특허 01: 안테나 엔진 (Antenna Engine)</div>
+      </div>
+      
+      <!-- 스크롤 콘텐츠 -->
+      <div style="flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:14px;">
+        
+        <!-- 분류 및 사양 -->
+        <div>
+          <div id="logos-desc-type" style="font-size:10px; color:#0071e3; font-family:'SF Mono',monospace; letter-spacing:.8px; margin-bottom:4px;">구동 분류: 에지 단말 특화</div>
+          <div id="logos-desc-spec" style="font-size:11px; color:#515154; font-weight:300; line-height:1.5;">엔지니어링 사양: vLLM / EXAONE 3.0 🇰🇷 / Python 3.10</div>
+        </div>
+        
+        <!-- 엔지니어링 상세 해설 -->
+        <div>
+          <div style="font-size:9px; letter-spacing:1.5px; color:#86868b; text-transform:uppercase; font-weight:600; margin-bottom:6px;">엔지니어링 상세 해설</div>
+          <div id="logos-desc-body" style="font-size:12.5px; color:#1d1d1f; line-height:1.75; font-weight:300; background:#f5f5f7; border:.5px solid rgba(0,0,0,0.06); padding:12px 14px; border-radius:8px;">안테나
+ 엔진은 유입되는 데이터를 의미론적 단위로 분할하여 이종 LLM 인스턴스에 독립 배분한 후, 동적 가중 다수결(Dynamic 
+Weighted Majority) 방식을 통해 1차 진위를 결정하고 신뢰도가 임계치에 미달할 시 외부 유출을 선제적으로 차단하는 
+실시간 보안 게이트웨이 기술입니다.</div>
+        </div>
+
+        <!-- 실제 사용 예시 — 해설 바로 아래 -->
+        <div>
+          <div style="font-size:9px; letter-spacing:1.5px; color:#0071e3; text-transform:uppercase; font-weight:600; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+            실제 사용 예시
+            <span style="font-size:8px; background:rgba(0,113,227,0.08); border:.5px solid rgba(0,113,227,0.2); color:#0071e3; padding:2px 7px; border-radius:10px; letter-spacing:.5px; text-transform:none; font-weight:500;">USE CASES</span>
+          </div>
+          <div id="logos-usage-body" style="font-size:12px; color:#1d1d1f; line-height:1.8; font-weight:300; background:#ffffff; border:.5px solid rgba(0,113,227,0.12); border-left:2px solid #0071e3; padding:14px 16px; border-radius:0 8px 8px 0;"><b>시나리오 1 — 언론사 AI 팩트체킹 시스템</b><br>뉴스 기사 초안이 입력되면 안테나 엔진이 EXAONE·Llama·Mistral 3개 모델에 동시 배분합니다. 각 모델이 독립적으로 "사실 / 허위 / 불확실" 판정을 내리고, 2개 이상 일치 시 통과, 불일치 시 즉시 차단됩니다.<br><br>▶ 실행 파일: sessions/s501-001/a_adaptive_filtering.py<br>▶ 실행 방법:<br>  python a_adaptive_filtering.py<br>  &gt;&gt;&gt; from a_adaptive_filtering import AdaptiveFilter<br>  &gt;&gt;&gt; engine = AdaptiveFilter()<br>  &gt;&gt;&gt; result = engine.process({"payload": "북한이 핵실험을 했다고 한다"}, system_load=0.3)<br>  &gt;&gt;&gt; print(result["passed"])     # True / False<br>  &gt;&gt;&gt; print(result["reliability_score"])  # 0~100점<br><br><b>시나리오 2 — 금융 거래 데이터 사전 차단</b><br>이상
+ 거래 데이터가 LLM 파이프라인에 주입되기 전, 안테나 엔진이 의미론적 이상 패턴을 탐지하고 신뢰 점수가 60점 미만이면 후속 
+연산 전 차단합니다. 금융사 내부망(폐쇄망)에서 vLLM + EXAONE 조합으로 데이터 이탈 없이 구동됩니다.<br><br><b>시나리오 3 — ChatGPT API 출력 2차 필터</b><br>OpenAI 응답이 돌아오면 안테나 엔진이 내용의 신뢰도를 재검증하여 환각(Hallucination) 의심 문장을 플래그 처리합니다. B2B SaaS로 API 형태 납품.</div>
+        </div>
+
+        <!-- 구조도 -->
+        <div>
+          <div style="font-size:9px; letter-spacing:1.5px; color:#86868b; text-transform:uppercase; font-weight:600; margin-bottom:6px;">수리적 구조 및 아키텍처 다이어그램</div>
+          <pre id="logos-diagram-body" style="background:#1d1d1f; border:.5px solid rgba(0,0,0,0.08); border-radius:8px; padding:12px; font-family:'SF Mono',monospace; font-size:9.5px; color:#00d68f; line-height:1.5; overflow-x:auto; white-space:pre-wrap; word-break:break-all;">+--------------------------------------------------+<br>|               유입 데이터 (Raw Data Input)        |<br>+--------------------------------------------------+<br>                         |<br>                         v<br>+--------------------------------------------------+<br>|     의미론적 슬라이싱 및 병렬 분배 (Slicing)      |<br>+--------------------------------------------------+<br>        |                 |                 |<br>        v                 v                 v<br>   [EXAONE 3.0]     [Llama-3-8B]      [Mistral 7B]<br>        |                 |                 |<br>        +-----------------+-----------------+<br>                         | (동적 가중 다수결 의사결정)<br>                         v<br>+--------------------------------------------------+<br>|           신뢰도 분석 및 선제 차단 판결          |<br>+--------------------------------------------------+</pre>
+        </div>
+
+        <!-- 시연 시뮬레이션 -->
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="font-size:9px; letter-spacing:1.5px; color:#86868b; text-transform:uppercase; font-weight:600;">실시간 런타임 시연</div>
+          <div id="logos-sim-container" style="min-height:320px; border-radius:8px; overflow:hidden; background:#f5f5f7; border:.5px solid rgba(0,0,0,0.06);"></div>
+        </div>
+
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+
+</div>
+<script>
+let activeLogosId = null;
+const LOGOS_COMPONENTS = [
+  {
+    id: "pat_01",
+    title: "특허 01: 안테나 엔진 (Antenna Engine)",
+    category: "에지",
+    period: "출원 완료",
+    spec: "vLLM / EXAONE 3.0 🇰🇷 / Python 3.10",
+    desc: "안테나 엔진은 유입되는 데이터를 의미론적 단위로 분할하여 이종 LLM 인스턴스에 독립 배분한 후, 동적 가중 다수결(Dynamic Weighted Majority) 방식을 통해 1차 진위를 결정하고 신뢰도가 임계치에 미달할 시 외부 유출을 선제적으로 차단하는 실시간 보안 게이트웨이 기술입니다.",
+    usage: `<b>시나리오 1 — 언론사 AI 팩트체킹 시스템</b>
+뉴스 기사 초안이 입력되면 안테나 엔진이 EXAONE·Llama·Mistral 3개 모델에 동시 배분합니다. 각 모델이 독립적으로 "사실 / 허위 / 불확실" 판정을 내리고, 2개 이상 일치 시 통과, 불일치 시 즉시 차단됩니다.
+
+▶ 실행 파일: sessions/s501-001/a_adaptive_filtering.py
+▶ 실행 방법:
+  python a_adaptive_filtering.py
+  >>> from a_adaptive_filtering import AdaptiveFilter
+  >>> engine = AdaptiveFilter()
+  >>> result = engine.process({"payload": "북한이 핵실험을 했다고 한다"}, system_load=0.3)
+  >>> print(result["passed"])     # True / False
+  >>> print(result["reliability_score"])  # 0~100점
+
+<b>시나리오 2 — 금융 거래 데이터 사전 차단</b>
+이상 거래 데이터가 LLM 파이프라인에 주입되기 전, 안테나 엔진이 의미론적 이상 패턴을 탐지하고 신뢰 점수가 60점 미만이면 후속 연산 전 차단합니다. 금융사 내부망(폐쇄망)에서 vLLM + EXAONE 조합으로 데이터 이탈 없이 구동됩니다.
+
+<b>시나리오 3 — ChatGPT API 출력 2차 필터</b>
+OpenAI 응답이 돌아오면 안테나 엔진이 내용의 신뢰도를 재검증하여 환각(Hallucination) 의심 문장을 플래그 처리합니다. B2B SaaS로 API 형태 납품.`,
+    diagram: `
++--------------------------------------------------+
+|               유입 데이터 (Raw Data Input)        |
++--------------------------------------------------+
+                         |
+                         v
++--------------------------------------------------+
+|     의미론적 슬라이싱 및 병렬 분배 (Slicing)      |
++--------------------------------------------------+
+        |                 |                 |
+        v                 v                 v
+   [EXAONE 3.0]     [Llama-3-8B]      [Mistral 7B]
+        |                 |                 |
+        +-----------------+-----------------+
+                         | (동적 가중 다수결 의사결정)
+                         v
++--------------------------------------------------+
+|           신뢰도 분석 및 선제 차단 판결          |
++--------------------------------------------------+
+    `
+  },
+  {
+    id: "pat_02",
+    title: "특허 02: 보라매 엔진 (Boramae Engine)",
+    category: "서버",
+    period: "출원 완료",
+    spec: "FastAPI / Llama-3-8B 🇺🇸 / Docker Stack",
+    desc: "보라매 엔진은 계층적 다중 분석 노드 기반 무결성 검증 특허입니다. 선행 노드(부모 노드)의 검증 실패 시 하위 후속 연산을 물리 수준에서 즉각 차단하며, 누적 신뢰도 스코어를 다차원 행렬로 연산하여 제한된 에지 디바이스의 추론 자원을 극한으로 절약하고 최적화합니다.",
+    usage: `<b>시나리오 1 — 의료 AI 오진 방지 계층 검증</b>
+CT 판독 AI → 혈액검사 AI → 최종 진단 AI 3단계 파이프라인에서, 상위 노드가 "정상" 판정 실패 시 하위 고비용 연산(MRI 분석 등)을 즉각 중단합니다. 병원 서버 비용을 40% 이상 절감한 사례.
+
+▶ 실행 파일: sessions/s501-001/b_hierarchical_validation.py
+▶ 실행 방법:
+  >>> from b_hierarchical_validation import HierarchicalValidation
+  >>> engine = HierarchicalValidation()
+  >>> result = engine.validate({"passed": True, "reliability_score": 72})
+  >>> print(result["integrity_index"])   # 무결성 지수
+  >>> print(result["memory_saved_mb"])   # 절감된 메모리 MB
+
+<b>시나리오 2 — IoT 센서 에지 디바이스 이상 탐지</b>
+공장 설비 센서 수천 개의 데이터가 루트 노드에서 1차 통과 시에만 세부 분석 노드로 전달됩니다. 배터리·CPU가 제한된 에지 보드(라즈베리파이 수준)에서도 구동 가능하도록 VRAM 연산을 최소화합니다.
+
+<b>시나리오 3 — 자율주행 멀티센서 퓨전 검증</b>
+카메라→라이다→레이더 순서로 인식 결과를 계층 검증하여, 상위 센서 신뢰도 미달 시 하위 고비용 센서 추론을 건너뜁니다. 실시간 처리 지연 30ms 이내 달성.`,
+    diagram: `
+        [루트 검증 노드 (Root Verification)]
+                         |
+          +--------------+--------------+
+          | (성공)                      | (실패)
+          v                             v
+[자식 검증 노드 A]            [후속 연산 즉시 차단 (HALT)]
+          |                             |
+     +----+----+                        v
+     |         |                  [리소스 회수]
+     v         v
+ [손자 A1]  [손자 A2]
+    `
+  },
+  {
+    id: "pat_03",
+    title: "특허 03: 마린즈 엔진 (Marines Engine)",
+    category: "서버",
+    period: "출원 완료",
+    spec: "ChromaDB / Mistral 7B 🇫🇷 / PyTorch 2.1",
+    desc: "마린즈 엔진은 삼심제(Tri-Courtroom) 기반의 다중 독립 LLM 상호 검증 특허입니다. 훈련 계보와 파라미터 아키텍처가 상이한 3개 이종 모델을 각각 '논리비판자', '팩트체커', '보안검증자'로 고정 배치하여 3인 합의(Consensus)가 이루어진 경우에만 출력을 최종 서명하는 무결성 보호 솔루션입니다.",
+    usage: `<b>시나리오 1 — 딥페이크·가짜뉴스 실시간 감지 (언론사·선관위)</b>
+영상 또는 텍스트가 입력되면 논리비판자(Llama-3)·팩트체커(Mistral)·보안검증자(EXAONE) 3개 모델이 독립 판정합니다. 3인 전원 합의 시에만 "진본" 서명, 1명이라도 이의를 제기하면 자가 교정 피드백 루프를 돌립니다.
+
+▶ 실행 파일: sessions/s501-001/c_independent_jury.py
+▶ 실행 방법:
+  >>> from c_independent_jury import JurySystem
+  >>> jury = JurySystem()
+  >>> result = jury.evaluate("이 기사가 사실인지 확인해줘", sensors={"device_temp": 35})
+  >>> print(result["consensus_outcome"])  # APPROVE / REJECT
+  >>> print(result["jury_raw_results"])   # 3인 개별 판정 결과
+
+<b>시나리오 2 — 국방·공공기관 AI 판단 최종 서명</b>
+전투 판단 AI, 복지 급여 심사 AI 등 고위험 의사결정 시스템에서, AI 단독 판단을 금지하고 3인 이종 LLM 합의를 의무화합니다. 결과에 감사 서명이 부착되어 법적 책임 추적이 가능합니다.
+
+<b>시나리오 3 — 법원 전자소송 문서 위변조 탐지</b>
+제출된 소장·증거 문서를 3개 모델이 교차 검증하고, 위변조 의심 시 즉시 차단합니다. 대법원 전자소송 시스템 B2G 납품 목표.`,
+    diagram: `
++--------------------------------------------------+
+|               검증 대상 텍스트 입력               |
++--------------------------------------------------+
+                         |
+         +---------------+---------------+
+         |               |               |
+         v               v               v
+  [논리비판자]     [팩트체커]      [보안검증자]
+  (Llama-3)       (Mistral)       (EXAONE)
+         |               |               |
+         +---------------+---------------+
+                         |
+                         v
+       [삼심제 합의 판정 (Quorum: 3인 전원)]
+                         |
+          +--------------+--------------+
+          | (전원 합의)                 | (불일치)
+          v                             v
+     [무결성 최종 서명]           [자가 교정 피드백]
+    `
+  },
+  {
+    id: "pat_04",
+    title: "특허 04: LOGOS ENGINE (통합 오케스트레이션)",
+    category: "전체",
+    period: "출원 준비중",
+    spec: "Federated Framework / Raft Consensus WAL",
+    desc: "3대 원천 기술(안테나, 보라매, 마린즈)의 실행 순서, 조건 분기, 예외 격리 및 자가 복구 피드백 루프를 오케스트레이션하는 마스터 특허입니다. 각 세션이 수집한 원시 데이터의 purification(정제) 계보를 추적하고, 최종 데이터에 분산 블록체인 스마트 컨트랙트 및 무결성 메타데이터 증명서를 부착하여 배포합니다.",
+    usage: `<b>시나리오 1 — AI 데이터 무결성 자율 검증 센터 (K-Moonshot·AI Hub 국책과제)</b>
+정부 AI 학습 데이터셋이 제출되면 로고스 엔진이 안테나→보라매→마린즈 3단계를 자동 오케스트레이션합니다. 최종 통과 데이터에 무결성 증명서(Logos Certificate)를 부착하고, 실패 데이터는 로그와 함께 반환합니다.
+
+▶ 실행 파일: sessions/s501-001/d_distributed_courtroom.py
+▶ 실행 방법:
+  >>> from d_distributed_courtroom import DistributedCourtroom
+  >>> court = DistributedCourtroom()
+  >>> result = court.process("검증할 AI 응답 텍스트", {"integrity_index": 85})
+  >>> print(result["trial_data"]["judge"]["verdict"])  # ACQUIT / CONVICT
+  >>> print(result["audit_log"])   # 감사 로그 (해시 서명 포함)
+  >>> print(result["handoff_data"])  # 다음 시스템으로 무손실 전달 데이터
+
+<b>시나리오 2 — 금융기관 온프레미스 LLM 파이프라인 완전 검증</b>
+은행 내부 AI 어시스턴트가 생성한 답변이 고객에게 전달되기 전, 로고스 엔진 전 과정을 통과해야 합니다. 외부 클라우드 연결 없이 폐쇄망에서 vLLM 기반으로 구동됩니다. 월 구독 $5,000~$50,000 수준의 B2B 계약.
+
+<b>시나리오 3 — 글로벌 AI 규제 컴플라이언스 자동 진단 (EU AI Act)</b>
+기업의 AI 시스템 출력을 로고스 엔진에 통과시켜 EU AI Act·개인정보보호법 위반 여부를 자동 진단합니다. 컴플라이언스 리포트를 PDF로 자동 발행하며 SaaS 구독 모델로 판매합니다.`,
+    diagram: `
+   +--------------------------------------------+
+   |                안테나 엔진                 |
+   +--------------------------------------------+
+                         |
+                         v
+   +--------------------------------------------+
+   |                보라매 엔진                 |
+   +--------------------------------------------+
+                         |
+                         v
+   +--------------------------------------------+
+   |                마린즈 엔진                 |
+   +--------------------------------------------+
+                         |
+                         v
++--------------------------------------------------+
+|    무결성 보증서 부착 및 배포 (Logos Certificate)  |
++--------------------------------------------------+
+    `
+  }
+];
+
+let activeLogosId = null;
+
+function openLogosPortal() {
+  // 페이지 모드 — 포털 전환 불필요
+  
+  // 최초 로드 시 카드 생성 및 첫 카드 자동선택
+  displayLogosComponents();
+}
+
+function closeLogosPortal() {
+  const portal = document.getElementById("logos-portal");
+  portal.classList.remove("active");
+  document.body.style.overflow = "";
+  
+  // 시뮬레이터 제거 및 placeholder 복원
+  const simContainer = document.getElementById("logos-sim-container");
+  simContainer.innerHTML = `<div style="display:flex; align-items:center; justify-content:center; height:320px; color:#86868b; font-size:11px;">모듈 선택 시 시뮬레이션이 로드됩니다</div>`;
+}
+
+function displayLogosComponents(filter = "전체") {
+  const container = document.getElementById("logos-cards-container");
+  container.innerHTML = "";
+  
+  const filtered = LOGOS_COMPONENTS.filter(c => {
+    if (filter === "전체") return true;
+    if (filter === "에지") return c.category === "에지" || c.category === "전체";
+    if (filter === "서버") return c.category === "서버" || c.category === "전체";
+    return true;
+  });
+  
+  filtered.forEach(c => {
+    const card = document.createElement("div");
+    card.className = `logos-card ${activeLogosId === c.id ? 'active' : ''}`;
+    card.id = `logos-card-${c.id}`;
+    card.onclick = () => selectLogosComponent(c.id);
+    
+    card.innerHTML = `
+      <div class="card-meta-row">
+        <span class="card-cat">${c.category}</span>
+        <span class="card-period">${c.period}</span>
+      </div>
+      <div class="card-title">${c.title}</div>
+      <div class="card-summary">${c.spec}</div>
+    `;
+    container.appendChild(card);
+  });
+  
+  if (filtered.length > 0 && !activeLogosId) {
+    selectLogosComponent(filtered[0].id);
+  }
+}
+
+function filterLogosComponents(category) {
+  // 필터 탭 활성화 토글
+  const panel = document.querySelector("#logos-portal");
+  panel.querySelectorAll(".filter-tab").forEach(tab => tab.classList.remove("active"));
+  event.target.classList.add("active");
+  displayLogosComponents(category);
+}
+
+function selectLogosComponent(id) {
+  activeLogosId = id;
+  
+  // 카드 스타일 클래스 변경
+  document.querySelectorAll(".logos-card").forEach(c => c.classList.remove("active"));
+  const activeCard = document.getElementById(`logos-card-${id}`);
+  if (activeCard) activeCard.classList.add("active");
+  
+  const comp = LOGOS_COMPONENTS.find(c => c.id === id);
+  if (!comp) return;
+  
+  // 정보 갱신
+  document.getElementById("logos-desc-title").innerText = comp.title;
+  document.getElementById("logos-desc-type").innerText = `구동 분류: ${comp.category === '전체' ? '서버 및 에지 공용 통합' : comp.category + ' 단말 특화'}`;
+  document.getElementById("logos-desc-spec").innerText = `엔지니어링 사양: ${comp.spec}`;
+  document.getElementById("logos-desc-body").innerText = comp.desc;
+
+  // 실제 사용 예시 렌더링
+  const usageEl = document.getElementById("logos-usage-body");
+  if (comp.usage) {
+    usageEl.innerHTML = comp.usage.replace(/\n/g, '<br>');
+  } else {
+    usageEl.innerText = "사용 예시 준비 중입니다.";
+  }
+
+  // 구조도 다이어그램 로드
+  document.getElementById("logos-diagram-body").innerText = comp.diagram.trim();
+  
+  // 시연 시뮬레이션 임베딩
+  const simContainer = document.getElementById("logos-sim-container");
+  simContainer.innerHTML = "";
+  
+  const iframe = document.createElement("iframe");
+  iframe.src = "/logos-patent/";
+  iframe.style.width = "100%";
+  iframe.style.height = "100%";
+  iframe.style.minHeight = "320px";
+  iframe.style.border = "none";
+  iframe.style.borderRadius = "0";
+  iframe.style.background = "#ffffff";
+  simContainer.appendChild(iframe);
+}
+</script>
+
+
+// 페이지 로드 시 자동 초기화
+document.addEventListener("DOMContentLoaded", function() { displayLogosComponents(); });
+</script>
+</body></html>

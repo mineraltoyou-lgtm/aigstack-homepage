@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>비공개 개발중 · AIGSTACK</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--em:#0071e3;--bg:#f5f5f7;--t1:#1d1d1f;--t2:#515154;--t3:#86868b;}
+body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;color:var(--t1)}
+nav{background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:.5px solid rgba(0,0,0,0.08);position:fixed;top:0;left:0;right:0;z-index:9999;}
+.nav-inner{display:flex;align-items:center;padding:0 16px;height:48px;max-width:1280px;margin:0 auto;gap:12px;}
+.logo{display:flex;align-items:center;cursor:pointer;}
+.logo-main{font-size:13px;font-weight:700;letter-spacing:2.5px;color:#1d1d1f;line-height:1}
+.logo-sub{font-size:8px;font-weight:300;letter-spacing:1px;color:rgba(0,0,0,0.4);text-transform:uppercase;margin-left:6px}
+.nav-back{margin-left:auto;font-size:11px;color:var(--em);text-decoration:none;}
+.nav-back:hover{text-decoration:underline;}
+
+.wrap{max-width:880px;margin:0 auto;padding:88px 16px 60px;}
+.eyebrow{font-size:10px;letter-spacing:3px;color:var(--em);text-transform:uppercase;opacity:.75;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.title{font-size:26px;font-weight:200;letter-spacing:-.5px;margin-bottom:8px;}
+.title strong{font-weight:600;}
+.sub{font-size:13px;color:var(--t2);font-weight:300;line-height:1.65;margin-bottom:32px;max-width:560px;}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:600px){.grid{grid-template-columns:1fr;}}
+.card{display:flex;flex-direction:column;background:#fff;border:.5px solid rgba(0,0,0,.08);border-radius:14px;padding:20px 22px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:border-color .2s,box-shadow .2s,transform .2s;}
+.card:hover{border-color:rgba(0,113,227,.25);box-shadow:0 8px 24px rgba(0,113,227,.1);transform:translateY(-2px);}
+.card-name{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:6px;display:flex;align-items:center;gap:7px;}
+.card-desc{font-size:12px;color:var(--t2);font-weight:300;line-height:1.55;}
+.card-go{margin-top:14px;font-size:11px;color:var(--em);font-weight:500;}
+.card.locked .card-name{color:#c07800;}
+.tag-lock{font-size:9px;letter-spacing:.5px;color:#c07800;background:rgba(192,120,0,.08);border:.5px solid rgba(192,120,0,.25);padding:2px 7px;border-radius:20px;font-weight:500;}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <div class="logo" onclick="location.href='/'">
+      <span class="logo-main">AIGSTACK</span>
+      <span class="logo-sub">INTEGRITY INFRASTRUCTURE</span>
+    </div>
+    <a href="/" class="nav-back">← 메인으로</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="eyebrow">🔒 PRIVATE · IN DEVELOPMENT</div>
+  <div class="title"><strong>비공개 개발중</strong></div>
+  <div class="sub">내부 검토·개발 진행 중인 페이지 모음입니다. 항목을 선택하면 해당 페이지로 이동합니다.</div>
+
+  <div class="grid">
+    <a class="card locked" href="/pages/admin/">
+      <div class="card-name">🔐 내부자료 <span class="tag-lock">ADMIN</span></div>
+      <div class="card-desc">로고스 제품 페이지 · 내부 도구 · 관제까지 통합 허브</div>
+      <div class="card-go">열기 →</div>
+    </a>
+  </div>
+</div>
+</body>
+</html>

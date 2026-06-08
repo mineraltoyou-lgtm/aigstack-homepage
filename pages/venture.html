@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사업 파이프라인 — AIGSTACK</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+:root{--blue:#0071e3;--ink:#1d1d1f;--sub:#515154;--mut:#86868b;--line:rgba(0,0,0,.08);--bg:#f5f5f7;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,'Segoe UI','Noto Sans KR',sans-serif;}
+nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);border-bottom:.5px solid var(--line);}
+.nav-inner{display:flex;align-items:center;gap:12px;padding:10px 22px;max-width:1280px;margin:0 auto;}
+.logo{font-weight:800;letter-spacing:-.02em;cursor:pointer;}
+.logo small{font-weight:400;color:var(--mut);font-size:11px;margin-left:6px;}
+.nav-sp{margin-left:auto;}
+.nav-btn{border:.5px solid var(--line);background:#fff;color:var(--sub);padding:5px 12px;border-radius:7px;font-size:12px;cursor:pointer;text-decoration:none;}
+.wrap{max-width:1280px;margin:0 auto;padding:22px;display:grid;grid-template-columns:300px 1fr;gap:18px;}
+@media(max-width:900px){.wrap{grid-template-columns:1fr;}}
+.card{background:#fff;border:.5px solid var(--line);border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+.pad{padding:18px 20px;}
+h2{font-size:15px;margin-bottom:12px;letter-spacing:-.01em;}
+label{display:block;font-size:12px;color:var(--sub);margin:12px 0 5px;font-weight:600;}
+input[type=text],textarea,select{width:100%;border:.5px solid var(--line);border-radius:9px;padding:10px 12px;font-size:13px;font-family:inherit;background:#fcfcfd;}
+textarea{min-height:84px;resize:vertical;}
+.row{display:flex;gap:10px;}.row>*{flex:1;}
+.btn{background:var(--blue);color:#fff;border:none;border-radius:9px;padding:11px 16px;font-size:13px;font-weight:700;cursor:pointer;width:100%;margin-top:14px;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.btn-ghost{background:#fff;color:var(--blue);border:.5px solid var(--blue);}
+.chk{display:flex;align-items:flex-start;gap:9px;background:#f0f7ff;border:.5px solid rgba(0,113,227,.2);border-radius:10px;padding:11px 13px;margin-top:12px;cursor:pointer;}
+.chk input{margin-top:2px;}.chk .t{font-size:12px;color:var(--ink);}.chk .t b{color:var(--blue);}
+.run-item{padding:11px 14px;border-bottom:.5px solid var(--line);cursor:pointer;}
+.run-item:hover{background:#f5f5f7;}.run-item.active{background:#eef6ff;}
+.run-item .g{font-size:12px;font-weight:600;line-height:1.3;}
+.run-item .meta{font-size:10px;color:var(--mut);margin-top:3px;display:flex;justify-content:space-between;}
+.steps{display:flex;gap:6px;margin:6px 0 2px;flex-wrap:wrap;}
+.step{font-size:9px;padding:3px 7px;border-radius:20px;border:.5px solid var(--line);color:var(--mut);background:#fafafa;}
+.step.done{background:#e7f7ed;border-color:#34c759;color:#1a7f37;}
+.step.pending{background:#fff4e0;border-color:#ff9f0a;color:#b8730a;}
+.step.go{background:#e7f7ed;border-color:#34c759;color:#1a7f37;}
+.step.stop{background:#ffeaea;border-color:#ff3b30;color:#c0271d;}
+.step.error{background:#ffeaea;border-color:#ff3b30;color:#c0271d;}
+.step.wip{background:#eef6ff;border-color:var(--blue);color:var(--blue);}
+.bar{height:8px;border-radius:20px;background:#eee;overflow:hidden;margin:10px 0;}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,#0071e3,#34c759);transition:width .5s;}
+.tabs{display:flex;gap:4px;border-bottom:.5px solid var(--line);margin-bottom:14px;flex-wrap:wrap;}
+.tab{padding:8px 13px;font-size:12px;color:var(--sub);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab.active{color:var(--blue);border-color:var(--blue);font-weight:700;}
+.md{font-size:13px;line-height:1.7;color:#33333a;white-space:pre-wrap;word-break:break-word;}
+.md table{border-collapse:collapse;width:100%;margin:8px 0;font-size:12px;}
+.gate{background:#fff8ec;border:1px solid #ffce7a;border-radius:12px;padding:16px;margin-bottom:16px;}
+.gate h3{font-size:14px;color:#b8730a;margin-bottom:8px;}
+.pill{display:inline-block;font-size:11px;padding:3px 9px;border-radius:20px;background:#eef6ff;color:var(--blue);margin:2px 4px 2px 0;}
+.tier{display:inline-block;border:.5px solid var(--line);border-radius:10px;padding:10px 14px;margin:6px 6px 0 0;}
+.tier b{font-size:16px;}.tier .f{font-size:11px;color:var(--sub);margin-top:4px;}
+.empty{color:var(--mut);font-size:13px;text-align:center;padding:40px 0;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1d1d1f;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;z-index:200;opacity:0;transition:.3s;}
+.toast.show{opacity:1;}
+.ok-banner{background:#e7f7ed;border:1px solid #34c759;color:#1a7f37;border-radius:12px;padding:14px 16px;margin-bottom:14px;font-size:13px;}
+.ok-banner a{color:#1a7f37;font-weight:700;}
+</style></head>
+<body>
+<nav><div class="nav-inner">
+  <div class="logo" onclick="location.href='/'">AIGSTACK <small>VENTURE PIPELINE</small></div>
+  <div class="nav-sp"></div>
+  <a class="nav-btn" href="/pages/internal.html">🔒 내부자료</a>
+  <a class="nav-btn" href="/">홈</a>
+</div></nav>
+
+<div class="wrap">
+  <!-- 왼쪽: 새 파이프라인 + 런 목록 -->
+  <div>
+    <div class="card pad">
+      <h2>🚀 새 사업 파이프라인</h2>
+      <label>목적 (무엇을 만들까요?)</label>
+      <textarea id="goal" placeholder="예) 1인 자영업자용 영수증 사진 자동 장부 SaaS"></textarea>
+      <div class="row">
+        <div><label>시장</label>
+          <select id="market"><option>KR</option><option>US</option><option>Global</option></select></div>
+        <div><label>분류</label>
+          <input type="text" id="category" placeholder="AI 인프라"></div>
+      </div>
+      <label>세부 자료 업로드 (선택, 여러 개)</label>
+      <input type="file" id="files" multiple style="font-size:12px;">
+      <label class="chk"><input type="checkbox" id="preapprove">
+        <span class="t"><b>결재 사전승인</b> — 미리 승인해 두면 사람 대기 없이<br>조사→기획→배포→결제까지 <b>한방컷</b>으로 자동 진행</span></label>
+      <button class="btn" id="startBtn" onclick="startRun()">파이프라인 시작 ▶</button>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <div class="pad" style="padding-bottom:8px;"><h2>진행 중 / 완료</h2></div>
+      <div id="runList"><div class="empty">아직 없음</div></div>
+    </div>
+  </div>
+
+  <!-- 오른쪽: 선택된 런 상세 -->
+  <div class="card pad" id="detail">
+    <div class="empty">왼쪽에서 새 파이프라인을 시작하거나, 목록에서 선택하세요.</div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+mermaid.initialize({startOnLoad:false, theme:'neutral'});
+const API = 'api';              // 상대경로 — /venture/ 프록시·:8035 직접접속 양쪽 동작
+let CUR = null, timer = null;
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// 아주 가벼운 마크다운(표/제목/리스트/볼드)
+function md(t){
+  if(!t) return '';
+  let h=esc(t);
+  h=h.replace(/^### (.*)$/gm,'<b style="font-size:13px">$1</b>')
+     .replace(/^## (.*)$/gm,'<b style="font-size:14px">$1</b>')
+     .replace(/^# (.*)$/gm,'<b style="font-size:15px">$1</b>')
+     .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+  // 표
+  h=h.replace(/((?:^\|.*\|\s*$\n?)+)/gm,(blk)=>{
+    const rows=blk.trim().split('\n').filter(r=>r.trim().startsWith('|'));
+    let out='<table>';rows.forEach((r,i)=>{
+      if(/^\|[\s:\-|]+\|$/.test(r.trim()))return;
+      const cells=r.split('|').slice(1,-1);
+      const tag=i===0?'th':'td';
+      out+='<tr>'+cells.map(c=>`<${tag} style="border:.5px solid #ddd;padding:5px 8px;text-align:left">${c.trim()}</${tag}>`).join('')+'</tr>';
+    });return out+'</table>';
+  });
+  return h;
+}
+
+async function startRun(){
+  const goal=document.getElementById('goal').value.trim();
+  if(!goal){toast('목적을 입력하세요');return;}
+  const fd=new FormData();
+  fd.append('goal',goal);
+  fd.append('market',document.getElementById('market').value);
+  fd.append('category',document.getElementById('category').value);
+  fd.append('pre_approve',document.getElementById('preapprove').checked);
+  for(const f of document.getElementById('files').files) fd.append('files',f);
+  const btn=document.getElementById('startBtn');btn.disabled=true;btn.textContent='시작 중…';
+  try{
+    const r=await fetch(API+'/runs',{method:'POST',body:fd});
+    const j=await r.json();
+    if(!r.ok){toast(j.detail||'실패');return;}
+    document.getElementById('goal').value='';document.getElementById('files').value='';
+    toast('파이프라인 시작됨');
+    await refreshList(); select(j.run_id);
+  }catch(e){toast('오류: '+e);}
+  finally{btn.disabled=false;btn.textContent='파이프라인 시작 ▶';}
+}
+
+async function refreshList(){
+  try{
+    const r=await fetch(API+'/runs');const runs=await r.json();
+    const el=document.getElementById('runList');
+    if(!runs.length){el.innerHTML='<div class="empty">아직 없음</div>';return;}
+    el.innerHTML=runs.map(x=>`
+      <div class="run-item ${x.run_id===CUR?'active':''}" onclick="select('${x.run_id}')">
+        <div class="g">${esc(x.goal).slice(0,52)}</div>
+        <div class="meta"><span>${x.run_id.replace('gs-','')}</span><span>${x.progress_pct}%</span></div>
+      </div>`).join('');
+  }catch(e){}
+}
+
+async function select(id){
+  CUR=id; await render();
+  if(timer)clearInterval(timer);
+  timer=setInterval(render,3000);
+  refreshList();
+}
+
+let _tab='plan';
+function setTab(t){_tab=t;render();}
+
+async function render(){
+  if(!CUR)return;
+  let d;
+  try{d=await (await fetch(API+'/runs/'+CUR)).json();}catch(e){return;}
+  const m=d.manifest, st=m.stages, S=['market','benchmark','plan','approval','deploy','billing'];
+  const lbl=d.stage_labels;
+  const steps=S.map(s=>`<span class="step ${st[s].status}">${lbl[s]}</span>`).join('');
+  const appr=st.approval.status;
+  const plan=d.artifacts.plan||{};
+
+  // 결재 게이트(병목) — 승인 대기 시 상단에 액션
+  let gate='';
+  if(appr==='pending'){
+    gate=`<div class="gate"><h3>✍️ 결재 대기 — 승인이 필요합니다 (병목 지점)</h3>
+      <div style="font-size:13px;margin-bottom:10px">제품: <b>${esc(plan.app_name||'')}</b> · ${esc(plan.one_liner||'')}<br>
+      기본가 ₩${(plan.base_price||0).toLocaleString()}/월</div>
+      <button class="btn" style="width:auto;display:inline-block;margin:0 8px 0 0" onclick="decide('GO')">승인 ▶ 배포·결제 진행</button>
+      <button class="btn btn-ghost" style="width:auto;display:inline-block" onclick="decide('STOP')">반려</button></div>`;
+  }
+  // 완료 배너
+  let okb='';
+  if(st.billing.status==='done'){
+    const port=st.deploy.port;
+    okb=`<div class="ok-banner">🎉 <b>한방컷 완료</b> — 앱 배포 + 결제 등록 끝.
+      앱 ID <b>${m.app_id}</b> · 포트 ${port} ·
+      <a href="http://${location.hostname}:${port}/" target="_blank">앱 열기 ↗</a> ·
+      결제 <a href="http://${location.hostname}:8034/price/${m.app_id}" target="_blank">가격확인 ↗</a></div>`;
+  }
+
+  // 사전승인 체크리스트
+  const g=d.gates.approval||{};
+  const preChecked=g.pre_approved?'checked':'';
+
+  // 탭 본문
+  const tabs=[['plan','📑 기획서'],['arch','🗺️ 구조도'],['road','🛣️ 로드맵'],
+              ['market','🔍 시장조사'],['bench','⚔️ 벤치마킹']];
+  let body='';
+  if(_tab==='market') body=`<div class="md">${md(d.artifacts.market_md)||'<div class=empty>생성 중…</div>'}</div>`;
+  else if(_tab==='bench') body=`<div class="md">${md(d.artifacts.benchmark_md)||'<div class=empty>생성 중…</div>'}</div>`;
+  else if(_tab==='plan'){
+    if(!plan.app_name) body='<div class=empty>기획서 생성 중…</div>';
+    else body=`<div class="md"><b style="font-size:17px">${esc(plan.app_name)}</b><br>
+      <span style="color:#515154">${esc(plan.one_liner||'')}</span>
+      <p style="margin-top:10px"><b>대상</b> ${esc(plan.target||'')}</p>
+      <p><b>문제</b> ${esc(plan.problem||'')}</p>
+      <p><b>솔루션</b> ${esc(plan.solution||'')}</p>
+      <p><b>시장</b> ${esc(plan.market_summary||'')}</p>
+      <p><b>침투전략</b> ${esc(plan.wedge||'')}</p>
+      <p style="margin-top:10px"><b>가격</b><br>${(plan.pricing||[]).map(t=>
+        `<span class="tier"><b>${esc(t.tier)}</b> ${typeof t.price==='number'?'₩'+t.price.toLocaleString():esc(t.price||'')}${esc(t.period||'')}
+         <div class="f">${(t.features||[]).map(esc).join(' · ')}</div></span>`).join('')}</p></div>`;
+  }
+  else if(_tab==='arch'){
+    body=plan.architecture?`<div class="mermaid">${esc(plan.architecture)}</div>`:'<div class=empty>구조도 생성 중…</div>';
+  }
+  else if(_tab==='road'){
+    body=(plan.roadmap&&plan.roadmap.length)?plan.roadmap.map(r=>`
+      <div style="border-left:3px solid var(--blue);padding:6px 0 6px 14px;margin-bottom:12px">
+        <b>${esc(r.phase)}</b> <span style="color:var(--mut);font-size:12px">${esc(r.weeks||'')}</span>
+        <ul style="margin:6px 0 0 16px;font-size:13px;color:#444">${(r.items||[]).map(i=>`<li>${esc(i)}</li>`).join('')}</ul>
+      </div>`).join(''):'<div class=empty>로드맵 생성 중…</div>';
+  }
+
+  document.getElementById('detail').innerHTML=`
+    ${okb}${gate}
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h2 style="margin:0">${esc(m.goal).slice(0,60)}</h2>
+      <span style="font-size:11px;color:var(--mut)">${m.run_id}</span></div>
+    <div class="steps">${steps}</div>
+    <div class="bar"><i style="width:${d.progress_pct}%"></i></div>
+    <label class="chk" style="margin-bottom:14px"><input type="checkbox" ${preChecked} onchange="preapprove(this.checked)">
+      <span class="t"><b>결재 사전승인</b> — 체크 시 결재 게이트를 자동 통과(병목 제거)</span></label>
+    <div class="tabs">${tabs.map(([k,v])=>`<div class="tab ${_tab===k?'active':''}" onclick="setTab('${k}')">${v}</div>`).join('')}</div>
+    ${body}`;
+
+  if(_tab==='arch'&&plan.architecture){
+    try{ const el=document.querySelector('.mermaid');
+      el.removeAttribute('data-processed');
+      await mermaid.run({nodes:[el]});
+    }catch(e){ document.querySelector('.mermaid').innerHTML='<div class=empty>구조도 렌더 실패: '+esc(e.message||'')+'</div>'; }
+  }
+  if(st.billing.status==='done'){ clearInterval(timer); }
+}
+
+async function decide(dec){
+  await fetch(API+'/runs/'+CUR+'/approve',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({gate:'approval',decision:dec,by:'ceo'})});
+  toast(dec==='GO'?'승인 — 배포 진행':'반려됨'); render();
+}
+async function preapprove(pre){
+  await fetch(API+'/runs/'+CUR+'/preapprove',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({gate:'approval',pre:pre,by:'ceo'})});
+  toast(pre?'사전승인 ON':'사전승인 OFF'); render();
+}
+
+refreshList(); setInterval(refreshList,4000);
+</script>
+</body></html>

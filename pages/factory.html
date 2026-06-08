@@ -1,0 +1,2510 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>S/W개발중 — 로고스 엔진 기반 소프트웨어 생성 — AIGSTACK</title>
+<style>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --em:#0071e3;
+  --bg:#f5f5f7;
+  --bg2:#ffffff;
+  --br:rgba(0,0,0,.08);
+  --br2:rgba(0,113,227,.2);
+  --t1:#1d1d1f;
+  --t2:#515154;
+  --t3:#86868b;
+}
+body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;color:var(--t1)}
+h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* NAV — 반응형 멀티라인 */
+nav{
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:.5px solid rgba(0,0,0,0.08);
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+}
+.nav-inner{
+  display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;
+  padding:0 16px 0 2px;height:48px;max-width:1280px;margin:0 auto;
+}
+.logo{display:flex;align-items:center;cursor:pointer;margin-right:8px;flex-shrink:0;}
+.logo-main{font-size:13px;font-weight:700;letter-spacing:2.5px;color:#1d1d1f;line-height:1}
+.logo-sub{font-size:8px;font-weight:300;letter-spacing:1px;color:rgba(0,0,0,0.4);text-transform:uppercase;margin-left:6px}
+.nav-menu{display:flex;align-items:center;gap:3px;flex-wrap:nowrap;}
+.nav-item{position:relative}
+.nav-btn{
+  background:none;border:none;
+  color:#1d1d1f;
+  font-size:11.5px;font-weight:400;
+  padding:4px 9px;cursor:pointer;
+  transition:color .2s,background .2s;
+  font-family:inherit;letter-spacing:.2px;
+  display:flex;align-items:center;white-space:nowrap;
+  border-radius:6px;
+}
+.nav-btn:hover{color:#0071e3;background:rgba(0,113,227,0.06)}
+.cpill{display:none}
+.nav-contact{display:none}
+/* 모바일 — 더 작게 */
+@media(max-width:480px){
+  .nav-btn{font-size:11px;padding:3px 7px;}
+  .nav-inner{padding:6px 12px 5px;}
+}
+/* 도입 규모별 — 반응형 */
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:32px;}
+@media(max-width:600px){
+  .pricing-grid{grid-template-columns:1fr;}
+}
+/* 도입 효과 — 반응형 메트릭 */
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.metric-card{background:#fff;border:.5px solid rgba(0,0,0,.08);border-radius:12px;padding:18px 20px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.metric-num{font-size:36px;font-weight:700;color:#0071e3;letter-spacing:-1px;line-height:1;flex-shrink:0;min-width:56px;text-align:center;}
+.metric-unit{font-size:18px;font-weight:600;}
+.metric-body{flex:1;}
+.metric-title{font-size:12px;font-weight:600;color:#1d1d1f;margin-bottom:4px;}
+.metric-desc{font-size:11px;color:#86868b;line-height:1.55;}
+/* 모바일: 1열 가로 레이아웃 */
+@media(max-width:600px){
+  .metrics-grid{grid-template-columns:1fr;}
+  .metric-card{padding:14px 16px;gap:14px;}
+  .metric-num{font-size:32px;min-width:52px;}
+}
+
+/* BODY */
+.body{padding:20px 14px 28px;max-width:800px;margin:0 auto}
+.top-label{text-align:center;margin-bottom:18px}
+.el{font-size:10px;letter-spacing:3px;color:var(--em);text-transform:uppercase;opacity:.75;margin-bottom:7px}
+.etitle{font-size:20px;font-weight:200;color:var(--t1);letter-spacing:-.4px}
+.etitle strong{font-weight:500}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:.5px solid rgba(0,0,0,.08);border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.05)}
+.col{position:relative;overflow:hidden}
+.col:not(:last-child){border-right:.5px solid rgba(0,0,0,.08)}
+canvas.vc{display:block;width:100%}
+.zone-top{position:absolute;top:0;left:0;right:0;padding:9px 8px 0;text-align:center;pointer-events:none}
+.zt-n{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:500;opacity:.85}
+.zone-bot{position:absolute;bottom:0;left:0;right:0;padding:8px 8px 10px;background:linear-gradient(transparent,rgba(255,255,255,.95));text-align:center;pointer-events:none}
+.zb-pct{font-size:15px;font-weight:200;font-family:'SF Mono',monospace;line-height:1;margin-bottom:2px}
+.zb-txt{font-size:9px;font-weight:300;line-height:1.4;color:var(--t2)}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:9px}
+.st{background:#ffffff;border:.5px solid rgba(0,0,0,.08);border-radius:10px;padding:9px 10px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.sv{font-size:17px;font-weight:200;font-family:'SF Mono',monospace}
+.sl{font-size:10px;color:var(--t3);margin-top:2px;font-weight:300}
+.hfooter{margin-top:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;padding:0 4px}
+.ft{font-size:10px;color:var(--t3);display:flex;align-items:center;gap:5px;letter-spacing:.3px}
+.ftd{width:4px;height:4px;border-radius:50%;background:var(--em);opacity:.55;flex-shrink:0}
+.cta{padding:9px 18px;border-radius:24px;border:.5px solid var(--em);background:rgba(0,113,227,.06);color:var(--em);font-size:12px;cursor:pointer;transition:all .22s;font-family:inherit;text-decoration:none;white-space:nowrap}
+.cta:hover{background:var(--em);color:#fff}
+
+/* SECTIONS — 흰 배경 라이트 테마 */
+.sec{padding:40px 14px;max-width:800px;margin:0 auto}
+.sec-label{font-size:9px;letter-spacing:3px;color:var(--em);text-transform:uppercase;opacity:.7;margin-bottom:8px}
+.sec-title{font-size:22px;font-weight:200;color:var(--t1);letter-spacing:-.5px;margin-bottom:6px}
+.sec-title strong{font-weight:600;color:var(--t1)}
+.sec-sub{font-size:13px;color:var(--t2);font-weight:300;line-height:1.65;margin-bottom:24px;max-width:560px}
+.divider{height:.5px;background:var(--br);margin:0 14px}
+
+/* 철학 카드 — 흰 배경 */
+.philosophy-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.philosophy-grid{grid-template-columns:1fr}}
+.ph-card{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:16px 18px;
+  position:relative;overflow:hidden;
+  transition:border-color .2s,box-shadow .2s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.ph-card:hover{border-color:rgba(0,113,227,.25);box-shadow:0 4px 16px rgba(0,113,227,0.08)}
+.ph-name{font-size:11px;font-weight:600;letter-spacing:1px;color:var(--em);text-transform:uppercase;margin-bottom:6px}
+.ph-desc{font-size:12px;color:var(--t2);line-height:1.6;font-weight:300}
+
+/* 플랫폼 목록 — 흰 배경 */
+.sf-list{display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;gap:8px}
+.sf-item{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:14px 16px;
+  display:flex;align-items:flex-start;gap:14px;
+  transition:border-color .2s,box-shadow .2s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.03);
+}
+.sf-item:hover{border-color:rgba(0,113,227,.2);box-shadow:0 4px 16px rgba(0,113,227,0.07)}
+.sf-num{font-size:11px;font-family:'SF Mono',monospace;color:var(--em);opacity:.7;min-width:24px;padding-top:2px}
+.sf-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:3px}
+.sf-meta{font-size:11px;color:var(--t2);font-weight:300;line-height:1.5;margin-bottom:4px;}
+.sf-tag{display:inline-block;font-size:9px;letter-spacing:.8px;padding:2px 6px;border-radius:4px;margin-right:5px;margin-bottom:4px;font-weight:500}
+
+/* 특허 카드 — 흰 배경 */
+.pat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.pat-grid{grid-template-columns:1fr}}
+.pat-card{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:16px 18px;
+  transition:border-color .2s,box-shadow .2s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.pat-card:hover{border-color:rgba(0,113,227,.2);box-shadow:0 4px 16px rgba(0,113,227,0.07)}
+.pat-num{font-size:9px;letter-spacing:2px;color:var(--em);opacity:.6;text-transform:uppercase;margin-bottom:6px;font-family:'SF Mono',monospace}
+.pat-name{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:6px}
+.pat-desc{font-size:11px;color:var(--t2);line-height:1.6;font-weight:300}
+.pat-status{display:inline-flex;align-items:center;gap:4px;font-size:9px;margin-top:10px;padding:3px 8px;border-radius:20px}
+.pat-filed{background:rgba(0,113,227,.08);border:.5px solid rgba(0,113,227,.25);color:var(--em)}
+.pat-pending{background:rgba(255,159,10,.08);border:.5px solid rgba(255,159,10,.25);color:#ff9f0a}
+
+/* 인프라 카드 — 흰 배경 */
+.infra-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+@media(max-width:480px){.infra-grid{grid-template-columns:1fr}}
+.inf-card{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:14px 16px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.inf-label{font-size:9px;letter-spacing:1.5px;color:var(--t3);text-transform:uppercase;margin-bottom:8px}
+.inf-items{display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;gap:5px}
+.inf-row{display:flex;justify-content:space-between;align-items:center;font-size:11px}
+.inf-key{color:var(--t2);font-weight:300}
+.inf-val{color:var(--em);font-family:'SF Mono',monospace;font-size:10px}
+
+/* CTA 박스 — 흰 배경 */
+.ir-box{
+  background:#f5f5f7;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:16px;padding:28px 24px;
+  text-align:center;margin-top:0;
+}
+.ir-title{font-size:18px;font-weight:200;color:var(--t1);margin-bottom:8px}
+.ir-title strong{font-weight:600;color:var(--em)}
+.ir-sub{font-size:12px;color:var(--t2);margin-bottom:20px;line-height:1.6}
+.ir-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.ir-btn-main{
+  padding:10px 24px;border-radius:24px;
+  border:.5px solid var(--em);
+  background:var(--em);color:#fff;
+  font-size:12px;cursor:pointer;
+  transition:all .22s;font-family:inherit;text-decoration:none;
+}
+.ir-btn-main:hover{background:#005ec7}
+.ir-btn-sub{
+  padding:10px 24px;border-radius:24px;
+  border:.5px solid var(--br);
+  background:#ffffff;color:var(--t2);
+  font-size:12px;cursor:pointer;
+  transition:all .22s;font-family:inherit;text-decoration:none;
+}
+.ir-btn-sub:hover{border-color:var(--t2);color:var(--t1)}
+
+/* 검증 섹션 — 흰 배경 */
+.vf-section{padding:40px 14px;max-width:800px;margin:0 auto}
+.vf-hero{text-align:center;margin-bottom:28px}
+.vf-eyebrow{font-size:9px;letter-spacing:3px;color:var(--em);text-transform:uppercase;opacity:.7;margin-bottom:10px}
+.vf-headline{font-size:22px;font-weight:200;color:var(--t1);letter-spacing:-.5px;margin-bottom:8px}
+.vf-headline strong{font-weight:600;color:var(--em)}
+.vf-sub{font-size:13px;color:var(--t2);font-weight:300;line-height:1.65;max-width:540px;margin:0 auto}
+.vf-banner{
+  background:rgba(0,113,227,0.04);
+  border:.5px solid rgba(0,113,227,.15);
+  border-radius:12px;padding:16px 20px;margin-bottom:24px;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.vf-banner-text{font-size:12px;color:var(--t2);line-height:1.65;font-weight:300}
+.vf-banner-text strong{color:var(--em);font-weight:500}
+.vf-matrix-label{font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;margin-bottom:10px}
+.vf-models{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px}
+@media(max-width:480px){.vf-models{grid-template-columns:1fr}}
+.vf-model-card{
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:12px;padding:14px 16px;
+  transition:border-color .2s,box-shadow .2s;cursor:default;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+.vf-model-card:hover{border-color:rgba(0,113,227,.2);box-shadow:0 4px 16px rgba(0,113,227,0.07)}
+.vf-model-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.vf-model-name{font-size:12px;font-weight:600;letter-spacing:.3px}
+.vf-model-badge{font-size:8px;letter-spacing:.8px;padding:2px 7px;border-radius:20px;font-weight:500}
+.vf-model-org{font-size:10px;color:var(--t3);font-weight:300;margin-bottom:6px;font-family:'SF Mono',monospace}
+.vf-model-method{font-size:10px;color:var(--t2);font-weight:300;line-height:1.5}
+.vf-model-method span{color:var(--em);font-weight:500}
+.vf-verified-stamp{font-size:9px;letter-spacing:1px;color:var(--em);opacity:.6;margin-top:8px;display:flex;align-items:center;gap:4px}
+.vf-verified-stamp::before{content:'✓';font-size:10px;opacity:.8}
+.vf-consensus{margin-bottom:24px}
+.vf-consensus-title{font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;margin-bottom:10px}
+.vf-consensus-items{display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;gap:6px}
+.vf-ci{
+  display:flex;align-items:center;gap:10px;
+  background:#ffffff;
+  border:.5px solid rgba(0,0,0,.08);
+  border-radius:8px;padding:9px 12px;
+  transition:border-color .15s;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
+}
+.vf-ci:hover{border-color:rgba(0,113,227,.2)}
+.vf-ci-score{font-size:10px;font-family:'SF Mono',monospace;color:var(--em);min-width:32px;font-weight:600}
+.vf-ci-bar-wrap{flex:1;height:2px;background:rgba(0,0,0,.06);border-radius:2px;overflow:hidden}
+.vf-ci-bar{height:100%;background:linear-gradient(90deg,var(--em),rgba(0,113,227,.4));border-radius:2px}
+.vf-ci-label{font-size:11px;color:var(--t2);font-weight:300;min-width:160px;text-align:right}
+.vf-meta{
+  background:rgba(0,113,227,0.04);
+  border:.5px solid rgba(0,113,227,.12);
+  border-left:2px solid var(--em);
+  border-radius:0 10px 10px 0;padding:14px 18px;margin-bottom:24px;
+}
+.vf-meta-label{font-size:9px;letter-spacing:2px;color:var(--em);text-transform:uppercase;margin-bottom:6px}
+.vf-meta-text{font-size:12px;color:var(--t2);line-height:1.7;font-weight:300}
+.vf-meta-text strong{color:var(--t1);font-weight:500}
+.vf-date{text-align:center;font-size:10px;color:var(--t3);font-family:'SF Mono',monospace;letter-spacing:.5px}
+</style>
+<style>
+/* 자아 투영실 — tt.md 라이트 테마 */
+#projection-portal {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 48px);
+  background: #f5f5f7;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #1d1d1f;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
+}
+#projection-portal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+#projection-canvas {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 1; pointer-events: none; opacity: 0.15;
+}
+.portal-header {
+  position: relative; z-index: 10;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 24px; height: 52px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid rgba(0,0,0,0.08);
+}
+.portal-title-area { display: flex; align-items: baseline; gap: 10px; }
+.portal-title { font-size: 14px; font-weight: 700; letter-spacing: 2px; color: #1d1d1f; }
+.portal-subtitle { font-size: 9px; letter-spacing: 0.8px; color: rgba(0,0,0,0.4); font-weight: 300; }
+.portal-close-btn {
+  background: none; border: 0.5px solid rgba(0,0,0,0.15);
+  color: #515154; font-size: 11px; padding: 5px 14px;
+  border-radius: 20px; cursor: pointer; transition: all 0.2s; font-family: inherit;
+}
+.portal-close-btn:hover { border-color: #0071e3; color: #0071e3; background: rgba(0,113,227,0.05); }
+.portal-content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 310px 1fr 310px;
+  gap: 20px;
+  padding: 20px 24px;
+  height: calc(100vh - 108px);
+  box-sizing: border-box;
+}
+@media (max-width: 950px) {
+  .portal-content {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+    gap: 16px;
+    height: auto;
+  }
+}
+/* 유리의 벽 (Glassmorphism Panels) */
+.glass-panel {
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  position: relative;
+  box-sizing: border-box;
+}
+.glass-panel::before {
+  display: none;
+}
+.panel-h {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #1d1d1f;
+  font-weight: 600;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: 8px;
+}
+.panel-sec {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.panel-label{font-size:10px;color:#86868b;font-weight:400;letter-spacing:.5px}
+.freq-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.freq-btn{background:#fff;border:.5px solid rgba(0,0,0,.1);color:#515154;padding:8px 6px;border-radius:8px;font-size:11px;cursor:pointer;transition:all .2s;text-align:center;font-family:inherit;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.freq-btn:hover,.freq-btn.active{background:rgba(0,113,227,.06);border-color:#0071e3;color:#0071e3;box-shadow:0 2px 8px rgba(0,113,227,.12)}
+.thought-input-wrap{display:flex;gap:6px;background:#fff;border:.5px solid rgba(0,0,0,.1);border-radius:8px;padding:4px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.thought-input{background:none;border:none;color:#1d1d1f;font-size:11px;padding:6px;flex:1;outline:none;font-family:inherit}
+.thought-submit-btn{background:#0071e3;border:none;color:#fff;padding:0 12px;border-radius:6px;cursor:pointer;font-size:10px;transition:all .2s;font-family:inherit}
+.thought-submit-btn:hover{background:#0077ed}
+.log-list{flex:1;overflow-y:auto;display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;gap:6px;max-height:240px}
+.log-item{background:#fff;border:.5px solid rgba(0,0,0,.07);border-left:2.5px solid #0071e3;padding:8px 10px;border-radius:0 8px 8px 0;font-size:11px;color:#1d1d1f;line-height:1.5;animation:slideIn .3s ease-out;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.log-time{font-family:'SF Mono',monospace;font-size:8.5px;color:#86868b;margin-bottom:4px}
+@keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+.center-core-wrap{display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;justify-content:center;align-items:center;position:relative}
+.mirror-core{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,#f0f4ff 0%,#ffffff 70%);border:1.5px solid rgba(0,113,227,.25);box-shadow:0 8px 40px rgba(0,113,227,.12);display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;justify-content:center;align-items:center;position:relative;cursor:pointer;transition:transform .35s cubic-bezier(.165,.84,.44,1),box-shadow .3s}
+.mirror-core:hover{transform:scale(1.04);box-shadow:0 12px 50px rgba(0,113,227,.2)}
+.mirror-core-pulse{position:absolute;top:-8px;left:-8px;width:216px;height:216px;border-radius:50%;border:.5px solid rgba(0,113,227,.18);animation:corePulse 3s infinite ease-in-out;pointer-events:none}
+@keyframes corePulse{0%{transform:scale(1);opacity:.8}50%{transform:scale(1.07);opacity:.2}100%{transform:scale(1);opacity:.8}}
+.mirror-identity{font-size:10px;letter-spacing:3px;color:#86868b;font-weight:300;margin-bottom:6px;text-transform:uppercase}
+.mirror-name{font-size:15px;font-weight:700;letter-spacing:3px;color:#0071e3}
+.mirror-state{font-size:9px;color:#515154;margin-top:8px;background:#f5f5f7;padding:3px 10px;border-radius:12px;font-family:'SF Mono',monospace}
+.synth-toggle-btn{margin-top:24px;background:#fff;border:.5px solid rgba(0,113,227,.3);color:#0071e3;font-size:11px;padding:9px 20px;border-radius:24px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;z-index:10;font-family:inherit;letter-spacing:.3px;box-shadow:0 2px 8px rgba(0,113,227,.08)}
+.synth-toggle-btn:hover{background:#0071e3;color:#fff;box-shadow:0 4px 16px rgba(0,113,227,.25)}
+.synth-active-dot{width:6px;height:6px;border-radius:50%;background:#86868b;display:inline-block}
+.synth-active-dot.active{background:#34c759;box-shadow:0 0 6px #34c759;animation:dotBlink 1s infinite alternate}
+@keyframes dotBlink{from{opacity:.4}to{opacity:1}}
+.telemetry-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;background:#fff;border:.5px solid rgba(0,0,0,.07);padding:8px 12px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.telemetry-key{color:#515154;font-weight:300}
+.telemetry-val{font-family:'SF Mono',monospace;color:#0071e3;font-size:10.5px}
+.status-pill{font-size:9px;padding:2px 7px;border-radius:4px;font-weight:500}
+.status-active{background:rgba(52,199,89,.08);border:.5px solid rgba(52,199,89,.3);color:#34c759}
+</style>
+
+<style>
+.filter-tab {
+  background: none;
+  border: none;
+  color: #86868b;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: color 0.18s;
+  white-space: nowrap;
+  font-family: inherit;
+  letter-spacing: 0.2px;
+}
+.filter-tab:hover {
+  color: #1d1d1f;
+}
+.filter-tab.active {
+  color: #0071e3;
+  font-weight: 600;
+}
+/* logos 카드 — 흰 배경 */
+.logos-card {
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+.logos-card:hover {
+  border-color: rgba(0, 113, 227, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.1);
+}
+.logos-card.active {
+  border-color: #0071e3;
+  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.15);
+  background: rgba(0, 113, 227, 0.04);
+}
+.logos-card.active::before {
+  content: '선택됨';
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #0071e3;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 0 0 0 8px;
+}
+.card-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-cat {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 113, 227, 0.08);
+  border: 0.5px solid rgba(0, 113, 227, 0.2);
+  color: #0071e3;
+  font-weight: 600;
+  font-family: 'SF Mono', monospace;
+}
+.card-period {
+  font-size: 9px;
+  font-family: 'SF Mono', monospace;
+  color: #86868b;
+}
+.card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d1d1f;
+  line-height: 1.4;
+}
+.card-summary {
+  font-size: 11px;
+  color: #515154;
+  line-height: 1.5;
+  font-weight: 300;
+}
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+
+.page-portal{display:flex;flex-direction:column;margin-top:48px;height:calc(100vh - 48px);background:#f5f5f7;color:#1d1d1f;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;}
+.page-portal .portal-header{flex-shrink:0;}.page-portal .portal-content{flex:1;overflow:hidden;}
+.card-cat {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 113, 227, 0.08);
+  border: 0.5px solid rgba(0, 113, 227, 0.2);
+  color: #0071e3;
+  font-weight: 600;
+  font-family: 'SF Mono', monospace;
+}
+.card-period {
+  font-size: 9px;
+  font-family: 'SF Mono', monospace;
+  color: #86868b;
+}
+.card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d1d1f;
+  line-height: 1.4;
+}
+.card-summary {
+  font-size: 11px;
+  color: #515154;
+  line-height: 1.5;
+  font-weight: 300;
+}
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* 자율 소프트웨어 생산 포털 전용 추가 스타일 — 라이트 테마 */
+#factory-portal {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 48px);
+  background: #f5f5f7;
+  z-index: 1999;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #1d1d1f;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+}
+#factory-portal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 🌳 로고스 포레스트 B2B 시뮬레이터 전용 추가 스타일 (Apple 라이트 테마 최적화) */
+#logos-forest-portal {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 48px);
+  background: #f5f5f7;
+  z-index: 1999;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #1d1d1f;
+  overflow-y: auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+}
+#logos-forest-portal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.forest-portal-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px 20px 80px;
+  width: 100%;
+}
+.forest-glass-panel {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  margin-bottom: 20px;
+}
+.forest-glass-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+.forest-glass-title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -.2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1d1d1f;
+}
+.forest-glass-title span {
+  color: #0071e3;
+}
+.forest-auth-container {
+  max-width: 480px;
+  margin: 40px auto;
+  width: 100%;
+}
+.forest-form-group {
+  margin-bottom: 16px;
+}
+.forest-form-group label {
+  display: block;
+  font-size: 11px;
+  color: #515154;
+  margin-bottom: 6px;
+  font-weight: 500;
+  letter-spacing: .3px;
+}
+.forest-form-input, .forest-form-select {
+  width: 100%;
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 11px 14px;
+  color: #1d1d1f;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
+.forest-form-input:focus, .forest-form-select:focus {
+  border-color: #0071e3;
+  background: #ffffff;
+}
+.forest-form-tabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.forest-form-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #515154;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all .18s;
+  font-family: inherit;
+  text-align: center;
+}
+.forest-form-tab.active {
+  background: #ffffff;
+  color: #1d1d1f;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.forest-auth-btn {
+  width: 100%;
+  background: #0071e3;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .2s, transform .1s;
+  font-family: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+.forest-auth-btn:hover {
+  opacity: 0.9;
+}
+.forest-auth-btn:active {
+  transform: scale(0.99);
+}
+.forest-auth-link {
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  color: #515154;
+  margin-top: 16px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.forest-auth-link strong {
+  color: #0071e3;
+}
+.forest-auth-link:hover strong {
+  text-decoration: underline;
+}
+.forest-compliance-box {
+  background: rgba(0, 113, 227, 0.02);
+  border: 1px solid rgba(0, 113, 227, 0.12);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 18px;
+}
+.forest-compliance-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #0071e3;
+  margin-bottom: 8px;
+}
+.forest-compliance-desc {
+  font-size: 10.5px;
+  color: #515154;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  font-weight: 300;
+}
+.forest-compliance-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 11px;
+  color: #1d1d1f;
+}
+.forest-compliance-checkbox input {
+  margin-top: 2px;
+}
+.forest-telemetry-screen {
+  display: none;
+  max-width: 540px;
+  margin: 40px auto;
+  width: 100%;
+}
+.forest-terminal-box {
+  background: #020408;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  font-family: 'SF Mono', monospace;
+  padding: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  min-height: 280px;
+}
+.forest-terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 10px;
+}
+.forest-t-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.forest-terminal-body {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #33ff33;
+}
+.forest-t-log {
+  margin-bottom: 8px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all .3s;
+}
+.forest-t-log.show {
+  opacity: 1;
+  transform: none;
+}
+.forest-spinner-inner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid rgba(0, 255, 157, 0.2);
+  border-top-color: #0071e3;
+  border-radius: 50%;
+  animation: forest-spin .8s linear infinite;
+  vertical-align: middle;
+}
+@keyframes forest-spin { to { transform: rotate(360deg) } }
+
+.forest-workspace {
+  display: none;
+  grid-template-columns: 1.8fr 1.2fr;
+  gap: 20px;
+  width: 100%;
+}
+@media(max-width: 768px) {
+  .forest-workspace {
+    grid-template-columns: 1fr;
+  }
+}
+.forest-workspace-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.forest-session-info-bar {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+.forest-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.forest-u-name {
+  font-weight: 600;
+  color: #1d1d1f;
+}
+.forest-u-org {
+  color: #515154;
+  font-size: 11px;
+}
+.forest-wallet-box {
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.forest-w-bal {
+  color: #0071e3;
+  font-family: 'SF Mono', monospace;
+}
+.forest-plan-switch-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+.forest-plan-switch-label {
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.forest-plan-switcher {
+  display: flex;
+  background: #f5f5f7;
+  border-radius: 24px;
+  padding: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.forest-plan-btn {
+  background: none;
+  border: none;
+  color: #515154;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 6px 14px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all .2s;
+  font-family: inherit;
+  letter-spacing: .3px;
+}
+.forest-plan-btn.active {
+  background: #ffffff;
+  color: #1d1d1f;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.forest-plan-btn.active.premium {
+  background: #ff9f0a;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 159, 10, 0.3);
+}
+.forest-factcheck-board {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+.forest-fact-textarea {
+  width: 100%;
+  height: 120px;
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  padding: 14px;
+  color: #1d1d1f;
+  font-size: 13px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  margin-bottom: 14px;
+  transition: border-color .2s;
+}
+.forest-fact-textarea:focus {
+  border-color: #0071e3;
+  background: #ffffff;
+}
+.forest-model-selectors {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+@media(max-width: 480px) {
+  .forest-model-selectors {
+    grid-template-columns: 1fr;
+  }
+}
+.forest-m-select-card {
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all .2s;
+}
+.forest-m-select-card.active {
+  border-color: #0071e3;
+  background: rgba(0, 113, 227, 0.04);
+}
+.forest-m-select-card.active.premium-active {
+  border-color: #ff9f0a;
+  background: rgba(255, 159, 10, 0.04);
+}
+.forest-m-n {
+  font-size: 11px;
+  font-weight: 600;
+}
+.forest-m-p {
+  font-size: 9.5px;
+  color: #515154;
+  font-family: 'SF Mono', monospace;
+  margin-top: 2px;
+}
+.forest-m-check {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: bold;
+}
+.forest-m-select-card.active .forest-m-check {
+  background: #0071e3;
+  border-color: #0071e3;
+  color: #ffffff;
+}
+.forest-m-select-card.active.premium-active .forest-m-check {
+  background: #ff9f0a;
+  border-color: #ff9f0a;
+  color: #ffffff;
+}
+.forest-pipeline-visualizer {
+  background: #020408;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 18px;
+  display: none;
+}
+.forest-pipe-header {
+  font-size: 9.5px;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.forest-pipe-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.forest-pipe-stage {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  opacity: 0.3;
+  transition: opacity .3s;
+  color: #ffffff;
+}
+.forest-pipe-stage.active {
+  opacity: 1;
+}
+.forest-pipe-stage.completed {
+  opacity: 0.75;
+  color: #33ff33;
+}
+.forest-pipe-icon {
+  font-size: 13px;
+  min-width: 18px;
+  text-align: center;
+}
+.forest-pipe-name {
+  font-weight: 500;
+  flex: 1;
+}
+.forest-pipe-val {
+  font-family: 'SF Mono', monospace;
+  font-size: 10px;
+}
+.forest-receipt-card {
+  display: none;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 18px;
+  margin-top: 18px;
+  border-left: 3px solid #0071e3;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+.forest-receipt-header {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #0071e3;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.forest-receipt-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 11px;
+  margin-bottom: 7px;
+  color: #515154;
+}
+.forest-receipt-row.total {
+  border-top: 1px dashed rgba(0, 0, 0, 0.08);
+  padding-top: 10px;
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+.forest-receipt-v {
+  font-family: 'SF Mono', monospace;
+}
+.forest-vault-panel {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: fit-content;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+.forest-vault-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+.forest-vault-item {
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+  padding: 11px 12px;
+  cursor: pointer;
+  transition: all .18s;
+}
+.forest-vault-item:hover {
+  border-color: #0071e3;
+  background: rgba(0, 113, 227, 0.03);
+}
+.forest-v-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9.5px;
+  color: #86868b;
+  margin-bottom: 4px;
+}
+.forest-v-lawyer {
+  font-weight: 600;
+  color: #515154;
+}
+.forest-v-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: #1d1d1f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 6px;
+}
+.forest-v-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.forest-v-tag {
+  font-size: 8px;
+  padding: 1.5px 5px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.forest-v-cost {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'SF Mono', monospace;
+  color: #0071e3;
+}
+.forest-custom-app-shield {
+  background: rgba(0, 113, 227, 0.02);
+  border: 1px solid rgba(0, 113, 227, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.forest-shield-icon {
+  font-size: 18px;
+  color: #0071e3;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.forest-shield-text {
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: #515154;
+}
+.forest-shield-text strong {
+  color: #0071e3;
+  font-weight: 600;
+}
+
+.factory-card {
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+.factory-card:hover {
+  border-color: rgba(0, 113, 227, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.1);
+}
+.factory-card.active {
+  border-color: #0071e3;
+  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.15);
+  background: rgba(0, 113, 227, 0.04);
+}
+.factory-card.active::before {
+  content: '선택됨';
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #0071e3;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 0 0 0 8px;
+}
+</style>
+
+<!-- ── 문의 모달 ─────────────────────────────────────── -->
+<div id="inquiry-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;width:min(520px,92vw);max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.18);position:relative;">
+    <!-- 헤더 -->
+    <div style="padding:24px 28px 0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="font-size:10px;letter-spacing:2px;color:#0071e3;text-transform:uppercase;font-weight:600;">INQUIRY</div>
+        <button onclick="closeInquiryModal()" style="background:none;border:none;font-size:18px;color:#86868b;cursor:pointer;padding:4px;line-height:1;">✕</button>
+      </div>
+      <div style="font-size:20px;font-weight:700;color:#1d1d1f;margin-bottom:4px;">문의하기</div>
+      <div style="font-size:13px;color:#86868b;margin-bottom:20px;">작성하신 내용은 즉시 담당자에게 전달됩니다.</div>
+    </div>
+    <!-- 폼 -->
+    <form id="inquiry-form" style="padding:0 28px 28px;display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;gap:14px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#1d1d1f;display:block;margin-bottom:5px;">이름 <span style="color:#0071e3;">*</span></label>
+          <input id="iq-name" type="text" placeholder="홍길동" required="" style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#1d1d1f;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#1d1d1f;display:block;margin-bottom:5px;">회사명</label>
+          <input id="iq-company" type="text" placeholder="(주)AIGSTACK" style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#1d1d1f;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#1d1d1f;display:block;margin-bottom:5px;">전화번호 <span style="color:#0071e3;">*</span></label>
+          <input id="iq-phone" type="tel" placeholder="010-0000-0000" required="" style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#1d1d1f;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#1d1d1f;display:block;margin-bottom:5px;">이메일 <span style="color:#0071e3;">*</span></label>
+          <input id="iq-email" type="email" placeholder="email@company.com" required="" style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#1d1d1f;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:600;color:#1d1d1f;display:block;margin-bottom:5px;">
+          카카오톡 아이디
+          <span style="font-size:10px;font-weight:400;color:#86868b;margin-left:4px;">입력 시 카톡으로 먼저 연락드립니다</span>
+        </label>
+        <div style="position:relative;">
+          <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;">💬</span>
+          <input id="iq-kakao" type="text" placeholder="카카오톡 아이디 (선택)" style="width:100%;padding:10px 12px 10px 34px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#1d1d1f;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#FEE500'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:600;color:#1d1d1f;display:block;margin-bottom:8px;">관심 솔루션 (복수 선택 가능)</label>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;" id="iq-solutions">
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#515154;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;border:.5px solid transparent;transition:all .15s;" id="sol-eye"><input type="checkbox" value="Logos Eye (CCTV 비식별화)" style="accent-color:#0071e3;"> Logos Eye</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#515154;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;border:.5px solid transparent;transition:all .15s;" id="sol-ai"><input type="checkbox" value="온프레미스 AI 구축" style="accent-color:#0071e3;"> 온프레미스 AI</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#515154;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;border:.5px solid transparent;transition:all .15s;" id="sol-auto"><input type="checkbox" value="AI 자동화 파이프라인" style="accent-color:#0071e3;"> AI 자동화</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#515154;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;border:.5px solid transparent;transition:all .15s;" id="sol-data"><input type="checkbox" value="데이터 인텔리전스" style="accent-color:#0071e3;"> 데이터 인텔리전스</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#515154;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;border:.5px solid transparent;transition:all .15s;" id="sol-etc"><input type="checkbox" value="기타 / 복합" style="accent-color:#0071e3;"> 기타</label>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:600;color:#1d1d1f;display:block;margin-bottom:5px;">문의 내용 <span style="color:#0071e3;">*</span></label>
+        <textarea id="iq-message" placeholder="도입 배경, 현재 상황, 궁금하신 점을 자유롭게 작성해 주세요." required="" rows="4" style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#1d1d1f;outline:none;resize:vertical;box-sizing:border-box;font-family:inherit;line-height:1.6;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'"></textarea>
+      </div>
+      <!-- 제출 -->
+      <button type="submit" id="iq-submit" style="padding:14px;background:#0071e3;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s;" onmouseover="this.style.background='#0077ed'" onmouseout="this.style.background='#0071e3'">
+        문의 접수하기
+      </button>
+      <div id="iq-result" style="display:none;text-align:center;padding:12px;border-radius:8px;font-size:13px;font-weight:500;"></div>
+      <div style="font-size:11px;color:#86868b;text-align:center;line-height:1.6;">접수된 문의는 24시간 이내 ceo@aigstack.kr 또는 기재하신 연락처로 답변드립니다.</div>
+    </form>
+  </div>
+</div>
+
+
+</style></head><body>
+<nav>
+  <div class="nav-inner">
+    <div class="logo" onclick="location.href='/'"><span class="logo-main">AIGSTACK</span><span class="logo-sub">INTEGRITY INFRASTRUCTURE</span></div>
+    <div class="nav-menu">
+      <div class="nav-item"><a href="https://aigstack.kr/docs/logos_eye_onepager.html" target="_blank" style="text-decoration:none;"><button class="nav-btn" style="background:#0071e3;color:#fff;font-weight:600;padding:4px 14px;border-radius:6px;letter-spacing:.5px;">자료PRINT</button></a></div>
+      <div class="nav-item"><a href="/pages/logos.html" style="text-decoration:none;"><button class="nav-btn">로고스 엔진</button></a></div>
+      <div class="nav-item"><a href="/pages/logos-eye.html" style="text-decoration:none;"><button class="nav-btn">로고스 아이</button></a></div>
+      <div class="nav-item"><a href="/pages/logos-forest.html" style="text-decoration:none;"><button class="nav-btn">로고스 포레스트</button></a></div>
+      <div class="nav-item"><a href="/pages/factory.html" style="text-decoration:none;"><button class="nav-btn">S/W개발중</button></a></div>
+      <div class="nav-item"><a href="/pages/saas.html" style="text-decoration:none;"><button class="nav-btn">S/W 허브</button></a></div>
+      <div class="nav-item"><a href="/pages/dashboard.html" style="text-decoration:none;"><button class="nav-btn" style="background:#1d1d1f;color:#fff;font-weight:600;padding:4px 14px;border-radius:6px;">중앙관제</button></a></div>
+      <div class="nav-item" style="position:relative;">
+        <button class="nav-btn" onclick="toggleDD('internal-dropdown',event)" style="color:#c07800;">내부자료 ▾</button>
+        <div id="internal-dropdown" style="display:none;position:fixed;top:0;left:0;background:#fff;border:.5px solid rgba(0,0,0,.12);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.12);min-width:150px;z-index:99999;overflow:hidden;">
+          <a href="/schedule/" target="_blank" style="text-decoration:none;display:block;padding:11px 16px;font-size:13px;color:#c07800;font-weight:600;border-bottom:.5px solid rgba(0,0,0,.06);" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''">🗓️ 일정관리</a>
+          <a href="/pages/internal.html" style="text-decoration:none;display:block;padding:11px 16px;font-size:13px;color:#1d1d1f;border-bottom:.5px solid rgba(0,0,0,.06);" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''">로고스_아이 시연</a>
+          <a href="https://aigstack.kr/content/" target="_blank" style="text-decoration:none;display:block;padding:11px 16px;font-size:13px;color:#1d1d1f;" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''">광고카피</a>
+        </div>
+      </div>
+      <div class="nav-item" style="margin-left:auto;position:relative;">
+        <button class="nav-btn" style="color:#86868b;font-size:11px;" onclick="toggleDD('dev-dropdown',event)">🔒 비공개 개발중 ▾</button>
+        <div id="dev-dropdown" style="display:none;position:fixed;top:0;left:0;background:#fff;border:.5px solid rgba(0,0,0,.12);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.1);padding:6px;min-width:160px;z-index:99999;">
+          <a href="/pages/dashboard.html" style="text-decoration:none;display:block;padding:8px 12px;border-radius:6px;font-size:12px;color:#1d1d1f;" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''"><div style="font-weight:600;">중앙관제</div><div style="font-size:10px;color:#86868b;margin-top:1px;">중앙 관제 허브</div></a>
+          <a href="/jarvis/" target="_blank" style="text-decoration:none;display:block;padding:8px 12px;border-radius:6px;font-size:12px;color:#1d1d1f;" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''"><div style="font-weight:600;">JARVIS Dev</div><div style="font-size:10px;color:#86868b;margin-top:1px;">개발자 JARVIS UI</div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<script>
+var _ddBtns={};function toggleDD(id,e){e.stopPropagation();var d=document.getElementById(id);_ddBtns[id]=e.currentTarget;if(d.style.display==="block"){d.style.display="none";return;}["internal-dropdown","dev-dropdown"].forEach(function(oid){if(oid!==id){var od=document.getElementById(oid);if(od)od.style.display="none";}});var rect=e.currentTarget.getBoundingClientRect();d.style.display="block";d.style.top=(rect.bottom+6)+"px";if(id==="dev-dropdown"){d.style.left="auto";d.style.right=(window.innerWidth-rect.right)+"px";}else{d.style.left=rect.left+"px";d.style.right="auto";}}
+document.addEventListener('click',function(e){if(e.target.closest('nav'))return;['internal-dropdown','dev-dropdown'].forEach(function(id){var d=document.getElementById(id);if(d)d.style.display='none';});});
+</script>
+<div class="page-portal">  <!-- 상단 제어 바 -->
+  <div class="portal-header" style="border-bottom:.5px solid rgba(0,0,0,0.08); background:rgba(255,255,255,0.95); backdrop-filter:blur(20px);">
+    <div class="portal-title-area">
+      <span class="portal-title" style="color:#1d1d1f; font-size:14px; font-weight:600; letter-spacing:.3px;">로고스 엔진 기반 소프트웨어 개발 생성</span>
+      <span class="portal-subtitle" style="color:#515154;">로고스 로직(교차 검증) 통과 후 생성 — 단일 AI 단독 판단 없이 이종 LLM 합의로만 빌드 확정</span>
+    </div>
+    <button class="portal-close-btn" onclick="location.href='/'" style="border-color:rgba(0,0,0,0.15); color:#515154; background:#fff;">홈으로</button>
+  </div>
+  
+  <!-- 3단 레이아웃: 세션/포트 목록 | 기획서/구조도 | 시뮬레이터 -->
+  <div class="portal-content" style="grid-template-columns: 280px 360px 1fr; gap:12px; padding:12px; background:#f5f5f7;">
+    
+    <!-- 1단 좌측: 할당 포트 및 세션 목록 -->
+    <div style="background: rgb(255, 255, 255); border: 0.5px solid rgba(0, 0, 0, 0.08); border-radius: 12px; display: flex; flex-direction: column; height: calc(-119px + 100vh); overflow: hidden; box-shadow: rgba(0, 0, 0, 0.04) 0px 2px 8px;">
+      <div style="padding:14px 16px; border-bottom:.5px solid rgba(0,0,0,0.08); flex-shrink:0;">
+        <div style="font-size:9px; letter-spacing:2px; color:#86868b; text-transform:uppercase; font-weight:500; margin-bottom:4px;">SESSION ALLOCATIONS</div>
+        <div style="font-size:13px; font-weight:600; color:#1d1d1f;">할당 포트 및 세션</div>
+      </div>
+      <div id="factory-cards-container" style="flex:1; overflow-y:auto; padding:10px; display:flex; flex-direction:column; gap:8px;"><div class="factory-card active" id="factory-card-s601-003">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9001</span>
+        <span class="card-period" style="color:#86868b;">s601-003</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">🏆 [융합] AIGSTACK 차세대 자율 에이전트 인프라 융합 사업 타당성 설계서</div>
+    </div><div class="factory-card " id="factory-card-s601-004">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9002</span>
+        <span class="card-period" style="color:#86868b;">s601-004</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">AppGallery Connect: Service Platform for HarmonyOS Applications</div>
+    </div><div class="factory-card " id="factory-card-s601-005">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9003</span>
+        <span class="card-period" style="color:#86868b;">s601-005</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">A Visual Guide to LLM Quantization</div>
+    </div><div class="factory-card " id="factory-card-s601-006">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9004</span>
+        <span class="card-period" style="color:#86868b;">s601-006</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Model Context Protocol</div>
+    </div><div class="factory-card " id="factory-card-s601-007">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9005</span>
+        <span class="card-period" style="color:#86868b;">s601-007</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Seccomp and landlock based application sandbox with support for namespaces</div>
+    </div><div class="factory-card " id="factory-card-s601-008">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9006</span>
+        <span class="card-period" style="color:#86868b;">s601-008</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Open-sourcing gVisor, a sandboxed container runtime</div>
+    </div><div class="factory-card " id="factory-card-s601-009">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9007</span>
+        <span class="card-period" style="color:#86868b;">s601-009</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Open-source Firecracker microVM orchestrator</div>
+    </div><div class="factory-card " id="factory-card-s601-010">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9008</span>
+        <span class="card-period" style="color:#86868b;">s601-010</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Show HN: Run a GitHub Actions step in a gVisor sandbox</div>
+    </div><div class="factory-card " id="factory-card-s601-011">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9009</span>
+        <span class="card-period" style="color:#86868b;">s601-011</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">⚡ CUDA 병렬 프로그래밍 가속화를 통한 대규모 딥러닝 추론 효율화</div>
+    </div><div class="factory-card " id="factory-card-s601-012">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9010</span>
+        <span class="card-period" style="color:#86868b;">s601-012</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">OpenNebula launches a challenge to deploy Firecracker microVMs on Fedora nodes</div>
+    </div><div class="factory-card " id="factory-card-s601-013">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9011</span>
+        <span class="card-period" style="color:#86868b;">s601-013</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Adventures in Symbolic Algebra with Model Context Protocol</div>
+    </div><div class="factory-card " id="factory-card-s601-014">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9012</span>
+        <span class="card-period" style="color:#86868b;">s601-014</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Implementing the Raft distributed consensus protocol in Go</div>
+    </div><div class="factory-card " id="factory-card-s601-015">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9013</span>
+        <span class="card-period" style="color:#86868b;">s601-015</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Show HN: LocalGPT Gen – LLM-driven world generation in Rust/Bevy [video]</div>
+    </div><div class="factory-card " id="factory-card-s601-016">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9014</span>
+        <span class="card-period" style="color:#86868b;">s601-016</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Show HN: Extrasafe – use seccomp and Landlock to make your Rust code extra safe</div>
+    </div><div class="factory-card " id="factory-card-s601-017">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9015</span>
+        <span class="card-period" style="color:#86868b;">s601-017</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Raft Consensus Protocol</div>
+    </div><div class="factory-card " id="factory-card-s601-018">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9016</span>
+        <span class="card-period" style="color:#86868b;">s601-018</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Ask HN: Pain Points of Serverless Architecture</div>
+    </div><div class="factory-card " id="factory-card-s601-019">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9017</span>
+        <span class="card-period" style="color:#86868b;">s601-019</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Edge.js: Run Node apps inside a WebAssembly sandbox</div>
+    </div><div class="factory-card " id="factory-card-s601-020">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9018</span>
+        <span class="card-period" style="color:#86868b;">s601-020</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Show HN: Sandboxing untrusted code using WebAssembly</div>
+    </div><div class="factory-card " id="factory-card-s601-021">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9019</span>
+        <span class="card-period" style="color:#86868b;">s601-021</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">EfficientQAT: LLM Quantization, gets a 2-bit llama2-70B outperform regular 13B</div>
+    </div><div class="factory-card " id="factory-card-s601-022">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9020</span>
+        <span class="card-period" style="color:#86868b;">s601-022</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Donating the Model Context Protocol and establishing the Agentic AI Foundation</div>
+    </div><div class="factory-card " id="factory-card-s601-023">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9021</span>
+        <span class="card-period" style="color:#86868b;">s601-023</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">Diving Deep into Serverless Architectures</div>
+    </div><div class="factory-card " id="factory-card-s601-024">
+      <div class="card-meta-row">
+        <span class="card-cat" style="border-color:rgba(0,113,227,0.25); color:#0071e3; background:rgba(0,113,227,0.08); font-family:'SF Mono',monospace;">Port 9022</span>
+        <span class="card-period" style="color:#86868b;">s601-024</span>
+      </div>
+      <div class="card-title" style="color:#1d1d1f; font-size:12px;">⚖️ Linux Landlock 및 Seccomp를 활용한 초경량 로컬 격리 패치 적용 완료</div>
+    </div></div>
+    </div>
+    
+    <!-- 2단 중앙: 기획서 내용 + 구조도 -->
+    <div style="background: rgb(255, 255, 255); border: 0.5px solid rgba(0, 0, 0, 0.08); border-radius: 12px; display: flex; flex-direction: column; height: calc(-119px + 100vh); overflow: hidden; box-shadow: rgba(0, 0, 0, 0.04) 0px 2px 8px;">
+      <div style="padding:14px 16px; border-bottom:.5px solid rgba(0,0,0,0.08); flex-shrink:0;">
+        <div style="font-size:9px; letter-spacing:2px; color:#86868b; text-transform:uppercase; font-weight:500; margin-bottom:4px;">LOGOS ENGINE VERIFIED · SOFTWARE DETAIL</div>
+        <div id="factory-desc-title" style="font-size:13px; font-weight:600; color:#1d1d1f;">new-01 🏆 [융합] AIGSTACK 차세대 자율 에이전트 인프라 융합 사업 타당성 설계서</div>
+      </div>
+      <div style="flex:1; overflow-y:auto; padding:14px; display:flex; flex-direction:column; gap:12px;">
+        <!-- 메타 정보 -->
+        <div>
+          <div id="factory-desc-meta" style="font-size:10px; color:#0071e3; font-family:'SF Mono',monospace; letter-spacing:.8px; margin-bottom:4px;">할당 세션: s601-003  |  할당 포트: 9001</div>
+          <div id="factory-desc-spec" style="font-size:11px; color:#515154; font-weight:300; line-height:1.5;">카테고리: Strategic Fusion  |  비즈니스 평점: 100/100</div>
+        </div>
+        <!-- 기획서 본문 -->
+        <div>
+          <div style="font-size:9px; letter-spacing:1.5px; color:#86868b; text-transform:uppercase; font-weight:600; margin-bottom:3px;">로고스 로직 적용 R&amp;R 기획 원안</div>
+          <div style="font-size:7.5px; color:#0071e3; margin-bottom:6px; font-weight:500;">이종 LLM 교차검증 통과 · 단일 AI 단독 판단 없음</div>
+          <div id="factory-desc-body" style="font-size:12px; color:#1d1d1f; line-height:1.7; font-weight:300; max-height:200px; overflow-y:auto; background:#f5f5f7; border:.5px solid rgba(0,0,0,0.06); padding:10px; border-radius:8px;">본 사업 모델에 대한 리소스 연산 마진 및 AI 추론 가용 부하량을 동적 연산하는 하이브리드 연산 텔레메트리 대시보드입니다.</div>
+        </div>
+        <!-- 실제 사용 예시 -->
+        <div>
+          <div style="font-size:9px; letter-spacing:1.5px; color:#0071e3; text-transform:uppercase; font-weight:600; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+            실제 사용 예시
+            <span style="font-size:8px; background:rgba(0,113,227,0.08); border:.5px solid rgba(0,113,227,0.2); color:#0071e3; padding:2px 7px; border-radius:10px; letter-spacing:.5px; text-transform:none; font-weight:500;">USE CASES</span>
+          </div>
+          <div id="factory-usage-body" style="font-size:12px; color:#1d1d1f; line-height:1.8; font-weight:300; background:#ffffff; border:.5px solid rgba(0,113,227,0.12); border-left:2px solid #0071e3; padding:12px 14px; border-radius:0 8px 8px 0;"><b>시나리오 1 — GPU 서버 비용 최적화 계산기</b><br>월 클라우드 GPU 비용이 $10,000 넘어갈 때, 이 모듈이 온프레미스 전환 시 손익분기점을 자동 계산합니다. AIGSTACK 맹 클러스터 기준으로 RTX PRO 6000 2장 도입비 vs 클라우드 월 비용을 비교.<br><br><b>시나리오 2 — 동시 접속자 대응 추론 용량 계획</b><br>B2B 고객사에 "동시 100명이 AI를 쓸 때 필요한 GPU 스펙은?" 질문에 모델 크기·양자화 수준·VRAM을 조합해 자동으로 구성안을 산출합니다.</div>
+        </div>
+        <!-- 구조도 -->
+        <div>
+          <div style="font-size:9px; letter-spacing:1.5px; color:#86868b; text-transform:uppercase; font-weight:600; margin-bottom:6px;">아키텍처 구조도</div>
+          <pre id="factory-diagram-body" style="background:#1d1d1f; border:.5px solid rgba(0,0,0,0.08); border-radius:8px; padding:12px; font-family:'SF Mono',monospace; font-size:9.5px; color:#00d68f; line-height:1.5; overflow-x:auto; white-space:pre-wrap; word-break:break-all;">[에이전트 가동 부하 수 변동 (Instances)]<br>                       |<br>                       v<br>   +---------------------------------------+<br>   |   Telemetry Core Load CPU/VRAM Estim  |<br>   +---------------------------------------+<br>                       |<br>                       v<br>   [실시간 연산 효율 및 NPU 전력 전압 측정]</pre>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 3단 우측: 실시간 시뮬레이션 -->
+    <div style="background: rgb(255, 255, 255); border: 0.5px solid rgba(0, 0, 0, 0.08); border-radius: 12px; display: flex; flex-direction: column; height: calc(-119px + 100vh); overflow: hidden; box-shadow: rgba(0, 0, 0, 0.04) 0px 2px 8px;">
+      <div style="padding:14px 16px; border-bottom:.5px solid rgba(0,0,0,0.08); flex-shrink:0;">
+        <div style="font-size:9px; letter-spacing:2px; color:#86868b; text-transform:uppercase; font-weight:500; margin-bottom:4px;">LIVE SIMULATION</div>
+        <div style="font-size:13px; font-weight:600; color:#1d1d1f;">실시간 런타임 시뮬레이션</div>
+      </div>
+      <div id="factory-sim-container" style="flex:1; overflow:hidden;"></div>
+    </div>
+    
+  </div>
+</div>
+
+<style>
+/* 로고스 엔진 분석실 포털 전용 추가 스타일 */
+#logos-portal {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 48px);
+  background: #f5f5f7;
+  z-index: 1999;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #1d1d1f;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+}
+#logos-portal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* filter-tab — 텍스트 전용 버튼 (테두리/배경 없음) */
+.filter-tab {
+  background: none;
+  border: none;
+  color: #86868b;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: color 0.18s;
+  white-space: nowrap;
+  font-family: inherit;
+  letter-spacing: 0.2px;
+}
+.filter-tab:hover {
+  color: #1d1d1f;
+}
+.filter-tab.active {
+  color: #0071e3;
+  font-weight: 600;
+}
+/* logos 카드 — 흰 배경 */
+.logos-card {
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+.logos-card:hover {
+  border-color: rgba(0, 113, 227, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.1);
+}
+.logos-card.active {
+  border-color: #0071e3;
+  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.15);
+  background: rgba(0, 113, 227, 0.04);
+}
+.logos-card.active::before {
+  content: '선택됨';
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #0071e3;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 0 0 0 8px;
+}
+.card-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card-cat {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 113, 227, 0.08);
+  border: 0.5px solid rgba(0, 113, 227, 0.2);
+  color: #0071e3;
+  font-weight: 600;
+  font-family: 'SF Mono', monospace;
+}
+.card-period {
+  font-size: 9px;
+  font-family: 'SF Mono', monospace;
+  color: #86868b;
+}
+.card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d1d1f;
+  line-height: 1.4;
+}
+.card-summary {
+  font-size: 11px;
+  color: #515154;
+  line-height: 1.5;
+  font-weight: 300;
+}
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* 자율 소프트웨어 생산 포털 전용 추가 스타일 — 라이트 테마 */
+#factory-portal {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 48px);
+  background: #f5f5f7;
+  z-index: 1999;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #1d1d1f;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+}
+#factory-portal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 🌳 로고스 포레스트 B2B 시뮬레이터 전용 추가 스타일 (Apple 라이트 테마 최적화) */
+#logos-forest-portal {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 48px);
+  background: #f5f5f7;
+  z-index: 1999;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #1d1d1f;
+  overflow-y: auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+}
+#logos-forest-portal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.forest-portal-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px 20px 80px;
+  width: 100%;
+}
+.forest-glass-panel {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  margin-bottom: 20px;
+}
+.forest-glass-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+.forest-glass-title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -.2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1d1d1f;
+}
+.forest-glass-title span {
+  color: #0071e3;
+}
+.forest-auth-container {
+  max-width: 480px;
+  margin: 40px auto;
+  width: 100%;
+}
+.forest-form-group {
+  margin-bottom: 16px;
+}
+.forest-form-group label {
+  display: block;
+  font-size: 11px;
+  color: #515154;
+  margin-bottom: 6px;
+  font-weight: 500;
+  letter-spacing: .3px;
+}
+.forest-form-input, .forest-form-select {
+  width: 100%;
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 11px 14px;
+  color: #1d1d1f;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
+.forest-form-input:focus, .forest-form-select:focus {
+  border-color: #0071e3;
+  background: #ffffff;
+}
+.forest-form-tabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.forest-form-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #515154;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all .18s;
+  font-family: inherit;
+  text-align: center;
+}
+.forest-form-tab.active {
+  background: #ffffff;
+  color: #1d1d1f;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.forest-auth-btn {
+  width: 100%;
+  background: #0071e3;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .2s, transform .1s;
+  font-family: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+.forest-auth-btn:hover {
+  opacity: 0.9;
+}
+.forest-auth-btn:active {
+  transform: scale(0.99);
+}
+.forest-auth-link {
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  color: #515154;
+  margin-top: 16px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.forest-auth-link strong {
+  color: #0071e3;
+}
+.forest-auth-link:hover strong {
+  text-decoration: underline;
+}
+.forest-compliance-box {
+  background: rgba(0, 113, 227, 0.02);
+  border: 1px solid rgba(0, 113, 227, 0.12);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 18px;
+}
+.forest-compliance-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #0071e3;
+  margin-bottom: 8px;
+}
+.forest-compliance-desc {
+  font-size: 10.5px;
+  color: #515154;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  font-weight: 300;
+}
+.forest-compliance-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 11px;
+  color: #1d1d1f;
+}
+.forest-compliance-checkbox input {
+  margin-top: 2px;
+}
+.forest-telemetry-screen {
+  display: none;
+  max-width: 540px;
+  margin: 40px auto;
+  width: 100%;
+}
+.forest-terminal-box {
+  background: #020408;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  font-family: 'SF Mono', monospace;
+  padding: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  min-height: 280px;
+}
+.forest-terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 10px;
+}
+.forest-t-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.forest-terminal-body {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #33ff33;
+}
+.forest-t-log {
+  margin-bottom: 8px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all .3s;
+}
+.forest-t-log.show {
+  opacity: 1;
+  transform: none;
+}
+.forest-spinner-inner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid rgba(0, 255, 157, 0.2);
+  border-top-color: #0071e3;
+  border-radius: 50%;
+  animation: forest-spin .8s linear infinite;
+  vertical-align: middle;
+}
+@keyframes forest-spin { to { transform: rotate(360deg) } }
+
+.forest-workspace {
+  display: none;
+  grid-template-columns: 1.8fr 1.2fr;
+  gap: 20px;
+  width: 100%;
+}
+@media(max-width: 768px) {
+  .forest-workspace {
+    grid-template-columns: 1fr;
+  }
+}
+.forest-workspace-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.forest-session-info-bar {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+.forest-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.forest-u-name {
+  font-weight: 600;
+  color: #1d1d1f;
+}
+.forest-u-org {
+  color: #515154;
+  font-size: 11px;
+}
+.forest-wallet-box {
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.forest-w-bal {
+  color: #0071e3;
+  font-family: 'SF Mono', monospace;
+}
+.forest-plan-switch-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+.forest-plan-switch-label {
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.forest-plan-switcher {
+  display: flex;
+  background: #f5f5f7;
+  border-radius: 24px;
+  padding: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.forest-plan-btn {
+  background: none;
+  border: none;
+  color: #515154;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 6px 14px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all .2s;
+  font-family: inherit;
+  letter-spacing: .3px;
+}
+.forest-plan-btn.active {
+  background: #ffffff;
+  color: #1d1d1f;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.forest-plan-btn.active.premium {
+  background: #ff9f0a;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 159, 10, 0.3);
+}
+.forest-factcheck-board {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+.forest-fact-textarea {
+  width: 100%;
+  height: 120px;
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  padding: 14px;
+  color: #1d1d1f;
+  font-size: 13px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  margin-bottom: 14px;
+  transition: border-color .2s;
+}
+.forest-fact-textarea:focus {
+  border-color: #0071e3;
+  background: #ffffff;
+}
+.forest-model-selectors {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+@media(max-width: 480px) {
+  .forest-model-selectors {
+    grid-template-columns: 1fr;
+  }
+}
+.forest-m-select-card {
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all .2s;
+}
+.forest-m-select-card.active {
+  border-color: #0071e3;
+  background: rgba(0, 113, 227, 0.04);
+}
+.forest-m-select-card.active.premium-active {
+  border-color: #ff9f0a;
+  background: rgba(255, 159, 10, 0.04);
+}
+.forest-m-n {
+  font-size: 11px;
+  font-weight: 600;
+}
+.forest-m-p {
+  font-size: 9.5px;
+  color: #515154;
+  font-family: 'SF Mono', monospace;
+  margin-top: 2px;
+}
+.forest-m-check {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: bold;
+}
+.forest-m-select-card.active .forest-m-check {
+  background: #0071e3;
+  border-color: #0071e3;
+  color: #ffffff;
+}
+.forest-m-select-card.active.premium-active .forest-m-check {
+  background: #ff9f0a;
+  border-color: #ff9f0a;
+  color: #ffffff;
+}
+.forest-pipeline-visualizer {
+  background: #020408;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 18px;
+  display: none;
+}
+.forest-pipe-header {
+  font-size: 9.5px;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.forest-pipe-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.forest-pipe-stage {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  opacity: 0.3;
+  transition: opacity .3s;
+  color: #ffffff;
+}
+.forest-pipe-stage.active {
+  opacity: 1;
+}
+.forest-pipe-stage.completed {
+  opacity: 0.75;
+  color: #33ff33;
+}
+.forest-pipe-icon {
+  font-size: 13px;
+  min-width: 18px;
+  text-align: center;
+}
+.forest-pipe-name {
+  font-weight: 500;
+  flex: 1;
+}
+.forest-pipe-val {
+  font-family: 'SF Mono', monospace;
+  font-size: 10px;
+}
+.forest-receipt-card {
+  display: none;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 18px;
+  margin-top: 18px;
+  border-left: 3px solid #0071e3;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+.forest-receipt-header {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #0071e3;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.forest-receipt-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 11px;
+  margin-bottom: 7px;
+  color: #515154;
+}
+.forest-receipt-row.total {
+  border-top: 1px dashed rgba(0, 0, 0, 0.08);
+  padding-top: 10px;
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+.forest-receipt-v {
+  font-family: 'SF Mono', monospace;
+}
+.forest-vault-panel {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: fit-content;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+.forest-vault-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+.forest-vault-item {
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+  padding: 11px 12px;
+  cursor: pointer;
+  transition: all .18s;
+}
+.forest-vault-item:hover {
+  border-color: #0071e3;
+  background: rgba(0, 113, 227, 0.03);
+}
+.forest-v-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9.5px;
+  color: #86868b;
+  margin-bottom: 4px;
+}
+.forest-v-lawyer {
+  font-weight: 600;
+  color: #515154;
+}
+.forest-v-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: #1d1d1f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 6px;
+}
+.forest-v-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.forest-v-tag {
+  font-size: 8px;
+  padding: 1.5px 5px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.forest-v-cost {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'SF Mono', monospace;
+  color: #0071e3;
+}
+.forest-custom-app-shield {
+  background: rgba(0, 113, 227, 0.02);
+  border: 1px solid rgba(0, 113, 227, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.forest-shield-icon {
+  font-size: 18px;
+  color: #0071e3;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.forest-shield-text {
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: #515154;
+}
+.forest-shield-text strong {
+  color: #0071e3;
+  font-weight: 600;
+}
+
+.factory-card {
+  background: #ffffff;
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+.factory-card:hover {
+  border-color: rgba(0, 113, 227, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.1);
+}
+.factory-card.active {
+  border-color: #0071e3;
+  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.15);
+  background: rgba(0, 113, 227, 0.04);
+}
+.factory-card.active::before {
+  content: '선택됨';
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #0071e3;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 0 0 0 8px;
+}
+</style>
+
+<!-- ── 문의 모달 ─────────────────────────────────────── -->
+<div id="inquiry-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;width:min(520px,92vw);max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.18);position:relative;">
+    <!-- 헤더 -->
+    <div style="padding:24px 28px 0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="font-size:10px;letter-spacing:2px;color:#0071e3;text-transform:uppercase;font-weight:600;">INQUIRY</div>
+        <button onclick="closeInquiryModal()" style="background:none;border:none;font-size:18px;color:#86868b;cursor:pointer;padding:4px;line-height:1;">✕</button>
+      </div>
+      <div style="font-size:20px;font-weight:700;color:#1d1d1f;margin-bottom:4px;">문의하기</div>
+      <div style="font-size:13px;color:#86868b;margin-bottom:20px;">작성하신 내용은 즉시 담당자에게 전달됩니다.</div>
+    </div>
+    <!-- 폼 -->
+    <form id="inquiry-form" style="padding:0 28px 28px;display:flex;flex-direction:row;align-items:center;overflow-x:auto;white-space:nowrap;gap:14px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#1d1d1f;display:block;margin-bottom:5px;">이름 <span style="color:#0071e3;">*</span></label>
+          <input id="iq-name" type="text" placeholder="홍길동" required="" style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#1d1d1f;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#1d1d1f;display:block;margin-bottom:5px;">회사명</label>
+          <input id="iq-company" type="text" placeholder="(주)AIGSTACK" style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#1d1d1f;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#1d1d1f;display:block;margin-bottom:5px;">전화번호 <span style="color:#0071e3;">*</span></label>
+          <input id="iq-phone" type="tel" placeholder="010-0000-0000" required="" style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#1d1d1f;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:600;color:#1d1d1f;display:block;margin-bottom:5px;">이메일 <span style="color:#0071e3;">*</span></label>
+          <input id="iq-email" type="email" placeholder="email@company.com" required="" style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#1d1d1f;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:600;color:#1d1d1f;display:block;margin-bottom:5px;">
+          카카오톡 아이디
+          <span style="font-size:10px;font-weight:400;color:#86868b;margin-left:4px;">입력 시 카톡으로 먼저 연락드립니다</span>
+        </label>
+        <div style="position:relative;">
+          <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;">💬</span>
+          <input id="iq-kakao" type="text" placeholder="카카오톡 아이디 (선택)" style="width:100%;padding:10px 12px 10px 34px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#1d1d1f;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#FEE500'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:600;color:#1d1d1f;display:block;margin-bottom:8px;">관심 솔루션 (복수 선택 가능)</label>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;" id="iq-solutions">
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#515154;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;border:.5px solid transparent;transition:all .15s;" id="sol-eye"><input type="checkbox" value="Logos Eye (CCTV 비식별화)" style="accent-color:#0071e3;"> Logos Eye</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#515154;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;border:.5px solid transparent;transition:all .15s;" id="sol-ai"><input type="checkbox" value="온프레미스 AI 구축" style="accent-color:#0071e3;"> 온프레미스 AI</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#515154;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;border:.5px solid transparent;transition:all .15s;" id="sol-auto"><input type="checkbox" value="AI 자동화 파이프라인" style="accent-color:#0071e3;"> AI 자동화</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#515154;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;border:.5px solid transparent;transition:all .15s;" id="sol-data"><input type="checkbox" value="데이터 인텔리전스" style="accent-color:#0071e3;"> 데이터 인텔리전스</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#515154;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;border:.5px solid transparent;transition:all .15s;" id="sol-etc"><input type="checkbox" value="기타 / 복합" style="accent-color:#0071e3;"> 기타</label>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:600;color:#1d1d1f;display:block;margin-bottom:5px;">문의 내용 <span style="color:#0071e3;">*</span></label>
+        <textarea id="iq-message" placeholder="도입 배경, 현재 상황, 궁금하신 점을 자유롭게 작성해 주세요." required="" rows="4" style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#1d1d1f;outline:none;resize:vertical;box-sizing:border-box;font-family:inherit;line-height:1.6;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'"></textarea>
+      </div>
+      <!-- 제출 -->
+      <button type="submit" id="iq-submit" style="padding:14px;background:#0071e3;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s;" onmouseover="this.style.background='#0077ed'" onmouseout="this.style.background='#0071e3'">
+        문의 접수하기
+      </button>
+      <div id="iq-result" style="display:none;text-align:center;padding:12px;border-radius:8px;font-size:13px;font-weight:500;"></div>
+      <div style="font-size:11px;color:#86868b;text-align:center;line-height:1.6;">접수된 문의는 24시간 이내 ceo@aigstack.kr 또는 기재하신 연락처로 답변드립니다.</div>
+    </form>
+  </div>
+</div>
+
+<script>
+// ── 문의 모달 ───────────────────────────────────────────────────
+const INQUIRY_API = window.location.protocol + '//' + window.location.hostname + '/submit';
+
+function openInquiryModal(preset) {
+  const modal = document.getElementById('inquiry-modal');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  // preset 텍스트 폼에 힌트
+  const msg = document.getElementById('iq-message');
+  if (preset && !msg.value) {
+    if (preset.includes('데모')) msg.placeholder = '어떤 솔루션의 데모를 보고 싶으신지 알려주세요. 고객사 환경에 맞게 준비해 드립니다.';
+    else if (preset.includes('Enterprise')) msg.placeholder = '그룹사 또는 대규모 도입을 검토 중이시면 현재 인프라 규모와 필요 솔루션을 알려주세요.';
+  }
+}
+function closeInquiryModal() {
+  document.getElementById('inquiry-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.getElementById('inquiry-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeInquiryModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeInquiryModal();
+});
+
+document.getElementById('inquiry-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('iq-submit');
+  const result = document.getElementById('iq-result');
+  btn.disabled = true;
+  btn.textContent = '접수 중...';
+
+  const solutions = [...document.querySelectorAll('#iq-solutions input:checked')].map(c => c.value);
+  const body = {
+    name:      document.getElementById('iq-name').value.trim(),
+    phone:     document.getElementById('iq-phone').value.trim(),
+    email:     document.getElementById('iq-email').value.trim(),
+    company:   document.getElementById('iq-company').value.trim(),
+    kakao_id:  document.getElementById('iq-kakao').value.trim(),
+    solutions: solutions,
+    message:   document.getElementById('iq-message').value.trim(),
+  };
+
+  try {
+    const res = await fetch(INQUIRY_API + '/submit', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (res.ok && data.ok) {
+      result.style.display = 'block';
+      result.style.background = 'rgba(52,199,89,.08)';
+      result.style.color = '#34c759';
+      result.style.border = '.5px solid rgba(52,199,89,.3)';
+      result.textContent = '✅ ' + data.message;
+      this.reset();
+      setTimeout(closeInquiryModal, 2500);
+    } else {
+      throw new Error(data.detail || '오류가 발생했습니다.');
+    }
+  } catch(err) {
+    result.style.display = 'block';
+    result.style.background = 'rgba(255,59,48,.08)';
+    result.style.color = '#ff3b30';
+    result.style.border = '.5px solid rgba(255,59,48,.3)';
+    result.textContent = '⚠️ ' + (err.message || '잠시 후 다시 시도해 주세요.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '문의 접수하기';
+  }
+});
+</script>
+<script defer="defer" src="index_bback_up_files/v833ccba57c9e4d2798f2e76cebdd09a11778172276447.js" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;c7d141252bea459fb22749fbb33bf858&quot;,&quot;r&quot;:1,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
+
+</div>
+
+</div>
+<script><script>
+// ── 문의 모달 ───────────────────────────────────────────────────
+const INQUIRY_API = window.location.protocol + '//' + window.location.hostname + '/submit';
+
+function openInquiryModal(preset) {
+  const modal = document.getElementById('inquiry-modal');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  // preset 텍스트 폼에 힌트
+  const msg = document.getElementById('iq-message');
+  if (preset && !msg.value) {
+    if (preset.includes('데모')) msg.placeholder = '어떤 솔루션의 데모를 보고 싶으신지 알려주세요. 고객사 환경에 맞게 준비해 드립니다.';
+    else if (preset.includes('Enterprise')) msg.placeholder = '그룹사 또는 대규모 도입을 검토 중이시면 현재 인프라 규모와 필요 솔루션을 알려주세요.';
+  }
+}
+function closeInquiryModal() {
+  document.getElementById('inquiry-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.getElementById('inquiry-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeInquiryModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeInquiryModal();
+});
+
+document.getElementById('inquiry-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('iq-submit');
+  const result = document.getElementById('iq-result');
+  btn.disabled = true;
+  btn.textContent = '접수 중...';
+
+  const solutions = [...document.querySelectorAll('#iq-solutions input:checked')].map(c => c.value);
+  const body = {
+    name:      document.getElementById('iq-name').value.trim(),
+    phone:     document.getElementById('iq-phone').value.trim(),
+    email:     document.getElementById('iq-email').value.trim(),
+    company:   document.getElementById('iq-company').value.trim(),
+    kakao_id:  document.getElementById('iq-kakao').value.trim(),
+    solutions: solutions,
+    message:   document.getElementById('iq-message').value.trim(),
+  };
+
+  try {
+    const res = await fetch(INQUIRY_API + '/submit', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (res.ok && data.ok) {
+      result.style.display = 'block';
+      result.style.background = 'rgba(52,199,89,.08)';
+      result.style.color = '#34c759';
+      result.style.border = '.5px solid rgba(52,199,89,.3)';
+      result.textContent = '✅ ' + data.message;
+      this.reset();
+      setTimeout(closeInquiryModal, 2500);
+    } else {
+      throw new Error(data.detail || '오류가 발생했습니다.');
+    }
+  } catch(err) {
+    result.style.display = 'block';
+    result.style.background = 'rgba(255,59,48,.08)';
+    result.style.color = '#ff3b30';
+    result.style.border = '.5px solid rgba(255,59,48,.3)';
+    result.textContent = '⚠️ ' + (err.message || '잠시 후 다시 시도해 주세요.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '문의 접수하기';
+  }
+});
+</script>
+<script defer="defer" src="index_bback_up_files/v833ccba57c9e4d2798f2e76cebdd09a11778172276447.js" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;c7d141252bea459fb22749fbb33bf858&quot;,&quot;r&quot;:1,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
+
+</script>
+</body></html>

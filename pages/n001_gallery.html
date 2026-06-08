@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIGSTACK · 데이터 한 조각의 여정 (특허 4건)</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { background:#03040a; color:#dfeaff;
+    font-family:'Pretendard','Segoe UI','Malgun Gothic',sans-serif; min-height:100%; }
+  #wrap { max-width:1180px; margin:0 auto; padding:48px 28px 90px; }
+  header h1 { font-size:32px; font-weight:800; letter-spacing:.5px; }
+  header h1 b { background:linear-gradient(90deg,#4ea8ff,#46e8c8);
+    -webkit-background-clip:text; background-clip:text; color:transparent; }
+  header p.kick { margin-top:10px; font-size:12.5px; letter-spacing:3px; opacity:.5; text-transform:uppercase; }
+  header .note { margin-top:14px; font-size:13.5px; opacity:.62; line-height:1.7; max-width:780px; }
+  header .note b { color:#9ad0ff; }
+
+  /* 히어로 — 전체 통합편 V0 */
+  .hero { margin-top:34px; display:grid; grid-template-columns:1.55fr 1fr; gap:24px; align-items:center;
+    background:linear-gradient(120deg,rgba(78,168,255,.06),rgba(70,232,200,.04));
+    border:1px solid rgba(120,160,220,.16); border-radius:18px; padding:20px; }
+  .hero video { width:100%; aspect-ratio:16/9; border-radius:12px; background:#06080f; display:block; }
+  .hero .meta .badge { display:inline-block; font-size:11px; letter-spacing:1px; padding:4px 11px; border-radius:20px;
+    background:rgba(70,232,200,.13); color:#46e8c8; font-weight:700; }
+  .hero .meta h2 { margin-top:12px; font-size:24px; font-weight:800; line-height:1.25; }
+  .hero .meta .sub { margin-top:6px; font-size:12.5px; color:#7f95b8; font-family:ui-monospace,monospace; }
+  .hero .meta .desc { margin-top:14px; font-size:14px; line-height:1.7; opacity:.82; }
+
+  h3.sec { margin:48px 0 6px; font-size:15px; letter-spacing:2px; color:#8fd0ff; text-transform:uppercase; }
+  h3.sec + .sub { font-size:13px; opacity:.55; margin-bottom:18px; }
+
+  /* 개별편 V1~V4 그리드 */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:20px; }
+  .card { background:rgba(255,255,255,.025); border:1px solid rgba(120,160,220,.14);
+    border-radius:14px; overflow:hidden; transition:.18s; }
+  .card:hover { border-color:rgba(78,168,255,.5); transform:translateY(-2px); box-shadow:0 10px 30px rgba(0,8,30,.55); }
+  .card video { width:100%; aspect-ratio:16/9; display:block; background:#06080f; }
+  .card .cap { padding:14px 16px 16px; }
+  .card .pno { font-size:11px; font-weight:700; letter-spacing:1px; color:#8fd0ff; }
+  .card .role { margin-top:3px; font-size:16px; font-weight:800; }
+  .card .gate { margin-top:2px; font-size:12px; color:#7f95b8; }
+  .card .desc { margin-top:10px; font-size:12.7px; line-height:1.65; opacity:.78; }
+  .card .id { margin-top:10px; font-size:10.5px; font-family:ui-monospace,monospace; color:#5d6f8e; }
+
+  footer { margin-top:54px; font-size:12px; opacity:.45; line-height:1.7; border-top:1px solid rgba(120,160,220,.12); padding-top:18px; }
+  footer code { font-family:ui-monospace,monospace; color:#9ad0ff; }
+  @media(max-width:760px){ .hero{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <header>
+    <h1>데이터 한 조각의 <b>여정</b></h1>
+    <p class="kick">AIGSTACK · ON-PREM AI 무결성 파이프라인 · 특허 4건</p>
+    <div class="note">
+      데이터 한 조각(<b>데이텀</b>)이 안전한 인공지능에 닿기까지 통과하는 <b>4개의 관문</b>을
+      3D 애니메이션으로 풀어낸 공개 영상입니다. 전체 통합편 1편 + 관문별 개별편 4편 · 한국어 나레이션 포함.
+      <br>온프레미스 Blackwell GPU 로컬 렌더(Blender Cycles/OptiX) · MeloTTS 한국어 음성.
+    </div>
+  </header>
+
+  <!-- 히어로: 전체 통합편 -->
+  <div class="hero">
+    <video src="videos/n001/V0.mp4" controls preload="metadata" playsinline poster=""></video>
+    <div class="meta">
+      <span class="badge">전체 통합편 · MAIN</span>
+      <h2>데이터의 여정 — 4관문 풀스토리</h2>
+      <div class="sub">V0 · 약 4분 03초 · 1080p · 나레이션</div>
+      <div class="desc">출처 검문소 → 계층 검증탑 → 11인 배심원 법정 → 통합 청사.
+        데이텀이 네 겹의 안전장치를 차례로 통과하며 "거짓 없이, 속지 않는" 데이터로 봉인되기까지의 전 과정.</div>
+    </div>
+  </div>
+
+  <h3 class="sec">관문별 개별편 — 특허 4건</h3>
+  <div class="sub">각 관문(특허)을 1분 내외로 단독 설명. 위 전체편에서 잘라낸 모듈식 구성.</div>
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    공개 갤러리 · 영상은 마케팅/IR 재사용 가능한 영속 자산입니다. 원본 마스터: <code>n001/3d_video/assembly/out/</code> ·
+    파이프라인: <code>assemble.py</code>(조립) → <code>mux_narration.py</code>(나레이션 mux).
+    4K 마스터는 별도 보관(용량 사유).
+  </footer>
+</div>
+<script>
+const FILMS = [
+  {f:'V1', pno:'특허 01', role:'출처 검문소', gate:'관문 1 · 모듈 110/120', dur:'약 1:00',
+   desc:'공항 입국심사처럼 데이터의 신원을 조회하고(신뢰지수), 잡음을 걷어내 정리합니다(시맨틱 정류). 수상한 데이터는 비싼 GPU를 쓰기도 전에 여기서 선제 차단.'},
+  {f:'V2', pno:'특허 02', role:'계층 검증탑', gate:'관문 2 · 가중 합의', dur:'약 1:00',
+   desc:'아래층 검사를 통과해야만 윗층에 불이 켜집니다(통과 실패 시 전력·자원 절약). 꼭대기에선 그동안 잘 맞혀온 검사관의 표를 더 무겁게 치는 가중치 합의.'},
+  {f:'V3', pno:'특허 03', role:'11인 배심원', gate:'관문 3 · 적대 검증', dur:'약 1:18',
+   desc:'AI 하나가 아닌 서로 다른 11명이 합동 판단. 일부러 트집 잡는 악역 검사가 약점을 미리 찾고, 현장 센서와 대조해 현실과 어긋나면 0.1초 만에 비상정지.'},
+  {f:'V4', pno:'특허 04', role:'통합 청사', gate:'관문 4 · 01·02·03 통합', dur:'약 1:08',
+   desc:'앞의 세 관문이 하나의 시스템으로 통합됩니다. 검증을 마친 데이터는 한 톨도 잃지 않고 다음 단계로 무손실 순간이동(핸드오프), 최종 기록은 위변조 불가로 봉인.'},
+];
+document.getElementById('grid').innerHTML = FILMS.map(v => `
+  <div class="card">
+    <video src="videos/n001/${v.f}.mp4" controls preload="none" playsinline></video>
+    <div class="cap">
+      <div class="pno">${v.pno}</div>
+      <div class="role">${v.role}</div>
+      <div class="gate">${v.gate} · ${v.dur}</div>
+      <div class="desc">${v.desc}</div>
+      <div class="id">videos/n001/${v.f}.mp4</div>
+    </div>
+  </div>`).join('');
+</script>
+</body>
+</html>

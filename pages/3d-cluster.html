@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIGSTACK · 맹 클러스터 3D</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:100%; height:100%; overflow:hidden; background:#03040a; font-family:'Pretendard','Segoe UI','Malgun Gothic',sans-serif; }
+  #app { position:fixed; inset:0; }
+  /* 비네팅 + 미세 그레인 */
+  #vignette { position:fixed; inset:0; pointer-events:none; z-index:5;
+    background:radial-gradient(ellipse at center, transparent 52%, rgba(0,0,8,.55) 100%); }
+  .ui { position:fixed; z-index:10; color:#dfeaff; pointer-events:none;
+    text-shadow:0 0 18px rgba(70,150,255,.45); }
+  #brand { top:34px; left:40px; }
+  #brand h1 { font-size:30px; font-weight:800; letter-spacing:.5px; line-height:1; }
+  #brand h1 b { background:linear-gradient(90deg,#4ea8ff,#46e8c8); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  #brand p { margin-top:8px; font-size:12.5px; letter-spacing:3px; opacity:.5; text-transform:uppercase; }
+  #stats { top:34px; right:40px; text-align:right; font-size:12px; opacity:.85; line-height:2; }
+  #stats b { color:#46e8c8; font-weight:700; font-size:15px; }
+  #stats .lbl { opacity:.55; letter-spacing:1px; }
+  #legend { bottom:30px; left:40px; font-size:11.5px; line-height:2.1; opacity:.75; letter-spacing:.3px; }
+  .dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:9px; vertical-align:middle;
+    box-shadow:0 0 8px currentColor; }
+  #hint { bottom:30px; right:40px; font-size:11px; opacity:.4; text-align:right; letter-spacing:.5px; }
+  #loader { position:fixed; inset:0; z-index:50; display:flex; align-items:center; justify-content:center;
+    background:#03040a; color:#4ea8ff; font-size:13px; letter-spacing:3px; transition:opacity .8s; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="vignette"></div>
+<div id="loader">L O A D I N G · 맹 클러스터</div>
+
+<div id="brand" class="ui">
+  <h1>AIG<b>STACK</b></h1>
+  <p>MAENG CLUSTER · LIVE TOPOLOGY</p>
+</div>
+<div id="stats" class="ui">
+  <div><b>2</b> <span class="lbl">GPU CORES</span></div>
+  <div><b id="nc">0</b> <span class="lbl">PLATFORM NODES</span></div>
+  <div><b>195.8</b> <span class="lbl">GB VRAM</span></div>
+</div>
+<div id="legend" class="ui">
+  <div><span class="dot" style="color:#4ea8ff;background:#4ea8ff"></span>GPU 코어 · RTX PRO 6000 ×2</div>
+  <div><span class="dot" style="color:#46e8c8;background:#46e8c8"></span>플랫폼 / 파이프라인 노드</div>
+  <div><span class="dot" style="color:#ffb44e;background:#ffb44e"></span>실시간 데이터 흐름</div>
+</div>
+<div id="hint" class="ui">DRAG 회전 · SCROLL 줌</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+}}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x03040a, 0.018);
+
+const camera = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.1, 600);
+camera.position.set(0, 10, 60);
+
+const renderer = new THREE.WebGLRenderer({ antialias:true, powerPreference:'high-performance' });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+document.getElementById('app').appendChild(renderer.domElement);
+
+// ── 포스트프로세싱: 네온 블룸 ──
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.95, 0.55, 0.18);
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.dampingFactor = 0.05;
+controls.autoRotate = true; controls.autoRotateSpeed = 0.35;
+controls.minDistance = 22; controls.maxDistance = 120;
+
+scene.add(new THREE.AmbientLight(0x2a3f66, 0.7));
+const key = new THREE.PointLight(0x6ab4ff, 2.4, 300); key.position.set(30,40,30); scene.add(key);
+const rim = new THREE.PointLight(0x46e8c8, 1.6, 300); rim.position.set(-35,-15,-25); scene.add(rim);
+
+// ── 별 필드 (2겹: 원경 미세 + 근경 글로우) ──
+function starLayer(n, spread, size, color, op){
+  const g = new THREE.BufferGeometry(), p = new Float32Array(n*3);
+  for(let i=0;i<n*3;i++) p[i]=(Math.random()-0.5)*spread;
+  g.setAttribute('position', new THREE.BufferAttribute(p,3));
+  const m = new THREE.PointsMaterial({ color, size, transparent:true, opacity:op, depthWrite:false, blending:THREE.AdditiveBlending });
+  const pts = new THREE.Points(g,m); scene.add(pts); return pts;
+}
+const stars1 = starLayer(3000, 460, 0.5, 0x88b8ff, 0.55);
+const stars2 = starLayer(700, 260, 1.4, 0xbfe0ff, 0.8);
+
+// ── 글로우 스프라이트 텍스처 (방사형) ──
+function glowTexture(){
+  const c=document.createElement('canvas'); c.width=c.height=128;
+  const x=c.getContext('2d'); const g=x.createRadialGradient(64,64,0,64,64,64);
+  g.addColorStop(0,'rgba(255,255,255,1)'); g.addColorStop(.25,'rgba(255,255,255,.7)');
+  g.addColorStop(.5,'rgba(160,210,255,.25)'); g.addColorStop(1,'rgba(0,0,0,0)');
+  x.fillStyle=g; x.fillRect(0,0,128,128); return new THREE.CanvasTexture(c);
+}
+const GLOW = glowTexture();
+
+// ── 라벨 스프라이트 ──
+function label(text, color){
+  const c=document.createElement('canvas'); c.width=256; c.height=64;
+  const x=c.getContext('2d'); x.font='600 30px Pretendard, Segoe UI, sans-serif';
+  x.fillStyle=color; x.textAlign='center'; x.textBaseline='middle';
+  x.shadowColor=color; x.shadowBlur=12; x.fillText(text,128,32);
+  const t=new THREE.CanvasTexture(c);
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t, transparent:true, depthWrite:false, opacity:0.0}));
+  s.scale.set(7,1.75,1); return s;
+}
+
+// ── GPU 코어 2개 (이중 구체: 발광 코어 + 와이어 셸) ──
+const cores=[];
+[-11,11].forEach((x,i)=>{
+  const grp=new THREE.Group(); grp.position.set(x,0,0);
+  const inner=new THREE.Mesh(new THREE.IcosahedronGeometry(3.2,2),
+    new THREE.MeshStandardMaterial({color:0x0a2a5a, emissive:0x2e7fff, emissiveIntensity:1.4, metalness:0.7, roughness:0.2, flatShading:true}));
+  const shell=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(4.6,1)),
+    new THREE.LineBasicMaterial({color:0x7fc4ff, transparent:true, opacity:0.5}));
+  const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:GLOW, color:0x3e9bff, transparent:true, opacity:0.9, depthWrite:false, blending:THREE.AdditiveBlending}));
+  halo.scale.set(16,16,1);
+  grp.add(inner,shell,halo); scene.add(grp);
+  cores.push({grp,inner,shell});
+});
+
+// ── 플랫폼 노드 (공전 + 글로우 + 라벨) ──
+const names=['jarvis','orchestrator','intelligence','watchdog','satellite','krx','mastermind',
+  'logos','billing','radar','spatial','router','backup','schedule','report','discord'];
+const nodeGeo=new THREE.SphereGeometry(0.55,18,18);
+const nodes=[];
+names.forEach((nm,i)=>{
+  const grp=new THREE.Group();
+  const m=new THREE.Mesh(nodeGeo, new THREE.MeshStandardMaterial({color:0x06402c, emissive:0x2bf0a0, emissiveIntensity:1.5, metalness:0.3, roughness:0.4}));
+  const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:GLOW, color:0x2bf0a0, transparent:true, opacity:0.85, depthWrite:false, blending:THREE.AdditiveBlending}));
+  halo.scale.set(3.6,3.6,1);
+  const lab=label(nm,'#bff7e2'); lab.position.set(0,1.1,0);
+  grp.add(m,halo,lab); scene.add(grp);
+  nodes.push({grp, lab, core:i%2, radius:8+(i%4)*2.2, speed:0.16+(i%5)*0.035, tilt:(i/names.length)*Math.PI, phase:i*1.35});
+});
+document.getElementById('nc').textContent=names.length;
+
+// ── 코어↔코어 곡선 + 흐르는 펄스 ──
+const curve=new THREE.QuadraticBezierCurve3(
+  new THREE.Vector3(-11,0,0), new THREE.Vector3(0,7,0), new THREE.Vector3(11,0,0));
+const linkGeo=new THREE.TubeGeometry(curve,40,0.07,8,false);
+scene.add(new THREE.Mesh(linkGeo, new THREE.MeshBasicMaterial({color:0xffb44e, transparent:true, opacity:0.35})));
+const pulses=[];
+for(let k=0;k<5;k++){
+  const p=new THREE.Sprite(new THREE.SpriteMaterial({map:GLOW, color:0xffd27f, transparent:true, opacity:0.95, depthWrite:false, blending:THREE.AdditiveBlending}));
+  p.scale.set(1.5,1.5,1); scene.add(p); pulses.push({s:p, t:k/5});
+}
+
+// ── 인트로 카메라 + 애니메이션 ──
+let t=0, intro=1;
+function animate(){
+  requestAnimationFrame(animate);
+  t+=0.01;
+  if(intro>0){ intro=Math.max(0,intro-0.006); camera.position.z=60+intro*70; }
+  cores.forEach((c,i)=>{ c.inner.rotation.y+=0.005*(i?1:-1); c.inner.rotation.x+=0.0025; c.shell.rotation.y-=0.003; });
+  nodes.forEach(n=>{
+    const cx=cores[n.core].grp.position.x;
+    const a=t*n.speed*6+n.phase;
+    n.grp.position.set(cx+Math.cos(a)*n.radius, Math.sin(a*0.8+n.tilt)*n.radius*0.5, Math.sin(a)*n.radius);
+    // 라벨이 카메라를 보되 가까울 때만 진하게
+    const d=camera.position.distanceTo(n.grp.position);
+    n.lab.material.opacity=Math.max(0, Math.min(0.9, (70-d)/40));
+  });
+  pulses.forEach(p=>{ p.t=(p.t+0.0045)%1; const v=curve.getPoint(p.t); p.s.position.copy(v); });
+  stars1.rotation.y+=0.0003; stars2.rotation.y-=0.0005;
+  controls.update();
+  composer.render();
+}
+animate();
+
+addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight); composer.setSize(innerWidth,innerHeight);
+});
+
+// 로더 제거
+addEventListener('load',()=>{ const l=document.getElementById('loader'); l.style.opacity=0; setTimeout(()=>l.remove(),900); });
+setTimeout(()=>{ const l=document.getElementById('loader'); if(l){l.style.opacity=0; setTimeout(()=>l.remove(),900);} }, 1500);
+</script>
+</body>
+</html>

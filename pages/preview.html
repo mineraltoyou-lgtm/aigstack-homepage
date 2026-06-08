@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIGSTACK · 특허 b-roll 프리뷰 보드</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { background:#03040a; color:#dfeaff;
+    font-family:'Pretendard','Segoe UI','Malgun Gothic',sans-serif; min-height:100%; }
+  #wrap { max-width:1400px; margin:0 auto; padding:40px 24px 80px; }
+  h1 { font-size:26px; font-weight:800; }
+  h1 b { background:linear-gradient(90deg,#4ea8ff,#46e8c8); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .note { margin-top:10px; font-size:13px; opacity:.6; line-height:1.6; max-width:880px; }
+  .note code { font-family:ui-monospace,monospace; font-size:11.5px; color:#9ad0ff; }
+  .row { margin-top:30px; }
+  .rowhead { font-size:15px; font-weight:700; color:#8fd0ff; padding:6px 0 2px; border-bottom:1px solid rgba(120,160,220,.18); }
+  .strip { margin-top:12px; display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+  .card { background:rgba(255,255,255,.025); border:1px solid rgba(120,160,220,.14); border-radius:10px; overflow:hidden; }
+  .card video { width:100%; aspect-ratio:16/9; display:block; background:#06080f; object-fit:cover; }
+  .card .cap { padding:7px 9px 9px; font-size:11px; }
+  .card .sh { color:#9fb4d6; }
+  .card .id { font-family:ui-monospace,monospace; color:#7f95b8; font-size:10px; margin-top:2px; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <h1>특허 b-roll <b>프리뷰 보드</b></h1>
+  <div class="note">로고스 엔진 4대 특허 × 8가지 모양 = 가벼운 프리뷰(832×480·33f·14step·~12초/컷). 괜찮은 컷의 ID(<code>pt0N_sM</code>)를 알려주면 풀퀄(1280×704·121f·30step)로 확장합니다.</div>
+  <div id="board"></div>
+</div>
+<script>
+const PT = {pt01:'특허① 안테나 · 적응형 필터링', pt02:'특허② 보라매 · 계층 검증', pt03:'특허③ 보라매 · 이종 배심원단', pt04:'특허④ 마린즈 · 분산 재판'};
+const SH = ['와이드 돔','탑다운 동심원','매크로 단면','아이소메트릭','세로 기둥','구체 셸','터널 플라이','크리스탈'];
+const board = document.getElementById('board');
+Object.keys(PT).forEach(k => {
+  let cards = SH.map((s,i) => `
+    <div class="card">
+      <video src="videos/preview/${k}_s${i}.mp4" autoplay loop muted playsinline
+             onerror="this.parentElement.querySelector('.id').textContent='${k}_s${i} · 생성중'"></video>
+      <div class="cap"><div class="sh">${i}. ${s}</div><div class="id">${k}_s${i}.mp4</div></div>
+    </div>`).join('');
+  board.innerHTML += `<div class="row"><div class="rowhead">${PT[k]}</div><div class="strip">${cards}</div></div>`;
+});
+</script>
+</body>
+</html>
