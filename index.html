@@ -179,9 +179,10 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
         <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
       </div>
       <div class="field">
-        <label>직군 / 직책</label>
+        <label>직군</label>
         <select id="role">
           <option value="">선택해 주세요</option>
+          <option>AI개발자·개발자</option>
           <option>의사·의료</option>
           <option>변호사·법률</option>
           <option>세무사·회계사</option>
@@ -191,9 +192,21 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
           <option>강사·교사</option>
           <option>마케터·디자이너</option>
           <option>회사원·직장인</option>
-          <option>대표·경영자(CEO)</option>
           <option>프리랜서·1인기업</option>
           <option>학생·취업준비</option>
+          <option>그외(기타)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>직책</label>
+        <select id="position">
+          <option value="">선택해 주세요</option>
+          <option>대표·CEO</option>
+          <option>임원·이사</option>
+          <option>팀장·관리자</option>
+          <option>실무자(사원~과장)</option>
+          <option>프리랜서·1인</option>
+          <option>학생·취준생</option>
           <option>그외(기타)</option>
         </select>
       </div>
@@ -256,6 +269,7 @@ go.addEventListener("click", async ()=>{
       body:JSON.stringify({
         email, consent:true,
         role:$("role").value.trim(),
+        position:$("position").value.trim(),
         ai_tool:$("ai_tool").value,
         pain:$("pain").value.trim(),
         source:"homepage"
