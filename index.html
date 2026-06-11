@@ -236,7 +236,8 @@ go.addEventListener("click", async ()=>{
   if(!$("consent").checked) return fail("마케팅 정보 수신 동의가 필요합니다.");
   go.disabled=true; go.textContent="보내는 중…";
   try{
-    const r=await fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},
+    // 헤더 없이 보내면 text/plain 단순요청 → CORS 프리플라이트(OPTIONS) 미발생
+    const r=await fetch(ENDPOINT,{method:"POST",
       body:JSON.stringify({
         email, consent:true,
         role:$("role").value.trim(),
@@ -245,7 +246,7 @@ go.addEventListener("click", async ()=>{
         source:"homepage"
       })});
     const d=await r.json().catch(()=>({}));
-    if(!r.ok){ go.disabled=false; go.textContent="설문 완료하고 무료로 받기 →"; return fail(d.detail||"전송에 실패했어요. 잠시 후 다시 시도해 주세요."); }
+    if(!d.ok){ go.disabled=false; go.textContent="설문 완료하고 무료로 받기 →"; return fail(d.detail||"전송에 실패했어요. 잠시 후 다시 시도해 주세요."); }
     if(d.message) $("doneMsg").innerHTML="당신만의 ‘비서IN’ 설정 프롬프트를<br>입력하신 이메일로 보내드릴게요. 메일함을 확인해 주세요.";
     $("formView").style.display="none";
     $("doneView").classList.add("show");
