@@ -1,1180 +1,260 @@
-<!DOCTYPE html>
-<html lang="ko" style="--nav-h: 59px; --content-h: calc(100vh - 59px); --panel-h: calc(100vh - 119px);"><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>LOGOS ENGINE Pipeline</title>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>비서IN — 당신만의 AI 개인비서</title>
+<meta name="description" content="가입 없이 설문 한 번이면, 제미나이·클로드·챗GPT에 바로 쓰는 당신만의 AI 비서 설정 프롬프트를 이메일로 보내드립니다.">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --em:#0071e3;
-  --bg:#d6d6db;
-  --bg2:#ffffff;
-  --br:rgba(0,0,0,.08);
-  --br2:rgba(0,113,227,.2);
-  --t1:#000;
-  --t2:#000;
-  --t3:#1a1a1a;
+  --bg:#07070c; --bg2:#0e0e16; --card:#12121c;
+  --em:#3a8bff; --em2:#7ab8ff; --glow:rgba(58,139,255,.55);
+  --t1:#f2f4f8; --t2:#aab1c2; --t3:#6b7384; --br:rgba(122,184,255,.14);
+  --ok:#34d399;
 }
-body{background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;color:var(--t1)}
-h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--t1);
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Pretendard','Helvetica Neue',sans-serif;
+  -webkit-font-smoothing:antialiased; line-height:1.5; overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
 
-/* NAV — 가로 한 줄 */
-nav{
-  background:rgba(255,255,255,0.92);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:.5px solid rgba(0,0,0,0.08);
-  position:fixed;top:0;left:0;right:0;z-index:9999;
-}
-.nav-inner{
-  display:flex;flex-direction:row;align-items:center;
-  padding:0 16px 0 2px;height:48px;max-width:1280px;margin:0 auto;gap:4px;
-  overflow-x:auto;white-space:nowrap;
-}
-.nav-inner::-webkit-scrollbar{display:none;}
-.logo{display:flex;align-items:center;cursor:pointer;margin-right:8px;flex-shrink:0;}
-.logo-main{font-size:13px;font-weight:700;letter-spacing:2.5px;color:#000;line-height:1}
-.logo-sub{font-size:8px;font-weight:300;letter-spacing:1px;color:rgba(0,0,0,0.4);text-transform:uppercase;margin-left:6px}
-.nav-menu{display:flex;align-items:center;gap:2px;flex-wrap:nowrap;}
-.nav-item{position:relative;flex-shrink:0;}
-.nav-btn{
-  background:none;border:none;
-  color:#000;
-  font-size:11px;font-weight:400;
-  padding:4px 8px;cursor:pointer;
-  transition:color .2s,background .2s;
-  font-family:inherit;letter-spacing:.2px;
-  display:flex;align-items:center;white-space:nowrap;
-  border-radius:6px;
-}
-.nav-btn:hover{color:#0071e3;background:rgba(0,113,227,0.06)}
-.cpill{display:none}
-.nav-contact{display:none}
-/* 도입 규모별 — 반응형 */
-.pricing-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:32px;}
-@media(max-width:600px){
-  .pricing-grid{grid-template-columns:1fr;}
-}
-/* 도입 효과 — 반응형 메트릭 */
-.metrics-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
-.metric-card{background:#fff;border:.5px solid rgba(0,0,0,.08);border-radius:12px;padding:18px 20px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,.04);}
-.metric-num{font-size:36px;font-weight:700;color:#0071e3;letter-spacing:-1px;line-height:1;flex-shrink:0;min-width:56px;text-align:center;}
-.metric-unit{font-size:18px;font-weight:600;}
-.metric-body{flex:1;}
-.metric-title{font-size:12px;font-weight:600;color:#000;margin-bottom:4px;}
-.metric-desc{font-size:11px;color:#86868b;line-height:1.55;}
-/* 모바일: 1열 가로 레이아웃 */
-@media(max-width:600px){
-  .metrics-grid{grid-template-columns:1fr;}
-  .metric-card{padding:14px 16px;gap:14px;}
-  .metric-num{font-size:32px;min-width:52px;}
-}
+/* nav */
+nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+  background:rgba(7,7,12,.72);border-bottom:1px solid var(--br)}
+nav .wrap{display:flex;align-items:center;height:60px;gap:14px}
+.brand{font-weight:800;letter-spacing:.5px;font-size:18px}
+.brand b{color:var(--em2)}
+.tag{font-size:11px;color:var(--t3);border:1px solid var(--br);border-radius:20px;padding:3px 10px}
+.nav-cta{margin-left:auto;font-size:13px;font-weight:600;color:#06080f;
+  background:var(--em);padding:9px 16px;border-radius:10px;transition:.2s}
+.nav-cta:hover{background:var(--em2);box-shadow:0 0 24px var(--glow)}
 
-/* BODY */
-.body{padding:20px 14px 28px;max-width:800px;margin:0 auto;margin-top:48px}
-.top-label{text-align:center;margin-bottom:18px}
-.el{font-size:10px;letter-spacing:3px;color:var(--em);text-transform:uppercase;opacity:.75;margin-bottom:7px}
-.etitle{font-size:20px;font-weight:200;color:var(--t1);letter-spacing:-.4px}
-.etitle strong{font-weight:500}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:.5px solid rgba(0,0,0,.08);border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.05)}
-.col{position:relative;overflow:hidden}
-.col:not(:last-child){border-right:.5px solid rgba(0,0,0,.08)}
-canvas.vc{display:block;width:100%}
-.zone-top{position:absolute;top:0;left:0;right:0;padding:9px 8px 0;text-align:center;pointer-events:none}
-.zt-n{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:500;opacity:.85}
-.zone-bot{position:absolute;bottom:0;left:0;right:0;padding:8px 8px 10px;background:linear-gradient(transparent,rgba(255,255,255,.95));text-align:center;pointer-events:none}
-.zb-pct{font-size:15px;font-weight:200;font-family:'SF Mono',monospace;line-height:1;margin-bottom:2px}
-.zb-txt{font-size:9px;font-weight:300;line-height:1.4;color:var(--t2)}
-.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:9px}
-.st{background:#ffffff;border:.5px solid rgba(0,0,0,.08);border-radius:10px;padding:9px 10px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
-.sv{font-size:17px;font-weight:200;font-family:'SF Mono',monospace}
-.sl{font-size:10px;color:var(--t3);margin-top:2px;font-weight:300}
-.hfooter{margin-top:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;padding:0 4px}
-.ft{font-size:10px;color:var(--t3);display:flex;align-items:center;gap:5px;letter-spacing:.3px}
-.ftd{width:4px;height:4px;border-radius:50%;background:var(--em);opacity:.55;flex-shrink:0}
-.cta{padding:9px 18px;border-radius:24px;border:.5px solid var(--em);background:rgba(0,113,227,.06);color:var(--em);font-size:12px;cursor:pointer;transition:all .22s;font-family:inherit;text-decoration:none;white-space:nowrap}
-.cta:hover{background:var(--em);color:#fff}
+/* hero */
+.hero{position:relative;padding:92px 0 60px;text-align:center;overflow:hidden}
+.hero::before{content:"";position:absolute;top:-40%;left:50%;transform:translateX(-50%);
+  width:900px;height:900px;border-radius:50%;
+  background:radial-gradient(circle,var(--glow) 0%,rgba(58,139,255,.06) 38%,transparent 65%);
+  filter:blur(8px);z-index:0;pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--em2);
+  border:1px solid var(--br);background:rgba(58,139,255,.06);border-radius:30px;padding:7px 15px;margin-bottom:24px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok)}
+h1{font-size:clamp(34px,6vw,62px);font-weight:850;letter-spacing:-1.5px;line-height:1.1}
+h1 .hl{background:linear-gradient(110deg,var(--em2),#c9e0ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin:22px auto 0;max-width:620px;font-size:clamp(16px,2.3vw,20px);color:var(--t2)}
+.brandbig{margin-top:30px;font-size:clamp(40px,8vw,76px);font-weight:850;letter-spacing:-2px}
+.brandbig b{color:var(--em2);text-shadow:0 0 40px var(--glow)}
+.brandbig small{display:block;font-size:14px;font-weight:600;letter-spacing:2px;color:var(--t3);margin-top:8px}
 
-/* SECTIONS — 흰 배경 라이트 테마 */
-.sec{padding:40px 14px;max-width:800px;margin:0 auto}
-.sec-label{font-size:9px;letter-spacing:3px;color:var(--em);text-transform:uppercase;opacity:.7;margin-bottom:8px}
-.sec-title{font-size:22px;font-weight:200;color:var(--t1);letter-spacing:-.5px;margin-bottom:6px}
-.sec-title strong{font-weight:600;color:var(--t1)}
-.sec-sub{font-size:13px;color:var(--t2);font-weight:300;line-height:1.65;margin-bottom:24px;max-width:560px}
-.divider{height:.5px;background:var(--br);margin:0 14px}
+.cta-row{margin-top:38px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;font-size:16px;font-weight:700;
+  padding:16px 30px;border-radius:13px;cursor:pointer;border:0;transition:.2s}
+.btn-main{background:var(--em);color:#06080f;box-shadow:0 8px 30px var(--glow)}
+.btn-main:hover{background:var(--em2);transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--t1);border:1px solid var(--br)}
+.btn-ghost:hover{border-color:var(--em);color:var(--em2)}
 
-/* 철학 카드 — 흰 배경 */
-.philosophy-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:480px){.philosophy-grid{grid-template-columns:1fr}}
-.ph-card{
-  background:#ffffff;
-  border:.5px solid rgba(0,0,0,.08);
-  border-radius:12px;padding:16px 18px;
-  position:relative;overflow:hidden;
-  transition:border-color .2s,box-shadow .2s;
-  box-shadow:0 2px 8px rgba(0,0,0,0.04);
-}
-.ph-card:hover{border-color:rgba(0,113,227,.25);box-shadow:0 4px 16px rgba(0,113,227,0.08)}
-.ph-name{font-size:11px;font-weight:600;letter-spacing:1px;color:var(--em);text-transform:uppercase;margin-bottom:6px}
-.ph-desc{font-size:12px;color:var(--t2);line-height:1.6;font-weight:300}
+.badges{margin-top:42px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.badge{font-size:13px;color:var(--t2);background:var(--card);border:1px solid var(--br);
+  border-radius:10px;padding:10px 16px;display:inline-flex;align-items:center;gap:8px}
+.badge b{color:var(--t1)}
 
-/* 플랫폼 목록 — 흰 배경 */
-.sf-list{display:flex;flex-direction:column;gap:8px}
-.sf-item{
-  background:#ffffff;
-  border:.5px solid rgba(0,0,0,.08);
-  border-radius:12px;padding:14px 16px;
-  display:flex;align-items:flex-start;gap:14px;
-  transition:border-color .2s,box-shadow .2s;
-  box-shadow:0 2px 8px rgba(0,0,0,0.03);
-}
-.sf-item:hover{border-color:rgba(0,113,227,.2);box-shadow:0 4px 16px rgba(0,113,227,0.07)}
-.sf-num{font-size:11px;font-family:'SF Mono',monospace;color:var(--em);opacity:.7;min-width:24px;padding-top:2px}
-.sf-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:3px}
-.sf-meta{font-size:11px;color:var(--t2);font-weight:300;line-height:1.5;margin-bottom:4px;}
-.sf-tag{display:inline-block;font-size:9px;letter-spacing:.8px;padding:2px 6px;border-radius:4px;margin-right:5px;margin-bottom:4px;font-weight:500}
+/* compat strip */
+.compat{margin-top:30px;color:var(--t3);font-size:13px}
+.compat .ais{margin-top:10px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap;font-size:15px;font-weight:600;color:var(--t2)}
+.compat .ais span{display:inline-flex;align-items:center;gap:7px}
 
-/* 특허 카드 — 흰 배경 */
-.pat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:480px){.pat-grid{grid-template-columns:1fr}}
-.pat-card{
-  background:#ffffff;
-  border:.5px solid rgba(0,0,0,.08);
-  border-radius:12px;padding:16px 18px;
-  transition:border-color .2s,box-shadow .2s;
-  box-shadow:0 2px 8px rgba(0,0,0,0.04);
-}
-.pat-card:hover{border-color:rgba(0,113,227,.2);box-shadow:0 4px 16px rgba(0,113,227,0.07)}
-.pat-num{font-size:9px;letter-spacing:2px;color:var(--em);opacity:.6;text-transform:uppercase;margin-bottom:6px;font-family:'SF Mono',monospace}
-.pat-name{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:6px}
-.pat-desc{font-size:11px;color:var(--t2);line-height:1.6;font-weight:300}
-.pat-status{display:inline-flex;align-items:center;gap:4px;font-size:9px;margin-top:10px;padding:3px 8px;border-radius:20px}
-.pat-filed{background:rgba(0,113,227,.08);border:.5px solid rgba(0,113,227,.25);color:var(--em)}
-.pat-pending{background:rgba(255,159,10,.08);border:.5px solid rgba(255,159,10,.25);color:#ff9f0a}
+/* how */
+.section{padding:74px 0;border-top:1px solid var(--br)}
+.section h2{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-1px;text-align:center}
+.section .lead{text-align:center;color:var(--t2);margin:14px auto 0;max-width:560px}
+.steps{margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:760px){.steps{grid-template-columns:1fr}}
+.step{background:var(--card);border:1px solid var(--br);border-radius:18px;padding:30px 26px}
+.step .n{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-weight:800;color:var(--em2);background:rgba(58,139,255,.1);border:1px solid var(--br);margin-bottom:18px}
+.step h3{font-size:19px;font-weight:750;margin-bottom:8px}
+.step p{color:var(--t2);font-size:15px}
 
-/* 인프라 카드 — 흰 배경 */
-.infra-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-@media(max-width:480px){.infra-grid{grid-template-columns:1fr}}
-.inf-card{
-  background:#ffffff;
-  border:.5px solid rgba(0,0,0,.08);
-  border-radius:12px;padding:14px 16px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.04);
-}
-.inf-label{font-size:9px;letter-spacing:1.5px;color:var(--t3);text-transform:uppercase;margin-bottom:8px}
-.inf-items{display:flex;flex-direction:column;gap:5px}
-.inf-row{display:flex;justify-content:space-between;align-items:center;font-size:11px}
-.inf-key{color:var(--t2);font-weight:300}
-.inf-val{color:var(--em);font-family:'SF Mono',monospace;font-size:10px}
+/* survey */
+#survey{padding:78px 0}
+.form-card{max-width:600px;margin:0 auto;background:linear-gradient(180deg,var(--bg2),var(--card));
+  border:1px solid var(--br);border-radius:22px;padding:40px 34px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.form-card h2{text-align:center;font-size:clamp(24px,4vw,32px)}
+.form-card .lead{margin-bottom:28px}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--t2);margin-bottom:8px}
+.field label .req{color:var(--em2)}
+input[type=email],input[type=text],select,textarea{
+  width:100%;background:#0a0a12;border:1px solid var(--br);border-radius:11px;
+  padding:14px 15px;color:var(--t1);font-size:15px;font-family:inherit;transition:.15s}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--em);box-shadow:0 0 0 3px rgba(58,139,255,.15)}
+textarea{resize:vertical;min-height:70px}
+select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%237ab8ff'><path d='M2 4l4 4 4-4'/></svg>");background-repeat:no-repeat;background-position:right 15px center}
+.consent{display:flex;gap:11px;align-items:flex-start;background:rgba(58,139,255,.05);
+  border:1px solid var(--br);border-radius:12px;padding:14px;margin:6px 0 22px;font-size:13px;color:var(--t2)}
+.consent input{margin-top:2px;width:18px;height:18px;accent-color:var(--em);flex-shrink:0}
+.consent a{color:var(--em2);text-decoration:underline}
+.submit{width:100%;font-size:16px;font-weight:750;padding:16px;border-radius:13px;border:0;cursor:pointer;
+  background:var(--em);color:#06080f;box-shadow:0 8px 30px var(--glow);transition:.2s}
+.submit:hover{background:var(--em2)}
+.submit:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
+.note{text-align:center;color:var(--t3);font-size:12px;margin-top:14px}
+.msg{text-align:center;margin-top:14px;font-size:14px;display:none}
+.msg.err{display:block;color:#ff8a8a}
+/* success */
+.done{display:none;text-align:center;padding:20px 0}
+.done.show{display:block;animation:pop .4s ease}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.done .ico{width:78px;height:78px;border-radius:50%;margin:0 auto 22px;display:flex;align-items:center;justify-content:center;
+  font-size:38px;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.4);box-shadow:0 0 40px rgba(52,211,153,.3)}
+.done h2{color:var(--ok)}
+.done p{color:var(--t2);margin-top:12px}
 
-/* CTA 박스 — 흰 배경 */
-.ir-box{
-  background:#f5f5f7;
-  border:.5px solid rgba(0,0,0,.08);
-  border-radius:16px;padding:28px 24px;
-  text-align:center;margin-top:0;
-}
-.ir-title{font-size:18px;font-weight:200;color:var(--t1);margin-bottom:8px}
-.ir-title strong{font-weight:600;color:var(--em)}
-.ir-sub{font-size:12px;color:var(--t2);margin-bottom:20px;line-height:1.6}
-.ir-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.ir-btn-main{
-  padding:10px 24px;border-radius:24px;
-  border:.5px solid var(--em);
-  background:var(--em);color:#fff;
-  font-size:12px;cursor:pointer;
-  transition:all .22s;font-family:inherit;text-decoration:none;
-}
-.ir-btn-main:hover{background:#005ec7}
-.ir-btn-sub{
-  padding:10px 24px;border-radius:24px;
-  border:.5px solid var(--br);
-  background:#ffffff;color:var(--t2);
-  font-size:12px;cursor:pointer;
-  transition:all .22s;font-family:inherit;text-decoration:none;
-}
-.ir-btn-sub:hover{border-color:var(--t2);color:var(--t1)}
-
-/* 검증 섹션 — 흰 배경 */
-.vf-section{padding:40px 14px;max-width:800px;margin:0 auto}
-.vf-hero{text-align:center;margin-bottom:28px}
-.vf-eyebrow{font-size:9px;letter-spacing:3px;color:var(--em);text-transform:uppercase;opacity:.7;margin-bottom:10px}
-.vf-headline{font-size:22px;font-weight:200;color:var(--t1);letter-spacing:-.5px;margin-bottom:8px}
-.vf-headline strong{font-weight:600;color:var(--em)}
-.vf-sub{font-size:13px;color:var(--t2);font-weight:300;line-height:1.65;max-width:540px;margin:0 auto}
-.vf-banner{
-  background:rgba(0,113,227,0.04);
-  border:.5px solid rgba(0,113,227,.15);
-  border-radius:12px;padding:16px 20px;margin-bottom:24px;
-  display:flex;align-items:flex-start;gap:12px;
-}
-.vf-banner-text{font-size:12px;color:var(--t2);line-height:1.65;font-weight:300}
-.vf-banner-text strong{color:var(--em);font-weight:500}
-.vf-matrix-label{font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;margin-bottom:10px}
-.vf-models{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px}
-@media(max-width:480px){.vf-models{grid-template-columns:1fr}}
-.vf-model-card{
-  background:#ffffff;
-  border:.5px solid rgba(0,0,0,.08);
-  border-radius:12px;padding:14px 16px;
-  transition:border-color .2s,box-shadow .2s;cursor:default;
-  box-shadow:0 2px 8px rgba(0,0,0,0.04);
-}
-.vf-model-card:hover{border-color:rgba(0,113,227,.2);box-shadow:0 4px 16px rgba(0,113,227,0.07)}
-.vf-model-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.vf-model-name{font-size:12px;font-weight:600;letter-spacing:.3px}
-.vf-model-badge{font-size:8px;letter-spacing:.8px;padding:2px 7px;border-radius:20px;font-weight:500}
-.vf-model-org{font-size:10px;color:var(--t3);font-weight:300;margin-bottom:6px;font-family:'SF Mono',monospace}
-.vf-model-method{font-size:10px;color:var(--t2);font-weight:300;line-height:1.5}
-.vf-model-method span{color:var(--em);font-weight:500}
-.vf-verified-stamp{font-size:9px;letter-spacing:1px;color:var(--em);opacity:.6;margin-top:8px;display:flex;align-items:center;gap:4px}
-.vf-verified-stamp::before{content:'✓';font-size:10px;opacity:.8}
-.vf-consensus{margin-bottom:24px}
-.vf-consensus-title{font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;margin-bottom:10px}
-.vf-consensus-items{display:flex;flex-direction:column;gap:6px}
-.vf-ci{
-  display:flex;align-items:center;gap:10px;
-  background:#ffffff;
-  border:.5px solid rgba(0,0,0,.08);
-  border-radius:8px;padding:9px 12px;
-  transition:border-color .15s;
-  box-shadow:0 1px 4px rgba(0,0,0,0.04);
-}
-.vf-ci:hover{border-color:rgba(0,113,227,.2)}
-.vf-ci-score{font-size:10px;font-family:'SF Mono',monospace;color:var(--em);min-width:32px;font-weight:600}
-.vf-ci-bar-wrap{flex:1;height:2px;background:rgba(0,0,0,.06);border-radius:2px;overflow:hidden}
-.vf-ci-bar{height:100%;background:linear-gradient(90deg,var(--em),rgba(0,113,227,.4));border-radius:2px}
-.vf-ci-label{font-size:11px;color:var(--t2);font-weight:300;min-width:160px;text-align:right}
-.vf-meta{
-  background:rgba(0,113,227,0.04);
-  border:.5px solid rgba(0,113,227,.12);
-  border-left:2px solid var(--em);
-  border-radius:0 10px 10px 0;padding:14px 18px;margin-bottom:24px;
-}
-.vf-meta-label{font-size:9px;letter-spacing:2px;color:var(--em);text-transform:uppercase;margin-bottom:6px}
-.vf-meta-text{font-size:12px;color:var(--t2);line-height:1.7;font-weight:300}
-.vf-meta-text strong{color:var(--t1);font-weight:500}
-.vf-date{text-align:center;font-size:10px;color:var(--t3);font-family:'SF Mono',monospace;letter-spacing:.5px}
+/* footer */
+footer{border-top:1px solid var(--br);padding:40px 0;color:var(--t3);font-size:13px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
+.foot-links{display:flex;gap:18px;flex-wrap:wrap}
 </style>
 </head>
 <body>
 
-<h2 class="sr-only">AIGSTACK 전체 페이지</h2>
+<nav><div class="wrap">
+  <div class="brand">AIG<b>STACK</b></div>
+  <span class="tag">AI 비서 세팅</span>
+  <a href="#survey" class="nav-cta">무료로 내 비서 받기</a>
+</div></nav>
 
-<nav>
-  <div class="nav-inner">
-    <div class="logo" onclick="location.href='/'">
-      <span class="logo-main">AIGSTACK</span>
-      <span class="logo-sub">INTEGRITY INFRASTRUCTURE</span>
-    </div>
-    <div class="nav-menu">
-      <div class="nav-item">
-        <a href="https://aigstack.kr/docs/logos_eye_onepager.html" target="_blank" style="text-decoration:none;">
-          <button class="nav-btn" style="background:#0071e3;color:#fff;font-weight:600;padding:4px 14px;border-radius:6px;letter-spacing:.5px;">자료PRINT</button>
-        </a>
-      </div>
-      <div class="nav-item" style="margin-left:auto;">
-        <a href="/admin/" style="text-decoration:none;"><button class="nav-btn" style="color:#c07800;font-weight:600;">🗂️ 내부자료</button></a>
-      </div>
-    </div>
-  </div>
-</nav>
+<!-- HERO -->
+<header class="hero"><div class="wrap">
+  <div class="eyebrow"><span class="dot"></span> 가입 없이 · 설문 한 번 · 이메일로 즉시</div>
+  <h1>여러분의 개인비서를<br><span class="hl">만들어 드립니다</span></h1>
+  <p class="sub">복잡한 세팅도, 가입도 필요 없습니다. 설문에 답하면<br>당신의 일에 꼭 맞는 <b>AI 비서 설정 프롬프트</b>를 이메일로 보내드려요.</p>
+  <div class="brandbig">AI 비서 <b>비서IN</b><small>BISEO·IN — 당신 안의 비서</small></div>
 
-<div class="body">
-  <div class="top-label">
-    <div class="el">LOGOS ENGINE · LIVE DATA PURIFICATION</div>
-    <div class="etitle" style="color:var(--t1);"><strong>Three-Stage</strong> Integrity Verification</div>
+  <div class="cta-row">
+    <a href="#survey" class="btn btn-main">▶ 설문하고 무료로 받기</a>
+    <a href="#how" class="btn btn-ghost">어떻게 되나요?</a>
   </div>
-  <div class="grid3">
-    <div class="col" style="background:#ffffff" id="col0">
-      <div class="zone-top"><span class="zt-n" style="color:#ef5350">INTAKE</span></div>
-      <canvas class="vc" id="c0" width="257" height="240" style="height: 240px;"></canvas>
-      <div class="zone-bot">
-        <div class="zb-pct" style="color:#ef5350">100%</div>
-        <div class="zb-txt">API 원시 데이터 유입<br>Raw Signal Intake</div>
+
+  <div class="badges">
+    <span class="badge">✅ <b>가입 불필요</b></span>
+    <span class="badge">📧 <b>이메일로 즉시 발송</b></span>
+    <span class="badge">🎯 <b>직군 맞춤</b> 설정</span>
+  </div>
+
+  <div class="compat">하나의 설문, 어떤 AI에서도 그대로
+    <div class="ais"><span>🟣 제미나이</span><span>🟠 클로드</span><span>🟢 챗GPT</span></div>
+  </div>
+</div></header>
+
+<!-- HOW -->
+<section class="section" id="how"><div class="wrap">
+  <h2>3단계면 끝납니다</h2>
+  <p class="lead">설치도, 계정도, 결제도 없습니다. 딱 1분.</p>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><h3>설문에 답하기</h3>
+      <p>직업과 가장 시간 뺏기는 일을 알려주세요. 이메일만 있으면 됩니다.</p></div>
+    <div class="step"><div class="n">2</div><h3>맞춤 프롬프트 수신</h3>
+      <p>당신의 일에 맞춘 ‘비서IN’ 설정 프롬프트를 이메일로 보내드립니다.</p></div>
+    <div class="step"><div class="n">3</div><h3>붙여넣고 바로 사용</h3>
+      <p>제미나이·클로드·챗GPT 어디든 붙여넣으면, 그 순간 당신의 개인비서.</p></div>
+  </div>
+</div></section>
+
+<!-- SURVEY -->
+<section id="survey"><div class="wrap">
+  <div class="form-card">
+    <div id="formView">
+      <h2>내 AI 비서 받기</h2>
+      <p class="lead" style="text-align:center;color:var(--t2)">1분 설문 → 이메일로 설정 프롬프트 발송</p>
+
+      <div class="field">
+        <label>이메일 <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
       </div>
-    </div>
-    <div class="col" style="background:#ffffff" id="col1">
-      <div class="zone-top"><span class="zt-n" style="color:#ff9f0a">FILTER</span></div>
-      <canvas class="vc" id="c1" width="257" height="240" style="height: 240px;"></canvas>
-      <div class="zone-bot">
-        <div class="zb-pct" style="color:#ff9f0a">50%</div>
-        <div class="zb-txt">안테나 가변 필터링<br>Noise Elimination</div>
+      <div class="field">
+        <label>직군 / 하는 일</label>
+        <input type="text" id="role" placeholder="예: 의사, 변호사, 쇼핑몰 운영, 학생, 디자이너…">
       </div>
-    </div>
-    <div class="col" style="background:#ffffff" id="col2">
-      <div class="zone-top"><span class="zt-n" style="color:#0071e3">VERIFIED</span></div>
-      <canvas class="vc" id="c2" width="257" height="240" style="height: 240px;"></canvas>
-      <div class="zone-bot">
-        <div class="zb-pct" style="color:#0071e3">20%</div>
-        <div class="zb-txt">로컬 MAENG 무결성 검증 완료<br>Certified Output</div>
+      <div class="field">
+        <label>주로 쓰는 AI</label>
+        <select id="ai_tool">
+          <option value="">선택 안 함 / 아직 없음</option>
+          <option value="gemini">제미나이 (Gemini)</option>
+          <option value="claude">클로드 (Claude)</option>
+          <option value="chatgpt">챗GPT (ChatGPT)</option>
+          <option value="여러개">여러 개 같이</option>
+        </select>
       </div>
+      <div class="field">
+        <label>가장 시간 뺏기는 업무 한 가지</label>
+        <textarea id="pain" placeholder="예: 이메일 답장, 보고서 초안, 진료기록 정리, 상품 설명 작성…"></textarea>
+      </div>
+
+      <label class="consent">
+        <input type="checkbox" id="consent">
+        <span>(필수) 설정 프롬프트 발송 및 <b>마케팅·광고성 정보 수신</b>에 동의합니다.
+        직군 맞춤 정보와 신규 기능 안내를 이메일로 받습니다. 언제든 수신거부 가능.</span>
+      </label>
+
+      <button class="submit" id="go">설문 완료하고 무료로 받기 →</button>
+      <p class="msg err" id="err"></p>
+      <p class="note">스팸 없이, 약속한 내용만 보냅니다 · 문의 ceo@aigstack.kr</p>
+    </div>
+
+    <div class="done" id="doneView">
+      <div class="ico">✓</div>
+      <h2>설문 완료!</h2>
+      <p id="doneMsg">당신만의 ‘비서IN’ 설정 프롬프트를<br>입력하신 이메일로 보내드릴게요. 메일함을 확인해 주세요.</p>
     </div>
   </div>
-  <div class="stats">
-    <div class="st"><div class="sv" style="color:#ef5350">160</div><div class="sl">Raw Particles</div></div>
-    <div class="st"><div class="sv" style="color:#ff9f0a">80</div><div class="sl">Filtered Particles</div></div>
-    <div class="st"><div class="sv" style="color:#00ff9d">32</div><div class="sl">Verified Particles</div></div>
+</div></section>
+
+<footer><div class="wrap">
+  <div>© 2026 AIGSTACK · 온프레미스 AI 비서 플랫폼</div>
+  <div class="foot-links">
+    <a href="mailto:ceo@aigstack.kr">ceo@aigstack.kr</a>
+    <a href="/admin/">내부자료</a>
   </div>
-  <div class="hfooter" style="display:flex; justify-content:center; align-items:center; margin-top:24px;">
-    <a href="mailto:ceo@aigstack.kr" style="color:var(--em); text-decoration:none; font-size:12px; font-family:'SF Mono',monospace; letter-spacing:1.5px; border:.5px solid rgba(0,255,157,.25); background:rgba(0,255,157,.04); padding:8px 18px; border-radius:24px; transition:all .22s; display:inline-flex; align-items:center; gap:6px;">
-      <span style="width:5px; height:5px; border-radius:50%; background:var(--em); display:inline-block; opacity:.8;"></span>
-      ceo@aigstack.kr
-    </a>
-  </div>
-</div>
+</div></footer>
 
 <script>
-function boot(){
-  var col0 = document.getElementById("col0"),
-      col1 = document.getElementById("col1"),
-      col2 = document.getElementById("col2");
-
-  var cv0 = document.getElementById("c0"),
-      cv1 = document.getElementById("c1"),
-      cv2 = document.getElementById("c2");
-
-  var ctx0 = cv0.getContext("2d"),
-      ctx1 = cv1.getContext("2d"),
-      ctx2 = cv2.getContext("2d");
-
-  function resize() {
-     cv0.width = col0.offsetWidth || 220; cv0.height = 240; cv0.style.height="240px";
-     cv1.width = col1.offsetWidth || 220; cv1.height = 240; cv1.style.height="240px";
-     cv2.width = col2.offsetWidth || 220; cv2.height = 240; cv2.style.height="240px";
-  }
-  window.addEventListener("resize", resize);
-  resize();
-
-  var COLS = ["#ef5350","#ffa726","#ab47bc","#ef9a9a","#fff176","#64b5f6","#ff7043","#ce93d8","#ffe082","#90caf9","#4db6ac","#f48fb1","#ff6e40","#ea80fc"];
-  var pts = [];
-  var NUM = 160;
-
-  // 전체 파이프라인 무결성 비율에 따른 파티클 운명 할당
-  // 160개 유입 -> 80개 필터링(안테나 탈락) -> 48개 무결성 실패(보라매 탈락) -> 32개 최종 통과(마린즈 합의)
-  for(var i=0; i<NUM; i++){
-    var fate = (i < 32) ? 'verified' : ((i < 80) ? 'drop_filter' : 'drop_intake');
-    var startX = Math.random() * (cv0.width + cv1.width + cv2.width); // 초기 화면을 채우기 위한 랜덤 배치
-    pts.push(initParticle({}, fate, startX));
-  }
-
-  function initParticle(p, fate, startX) {
-    p.fate = fate;
-    p.x = startX !== undefined ? startX : -Math.random()*30; // 죽으면 항상 화면 왼쪽 밖에서 재시작 (무한루프)
-    p.y = Math.random() * 240;
-    p.baseSpeed = 0.5 + Math.random() * 1.2;
-    p.vx = p.baseSpeed;
-    p.vy = (Math.random() - 0.5) * 1.5;
-    p.r = 0.9 + Math.random() * 1.6;
-    p.col = COLS[Math.floor(Math.random() * COLS.length)];
-    p.a = startX !== undefined ? (Math.random() * 0.5 + 0.5) : 0; 
-    p.ph = Math.random() * Math.PI * 2;
-    p.targetY = p.y;
-    return p;
-  }
-
-  function tick() {
-    var w0 = cv0.width, w1 = cv1.width, w2 = cv2.width;
-    var h = 240;
-
-    // 각 캔버스 초기화
-    ctx0.fillStyle="rgba(255,255,255,0.22)"; ctx0.fillRect(0,0,w0,h);
-    ctx1.fillStyle="rgba(255,255,255,0.2)";   ctx1.fillRect(0,0,w1,h);
-    ctx2.fillStyle="rgba(255,255,255,0.18)";   ctx2.fillRect(0,0,w2,h);
-
-    // Verified Zone (마린즈 엔진 통과 영역) 레인(Lanes) 시각화
-    var LANES = 8;
-    for(var l=0; l<LANES; l++) {
-      var ly = 22 + (l*(h-44)/(LANES-1));
-      ctx2.beginPath(); ctx2.moveTo(0, ly); ctx2.lineTo(w2, ly);
-      ctx2.strokeStyle = "rgba(0,113,227,0.06)"; ctx2.lineWidth = 0.5; ctx2.stroke();
-    }
-
-    // 파티클 글로벌 좌표계 이동 및 렌더링
-    pts.forEach(function(p) {
-      p.ph += 0.05;
-
-      // 새롭게 진입하는 파티클 페이드 인
-      if (p.a < 1 && p.x < w0 * 0.8) p.a += 0.02;
-
-      var inZone0 = p.x < w0;
-      var inZone1 = p.x >= w0 && p.x < (w0 + w1);
-      var inZone2 = p.x >= (w0 + w1);
-
-      if (inZone0) {
-        // [Stage 1] Intake: 원시 데이터 난기류 시뮬레이션
-        p.vx = p.baseSpeed + Math.sin(p.ph)*0.3;
-        p.vy += (Math.random()-0.5)*0.3;
-        
-        // 안테나 엔진에서 걸러지는 파티클 소멸 로직
-        if (p.fate === 'drop_intake' && p.x > w0 * 0.7) {
-          p.a -= 0.03;
-          p.vx *= 0.9;
-          if (p.a <= 0) initParticle(p, p.fate);
-        }
-      } else if (inZone1) {
-        // [Stage 2] Filter: 보라매/마린즈 논리 검증 진입 시뮬레이션
-        p.vx = p.baseSpeed * 1.3;
-        
-        // 레인에 맞춰 정렬되는 모습
-        var laneIdx = Math.max(0, Math.min(LANES-1, Math.floor((p.y / h) * LANES)));
-        p.targetY = 22 + (laneIdx * (h-44)/(LANES-1));
-        p.vy += (p.targetY - p.y) * 0.03;
-        
-        // 데이터 상태에 따른 색상 변화
-        if (p.fate === 'verified') p.col = "#ff9f0a"; // 검증 대기
-        else p.col = "#ef5350"; // 논리 오류 발견
-
-        // 보라매/마린즈 합의 실패 파티클 차단 소멸 로직
-        if (p.fate === 'drop_filter' && p.x > w0 + w1 * 0.6) {
-          p.a -= 0.02;
-          p.vy += (Math.random()-0.5)*1.5; 
-          if (p.a <= 0) initParticle(p, p.fate);
-        }
-      } else if (inZone2) {
-        // [Stage 3] Verified: 무결성 검증 완료 후 최종 출력 시뮬레이션
-        p.vx = p.baseSpeed * 2.2; 
-        p.vy = Math.sin(p.ph) * 0.5; // 안정된 사인파 흐름
-        p.col = "#00ff9d"; // 무결성 보증 그린라이트
-        
-        // 최종 출력 완료 시 무한 루프를 위해 재유입
-        if (p.x > w0 + w1 + w2) {
-          initParticle(p, p.fate);
-        }
-      }
-
-      p.vy = Math.max(-2.5, Math.min(2.5, p.vy));
-      p.x += p.vx;
-      p.y += p.vy;
-
-      // Y축 경계선 튕김
-      if(p.y < 2) { p.y = 2; p.vy *= -1; }
-      if(p.y > h-2) { p.y = h-2; p.vy *= -1; }
-
-      // 현재 속한 Zone에 따른 개별 캔버스 드로잉
-      if (p.a > 0) {
-        var drawCtx, localX;
-        if (inZone0) { drawCtx = ctx0; localX = p.x; }
-        else if (inZone1) { drawCtx = ctx1; localX = p.x - w0; }
-        else { drawCtx = ctx2; localX = p.x - w0 - w1; }
-
-        // Verified 파티클 후광(Glow) 효과
-        if (inZone2) {
-          var gr = drawCtx.createRadialGradient(localX, p.y, 0, localX, p.y, p.r*3.2);
-          gr.addColorStop(0,"rgba(0,255,157,0.26)");
-          gr.addColorStop(1,"rgba(0,255,157,0)");
-          drawCtx.beginPath(); drawCtx.arc(localX, p.y, p.r*3.2, 0, Math.PI*2);
-          drawCtx.fillStyle = gr; drawCtx.fill();
-        }
-
-        // 파티클 본체
-        drawCtx.beginPath();
-        drawCtx.arc(localX, p.y, p.r, 0, Math.PI*2);
-        drawCtx.fillStyle = p.col;
-        drawCtx.globalAlpha = Math.max(0, p.a);
-        drawCtx.fill();
-        drawCtx.globalAlpha = 1;
-      }
-    });
-
-    // Verified Zone(c2) 중앙 펄스 및 레이블 유지
-    var gt = Date.now() * 0.002;
-    var cx = w2 * 0.5, cy = h * 0.5;
-    var pulse = 0.14 + Math.sin(gt*2)*0.07;
-    var g2 = ctx2.createRadialGradient(cx,cy,0,cx,cy,26);
-    g2.addColorStop(0,"rgba(0,113,227,"+(pulse*1.8)+")");
-    g2.addColorStop(0.5,"rgba(0,113,227,"+(pulse*0.35)+")");
-    g2.addColorStop(1,"rgba(0,113,227,0)");
-    ctx2.beginPath();ctx2.arc(cx,cy,26,0,Math.PI*2);ctx2.fillStyle=g2;ctx2.fill();
-    ctx2.beginPath();ctx2.arc(cx,cy,5.5,0,Math.PI*2);ctx2.fillStyle="rgba(0,113,227,0.92)";ctx2.fill();
-    ctx2.textAlign="center";ctx2.font="500 9px -apple-system,sans-serif";ctx2.fillStyle="rgba(0,113,227,0.85)";ctx2.fillText("✓ VERIFIED",cx,cy-13);
-    ctx2.font="300 8px 'SF Mono',monospace";ctx2.fillStyle="rgba(0,113,227,0.52)";ctx2.fillText("99.99%",cx,cy+18);
-
-    requestAnimationFrame(tick);
-  }
-  tick();
-}
-window.addEventListener("load",boot);
-
-// nav 높이 동적 계산 → CSS 변수로 주입
-function updateNavHeight(){
-  const h = document.querySelector('nav').offsetHeight;
-  document.documentElement.style.setProperty('--nav-h', h + 'px');
-  document.documentElement.style.setProperty('--content-h', 'calc(100vh - ' + h + 'px)');
-  document.documentElement.style.setProperty('--panel-h', 'calc(100vh - ' + (h + 60) + 'px)');
-  // 모든 포털 top 동적 적용
-  document.querySelectorAll('#logos-portal,#logos-eye-portal,#factory-portal,#status-portal,#projection-portal,#internal-portal').forEach(el=>{
-    el.style.top = h + 'px';
-    el.style.height = 'calc(100vh - ' + h + 'px)';
-  });
-  // 포털 내부 카드 패널 높이 재계산
-  document.querySelectorAll('[style*="calc(100vh - 108px)"]').forEach(el=>{
-    el.style.height = 'calc(100vh - ' + (h + 60) + 'px)';
-  });
-}
-window.addEventListener('load', updateNavHeight);
-window.addEventListener('resize', updateNavHeight);
-</script>
-
-<!-- (이하 HTML 섹션들은 변경 없이 원본 그대로 유지됩니다) -->
-<div class="divider"></div>
-<div class="sec">
-  <div class="sec-label">LOGOS ENGINE · CORE PHILOSOPHY</div>
-  <div class="sec-title"><strong>구조적 불신뢰</strong>가 신뢰를 만든다</div>
-  <div class="sec-sub">단일 모델의 성능을 높이는 대신, 어떤 AI도 혼자 결론을 내릴 수 없는 시스템을 설계했습니다. 3개의 특허 엔진이 독립적으로 판단하고 상호 검증합니다.</div>
-  <div class="philosophy-grid">
-    <div class="ph-card">
-      <div class="ph-name">Antenna Engine</div>
-      <div class="ph-desc">입력 데이터를 의미론적 단위로 분할하여 이종 LLM 인스턴스에 독립 배분. 동적 가중 다수결로 1차 진위 결정 및 신뢰도 임계치 미달 시 선제 차단.</div>
-    </div>
-    <div class="ph-card">
-      <div class="ph-name">Boramae Engine</div>
-      <div class="ph-desc">계층적 논리 노드 기반 무결성 검증. 상위 노드 실패 시 후속 연산 즉시 차단. 누적 신뢰도 스코어 산출로 연산 자원 최적화.</div>
-    </div>
-    <div class="ph-card">
-      <div class="ph-name">Marines Engine</div>
-      <div class="ph-desc">훈련 계보·아키텍처가 상이한 3개 이종 LLM을 논리비판자·팩트체커·보안검증자로 고정 배치. 3인 전원 합의 시에만 통과.</div>
-    </div>
-    <div class="ph-card" style="border-color:rgba(0,113,227,.2);background:#fff">
-      <div class="ph-name" style="color:var(--em)">LOGOS ENGINE</div>
-      <div class="ph-desc">3대 엔진의 실행 순서·조건 분기·재처리 루프를 중앙 제어. 최종 출력에 검증 경로 메타데이터와 무결성 스코어 부착.</div>
-    </div>
-  </div>
-</div>
-
-<div class="divider"></div>
-<div class="sec">
-  <div class="sec-label">STRIKE FORCE 5 · PLATFORM LINEUP</div>
-  <div class="sec-title">전략 <strong>5대 플랫폼</strong></div>
-  <div class="sec-sub">로고스 엔진의 3대 특허 기술을 가장 돋보이게 만들 최우선 사업 라인업. B2B·B2G 실수요 시장을 정밀 타겟합니다.</div>
-  <div class="sf-list">
-    <div class="sf-item">
-      <div class="sf-num">01</div>
-      <div class="sf-body">
-        <div class="sf-title">AI Data Integrity Autonomous Verification Center</div>
-        <div class="sf-meta">K-Moonshot·AI Hub 국책 과제의 데이터 오류·편향 검수 시장 대체. 보라매 엔진 총력 투입.</div>
-        <div><span class="sf-tag" style="background:rgba(255,69,58,.1);color:#ff453a;border:.5px solid rgba(255,69,58,.3)">B2G</span><span class="sf-tag" style="background:rgba(0,122,255,.1);color:#007AFF;border:.5px solid rgba(0,122,255,.3)">Boramae</span></div>
-      </div>
-    </div>
-    <div class="sf-item">
-      <div class="sf-num">02</div>
-      <div class="sf-body">
-        <div class="sf-title">On-Premise Specialized LLM Architecture</div>
-        <div class="sf-meta">국방·금융·의료 폐쇄망 특화 고단가 프로젝트. 96GB VRAM 내 다중 모델 완벽 상호 통제 구현.</div>
-        <div><span class="sf-tag" style="background:rgba(48,209,88,.1);color:#30D158;border:.5px solid rgba(48,209,88,.3)">B2B</span><span class="sf-tag" style="background:rgba(0,122,255,.1);color:#007AFF;border:.5px solid rgba(0,122,255,.3)">Marines</span></div>
-      </div>
-    </div>
-    <div class="sf-item">
-      <div class="sf-num">03</div>
-      <div class="sf-body">
-        <div class="sf-title">Global AI Regulatory Compliance Diagnostic</div>
-        <div class="sf-meta">EU AI Act·글로벌 저작권 규제 자동 스캐닝 및 리포팅. 안테나 엔진 총력 투입.</div>
-        <div><span class="sf-tag" style="background:rgba(0,122,255,.1);color:#007AFF;border:.5px solid rgba(0,122,255,.3)">B2B</span><span class="sf-tag" style="background:rgba(255,159,10,.1);color:#FF9F0A;border:.5px solid rgba(255,159,10,.3)">Antenna</span></div>
-      </div>
-    </div>
-    <div class="sf-item">
-      <div class="sf-num">04</div>
-      <div class="sf-body">
-        <div class="sf-title">Real-time Deepfake &amp; Disinformation Radar</div>
-        <div class="sf-meta">언론사·선관위 SaaS 납품. 2,000 에이전트 차출로 특정 채널 집중 감시·필터링.</div>
-        <div><span class="sf-tag" style="background:rgba(255,69,58,.1);color:#ff453a;border:.5px solid rgba(255,69,58,.3)">B2G</span><span class="sf-tag" style="background:rgba(255,159,10,.1);color:#FF9F0A;border:.5px solid rgba(255,159,10,.3)">Antenna+Boramae</span></div>
-      </div>
-    </div>
-    <div class="sf-item">
-      <div class="sf-num">05</div>
-      <div class="sf-body">
-        <div class="sf-title">R&amp;D Patent &amp; Tech Trend Autonomous Reasoner</div>
-        <div class="sf-meta">전 세계 논문·특허 자율 분석 및 경쟁사 기술 트렌드 예측. 하이엔드 구독 모델.</div>
-        <div><span class="sf-tag" style="background:rgba(0,122,255,.1);color:#007AFF;border:.5px solid rgba(0,122,255,.3)">B2B</span><span class="sf-tag" style="background:rgba(0,122,255,.1);color:#007AFF;border:.5px solid rgba(0,122,255,.3)">Marines+Boramae</span></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="divider"></div>
-<div class="sec">
-  <div class="sec-label">INTELLECTUAL PROPERTY · PATENT PORTFOLIO</div>
-  <div class="sec-title"><strong>4건</strong>의 원천 특허</div>
-  <div class="sec-sub">단일 판단자를 신뢰하지 않는다는 하나의 철학에서 출발한 특허 포트폴리오. 부품 3건과 통합 시스템 1건으로 완전한 기술 해자를 구축합니다.</div>
-  <div class="pat-grid">
-    <div class="pat-card">
-      <div class="pat-num">Patent · 01</div>
-      <div class="pat-name">안테나 엔진</div>
-      <div class="pat-desc">적응형 데이터 소스 검증 및 가변 필터링. 이종 LLM 분산 배분 및 동적 가중 다수결 진위 결정 방법.</div>
-      <div class="pat-status pat-filed">● 출원 완료</div>
-    </div>
-    <div class="pat-card">
-      <div class="pat-num">Patent · 02</div>
-      <div class="pat-name">보라매 엔진</div>
-      <div class="pat-desc">계층적 다중 분석 노드 기반 무결성 검증. 선행 노드 실패 시 후속 연산 차단 및 누적 신뢰도 스코어 산출.</div>
-      <div class="pat-status pat-filed">● 출원 완료</div>
-    </div>
-    <div class="pat-card">
-      <div class="pat-num">Patent · 03</div>
-      <div class="pat-name">마린즈 엔진</div>
-      <div class="pat-desc">다중 독립 LLM 상호 검증. 삼심제 기반 합의 및 자가 교정 피드백 루프를 통한 환각 차단 방법.</div>
-      <div class="pat-status pat-filed">● 출원 완료</div>
-    </div>
-    <div class="pat-card" style="border-color:rgba(0,255,157,.2)">
-      <div class="pat-num">Patent · 04</div>
-      <div class="pat-name">LOGOS ENGINE</div>
-      <div class="pat-desc">이종 다중 LLM 분산 재판 구조 기반 인공지능 데이터 무결성 통합 검증 시스템. 3대 엔진 통합 오케스트레이션.</div>
-      <div class="pat-status pat-pending">◐ 출원 준비중</div>
-    </div>
-  </div>
-</div>
-
-<div class="divider"></div>
-<div class="sec">
-  <div class="sec-label">MAENG · LOCAL INFERENCE INFRASTRUCTURE</div>
-  <div class="sec-title"><strong>완전 폐쇄망</strong> 추론 인프라</div>
-  <div class="sec-sub">외부 클라우드 의존 없이 온프레미스에서 다중 LLM을 동시 구동. 데이터는 물리적으로 외부와 차단된 환경에서만 처리됩니다.</div>
-  <div class="infra-grid">
-    <div class="inf-card">
-      <div class="inf-label">Compute</div>
-      <div class="inf-items">
-        <div class="inf-row"><span class="inf-key">Platform</span><span class="inf-val">DELL Precision 7960</span></div>
-        <div class="inf-row"><span class="inf-key">CPU</span><span class="inf-val">Xeon W5-3425 12C</span></div>
-        <div class="inf-row"><span class="inf-key">RAM</span><span class="inf-val">256GB ECC/REG</span></div>
-        <div class="inf-row"><span class="inf-key">Storage</span><span class="inf-val">2TB NVMe + 8TB HDD</span></div>
-      </div>
-    </div>
-    <div class="inf-card">
-      <div class="inf-label">GPU · VRAM</div>
-      <div class="inf-items">
-        <div class="inf-row"><span class="inf-key">GPU</span><span class="inf-val">RTX PRO 6000 ×2</span></div>
-        <div class="inf-row"><span class="inf-key">VRAM</span><span class="inf-val">96GB Total</span></div>
-        <div class="inf-row"><span class="inf-key">Network</span><span class="inf-val">10GbE</span></div>
-        <div class="inf-row"><span class="inf-key">Mode</span><span class="inf-val">Air-Gap / Local First</span></div>
-      </div>
-    </div>
-    <div class="inf-card">
-      <div class="inf-label">Software Stack</div>
-      <div class="inf-items">
-        <div class="inf-row"><span class="inf-key">OS</span><span class="inf-val">Ubuntu 22.04 LTS</span></div>
-        <div class="inf-row"><span class="inf-key">Inference</span><span class="inf-val">vLLM + Docker</span></div>
-        <div class="inf-row"><span class="inf-key">Vector DB</span><span class="inf-val">ChromaDB (US)</span></div>
-        <div class="inf-row"><span class="inf-key">API</span><span class="inf-val">FastAPI Middleware</span></div>
-      </div>
-    </div>
-    <div class="inf-card">
-      <div class="inf-label">LLM Lineup · Non-Chinese</div>
-      <div class="inf-items">
-        <div class="inf-row"><span class="inf-key">Antenna</span><span class="inf-val">EXAONE 3.0 🇰🇷</span></div>
-        <div class="inf-row"><span class="inf-key">Boramae</span><span class="inf-val">Llama-3-8B 🇺🇸</span></div>
-        <div class="inf-row"><span class="inf-key">Marines</span><span class="inf-val">Mistral 7B 🇫🇷</span></div>
-        <div class="inf-row"><span class="inf-key">Alliance</span><span class="inf-val">KR · US · EU Only</span></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="divider"></div>
-<div class="vf-section">
-  <div class="vf-hero">
-    <div class="vf-eyebrow">INDEPENDENT CROSS-VALIDATION · 2026.05.06</div>
-    <div class="vf-headline">경쟁 AI 5사가 동일한 결론에<br><strong>수렴했습니다</strong></div>
-    <div class="vf-sub">우리는 LOGOS ENGINE을 출시 전, 훈련 계보와 아키텍처가 서로 다른 5개의 이종 AI 시스템에 독립적으로 검증을 의뢰했습니다. 단일 AI의 평가가 아닙니다.</div>
-  </div>
-  <div class="vf-banner">
-    <div class="vf-banner-text">
-      LOGOS ENGINE의 핵심 철학은 <strong>"어떤 AI도 혼자 결론을 내릴 수 없는 구조"</strong>입니다. 우리는 이 철학을 시스템 설계에만 적용한 것이 아니라, <strong>시스템 검증 과정 자체에도 동일하게 적용했습니다.</strong> 이것이 마린즈 엔진의 실증입니다.
-    </div>
-  </div>
-  <div class="vf-matrix-label">VERIFICATION SOURCES · 5 INDEPENDENT AI SYSTEMS</div>
-  <div class="vf-models">
-    <div class="vf-model-card">
-      <div class="vf-model-head">
-        <span class="vf-model-name" style="color:#00ff9d">Claude Sonnet 4.6</span>
-        <span class="vf-model-badge" style="background:rgba(0,255,157,.1);color:#00ff9d;border:.5px solid rgba(0,255,157,.3)">Anthropic</span>
-      </div>
-      <div class="vf-model-org">anthropic.com · 🇺🇸 USA</div>
-      <div class="vf-model-method">검증 방식: <span>학습 데이터 기반 독립 추론</span></div>
-      <div class="vf-verified-stamp">출처 확인 완료</div>
-    </div>
-    <div class="vf-model-card">
-      <div class="vf-model-head">
-        <span class="vf-model-name" style="color:#10a37f">GPT-5.3</span>
-        <span class="vf-model-badge" style="background:rgba(16,163,127,.1);color:#10a37f;border:.5px solid rgba(16,163,127,.3)">OpenAI</span>
-      </div>
-      <div class="vf-model-org">chatgpt.com · 🇺🇸 USA</div>
-      <div class="vf-model-method">검증 방식: <span>학습 데이터 기반 독립 추론</span></div>
-      <div class="vf-verified-stamp">스크린샷 출처 확인 완료</div>
-    </div>
-    <div class="vf-model-card">
-      <div class="vf-model-head">
-        <span class="vf-model-name" style="color:#4285f4">Gemini 3.1 Pro</span>
-        <span class="vf-model-badge" style="background:rgba(66,133,244,.1);color:#4285f4;border:.5px solid rgba(66,133,244,.3)">Google</span>
-      </div>
-      <div class="vf-model-org">gemini.google.com · 🇺🇸 USA</div>
-      <div class="vf-model-method">검증 방식: <span>학습 데이터 기반 독립 추론</span></div>
-      <div class="vf-verified-stamp">스크린샷 출처 확인 완료</div>
-    </div>
-    <div class="vf-model-card">
-      <div class="vf-model-head">
-        <span class="vf-model-name" style="color:#ff6b35">Grok</span>
-        <span class="vf-model-badge" style="background:rgba(255,107,53,.1);color:#ff6b35;border:.5px solid rgba(255,107,53,.3)">xAI</span>
-      </div>
-      <div class="vf-model-org">grok.com · 🇺🇸 USA</div>
-      <div class="vf-model-method">검증 방식: <span>학습 데이터 + 실시간 웹 검색</span></div>
-      <div class="vf-verified-stamp">스크린샷 출처 확인 완료</div>
-    </div>
-    <div class="vf-model-card" style="grid-column:1/-1">
-      <div class="vf-model-head">
-        <span class="vf-model-name" style="color:#a855f7">Genspark AI</span>
-        <span class="vf-model-badge" style="background:rgba(168,85,247,.1);color:#a855f7;border:.5px solid rgba(168,85,247,.3)">Genspark</span>
-      </div>
-      <div class="vf-model-org">genspark.ai · 🇺🇸 USA</div>
-      <div class="vf-model-method">검증 방식: <span>실시간 학술 논문 + 특허 데이터베이스 병렬 검색</span> — N-version Programming 원전 논문, Google Patents 직접 조회 포함</div>
-      <div class="vf-verified-stamp">스크린샷 출처 확인 완료</div>
-    </div>
-  </div>
-  <div class="vf-consensus">
-    <div class="vf-consensus-title">CONVERGENCE RESULTS · 5개 AI 공통 확인 항목</div>
-    <div class="vf-consensus-items">
-      <div class="vf-ci">
-        <span class="vf-ci-score">5 / 5</span>
-        <div class="vf-ci-bar-wrap"><div class="vf-ci-bar" style="width:100%"></div></div>
-        <span class="vf-ci-label">구조적 구현 가능성</span>
-      </div>
-      <div class="vf-ci">
-        <span class="vf-ci-score">5 / 5</span>
-        <div class="vf-ci-bar-wrap"><div class="vf-ci-bar" style="width:100%"></div></div>
-        <span class="vf-ci-label">고신뢰 B2B·B2G 시장 유효성</span>
-      </div>
-      <div class="vf-ci">
-        <span class="vf-ci-score">5 / 5</span>
-        <div class="vf-ci-bar-wrap"><div class="vf-ci-bar" style="width:100%"></div></div>
-        <span class="vf-ci-label">구조적 불신뢰 설계의 기술적 합리성</span>
-      </div>
-      <div class="vf-ci">
-        <span class="vf-ci-score">5 / 5</span>
-        <div class="vf-ci-bar-wrap"><div class="vf-ci-bar" style="width:100%"></div></div>
-        <span class="vf-ci-label">규제 산업 (국방·금융·의료·법률) 적합성</span>
-      </div>
-      <div class="vf-ci">
-        <span class="vf-ci-score">5 / 5</span>
-        <div class="vf-ci-bar-wrap"><div class="vf-ci-bar" style="width:100%"></div></div>
-        <span class="vf-ci-label">이종 LLM 다중 검증 방향의 타당성</span>
-      </div>
-    </div>
-  </div>
-  <div class="vf-meta">
-    <div class="vf-meta-label">META INSIGHT</div>
-    <div class="vf-meta-text">
-      설계자는 5개의 이종 AI에 동일한 질문을 독립적으로 제출하고, 각 출처를 스크린샷으로 검증하며, 수렴 결과를 분석했습니다. 이것은 <strong>LOGOS ENGINE의 마린즈 프로토콜을 검증 과정에 직접 적용한 것</strong>입니다. 우리는 우리가 만드는 것을 우리가 먼저 실천합니다.
-    </div>
-  </div>
-  <div class="vf-date">VERIFICATION DATE · 2026.05.06 · KST · Claude / GPT-5.3 / Gemini 3.1 Pro / Grok / Genspark</div>
-</div>
-
-<!-- ────────── 솔루션 라인업 ────────── -->
-<div class="divider"></div>
-<div class="sec">
-  <div class="sec-label">SOLUTION LINEUP</div>
-  <div class="sec-title">무엇을 <strong>도와드릴 수 있나요</strong></div>
-  <div class="sec-sub">모든 솔루션은 외부 클라우드 없이 고객사 내부 서버에서 완전 구동됩니다. 데이터가 외부로 나가지 않습니다.</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-
-    <div style="background:#fff;border:.5px solid rgba(0,0,0,.08);border-radius:14px;padding:22px 24px;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:box-shadow .2s;" onmouseover="this.style.boxShadow='0 8px 28px rgba(0,113,227,.12)'" onmouseout="this.style.boxShadow='0 2px 12px rgba(0,0,0,.05)'">
-      <div style="font-size:10px;letter-spacing:2px;color:#0071e3;text-transform:uppercase;font-weight:600;margin-bottom:6px;">Logos Eye</div>
-      <div style="font-size:17px;font-weight:600;color:#000;margin-bottom:8px;line-height:1.3;">CCTV 영상<br>개인정보 비식별화</div>
-      <div style="font-size:12px;color:#000;line-height:1.7;margin-bottom:16px;">촬영된 CCTV 영상에서 얼굴·신체를 실시간으로 자동 비식별화합니다. 개인정보보호법·GDPR을 수학적으로 준수하며, 고객 동선 분석 데이터는 그대로 활용 가능합니다.</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
-        <span style="font-size:10px;background:#f5f5f7;color:#000;padding:3px 10px;border-radius:20px;">백화점·유통</span>
-        <span style="font-size:10px;background:#f5f5f7;color:#000;padding:3px 10px;border-radius:20px;">공항·교통</span>
-        <span style="font-size:10px;background:#f5f5f7;color:#000;padding:3px 10px;border-radius:20px;">편의점·프랜차이즈</span>
-      </div>
-      <div style="font-size:12px;color:#0071e3;font-weight:500;">PII 누수율 0.0% 수학적 검증 완료 →</div>
-    </div>
-
-    <div style="background:#fff;border:.5px solid rgba(0,0,0,.08);border-radius:14px;padding:22px 24px;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:box-shadow .2s;" onmouseover="this.style.boxShadow='0 8px 28px rgba(0,113,227,.12)'" onmouseout="this.style.boxShadow='0 2px 12px rgba(0,0,0,.05)'">
-      <div style="font-size:10px;letter-spacing:2px;color:#0071e3;text-transform:uppercase;font-weight:600;margin-bottom:6px;">On-Premise AI</div>
-      <div style="font-size:17px;font-weight:600;color:#000;margin-bottom:8px;line-height:1.3;">폐쇄망<br>온프레미스 AI 구축</div>
-      <div style="font-size:12px;color:#000;line-height:1.7;margin-bottom:16px;">인터넷이 차단된 내부망에서 대형 언어모델(LLM)을 직접 구동합니다. 민감 데이터가 외부로 한 바이트도 나가지 않는 완전 폐쇄형 AI 인프라를 구축해드립니다.</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
-        <span style="font-size:10px;background:#f5f5f7;color:#000;padding:3px 10px;border-radius:20px;">금융·보험</span>
-        <span style="font-size:10px;background:#f5f5f7;color:#000;padding:3px 10px;border-radius:20px;">의료·병원</span>
-        <span style="font-size:10px;background:#f5f5f7;color:#000;padding:3px 10px;border-radius:20px;">공공기관·국방</span>
-      </div>
-      <div style="font-size:12px;color:#0071e3;font-weight:500;">맹(MAENG) 클러스터 실운영 레퍼런스 보유 →</div>
-    </div>
-
-    <div style="background:#fff;border:.5px solid rgba(0,0,0,.08);border-radius:14px;padding:22px 24px;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:box-shadow .2s;" onmouseover="this.style.boxShadow='0 8px 28px rgba(0,113,227,.12)'" onmouseout="this.style.boxShadow='0 2px 12px rgba(0,0,0,.05)'">
-      <div style="font-size:10px;letter-spacing:2px;color:#0071e3;text-transform:uppercase;font-weight:600;margin-bottom:6px;">AI Automation</div>
-      <div style="font-size:17px;font-weight:600;color:#000;margin-bottom:8px;line-height:1.3;">반복 업무<br>AI 자동화 파이프라인</div>
-      <div style="font-size:12px;color:#000;line-height:1.7;margin-bottom:16px;">보고서 작성, 데이터 수집·분석, 문서 검토 등 반복되는 사무 업무를 AI 에이전트가 24시간 자동으로 처리합니다. 직원은 고부가가치 업무에만 집중할 수 있습니다.</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
-        <span style="font-size:10px;background:#f5f5f7;color:#000;padding:3px 10px;border-radius:20px;">제조·물류</span>
-        <span style="font-size:10px;background:#f5f5f7;color:#000;padding:3px 10px;border-radius:20px;">법무·컴플라이언스</span>
-        <span style="font-size:10px;background:#f5f5f7;color:#000;padding:3px 10px;border-radius:20px;">금융·회계</span>
-      </div>
-      <div style="font-size:12px;color:#0071e3;font-weight:500;">도입 후 평균 업무시간 60% 절감 →</div>
-    </div>
-
-    <div style="background:#fff;border:.5px solid rgba(0,0,0,.08);border-radius:14px;padding:22px 24px;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:box-shadow .2s;" onmouseover="this.style.boxShadow='0 8px 28px rgba(0,113,227,.12)'" onmouseout="this.style.boxShadow='0 2px 12px rgba(0,0,0,.05)'">
-      <div style="font-size:10px;letter-spacing:2px;color:#0071e3;text-transform:uppercase;font-weight:600;margin-bottom:6px;">In-To-Out</div>
-      <div style="font-size:17px;font-weight:600;color:#000;margin-bottom:8px;line-height:1.3;">인투아웃<br>콘텐츠 자동 생성·배포</div>
-      <div style="font-size:12px;color:#000;line-height:1.7;margin-bottom:16px;">회사 내부 맥락을 학습한 온프레미스 AI 비서가 자사 뉴스·콘텐츠를 내부자 관점으로 직접 작성하고, 영상·비주얼로 가공해 여러 채널에 자동 배포합니다. 내부지식(IN)에서 외부송출(OUT)까지 끊김 없는 일체형 루프입니다.</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">
-        <span style="font-size:10px;background:#f5f5f7;color:#000;padding:3px 10px;border-radius:20px;">마케팅·홍보</span>
-        <span style="font-size:10px;background:#f5f5f7;color:#000;padding:3px 10px;border-radius:20px;">콘텐츠·미디어</span>
-        <span style="font-size:10px;background:#f5f5f7;color:#000;padding:3px 10px;border-radius:20px;">커머스·제휴</span>
-      </div>
-      <div style="font-size:12px;color:#0071e3;font-weight:500;">내부지식 IN → 외부송출 OUT 일체형 루프 →</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ────────── 도입 효과 ────────── -->
-<div class="divider"></div>
-<div class="sec">
-  <div class="sec-label">WHY AIGSTACK</div>
-  <div class="sec-title">도입하면 <strong>무엇이 달라지나요</strong></div>
-  <div class="sec-sub">실제 운영 데이터 기반의 도입 효과입니다.</div>
-  <div class="metrics-grid">
-
-    <div class="metric-card">
-      <div class="metric-num">0<span class="metric-unit">건</span></div>
-      <div class="metric-body">
-        <div class="metric-title">개인정보 분쟁</div>
-        <div class="metric-desc">Logos Eye 도입 후 CCTV 관련 개인정보 민원 및 법적 분쟁 발생 건수</div>
-      </div>
-    </div>
-
-    <div class="metric-card">
-      <div class="metric-num">100<span class="metric-unit">%</span></div>
-      <div class="metric-body">
-        <div class="metric-title">데이터 내부 보존</div>
-        <div class="metric-desc">온프레미스 AI 구축 시 고객 데이터가 외부 클라우드로 전송되는 비율</div>
-      </div>
-    </div>
-
-    <div class="metric-card">
-      <div class="metric-num">24<span class="metric-unit">h</span></div>
-      <div class="metric-body">
-        <div class="metric-title">무중단 자동 운영</div>
-        <div class="metric-desc">AI 자동화 파이프라인이 사람 개입 없이 운영되는 일일 가동 시간</div>
-      </div>
-    </div>
-
-    <div class="metric-card">
-      <div class="metric-num">2<span class="metric-unit">주</span></div>
-      <div class="metric-body">
-        <div class="metric-title">POC 시연 기간</div>
-        <div class="metric-desc">계약 전 무료 시연으로 도입 효과를 직접 확인하실 수 있습니다</div>
-      </div>
-    </div>
-
-    <div class="metric-card">
-      <div class="metric-num">4<span class="metric-unit">건</span></div>
-      <div class="metric-body">
-        <div class="metric-title">원천 특허 보유</div>
-        <div class="metric-desc">경쟁사가 동일 기술을 사용할 수 없는 독점적 기술 해자</div>
-      </div>
-    </div>
-
-    <div class="metric-card">
-      <div class="metric-num">5<span class="metric-unit">개사</span></div>
-      <div class="metric-body">
-        <div class="metric-title">글로벌 AI 교차 검증</div>
-        <div class="metric-desc">Claude·GPT-5.3·Gemini·Grok·Genspark 이종 AI 5개사가 동일하게 기술 유효성 인정</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ────────── 도입 프로세스 ────────── -->
-<div class="divider"></div>
-<div class="sec">
-  <div class="sec-label">HOW TO START</div>
-  <div class="sec-title">도입은 <strong>이렇게 진행됩니다</strong></div>
-  <div class="sec-sub">부담 없이 상담부터 시작하세요. POC 시연까지 무료입니다.</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0;position:relative;">
-
-    <div style="position:absolute;top:32px;left:12.5%;right:12.5%;height:1px;background:linear-gradient(90deg,#0071e3,rgba(0,113,227,0.2));z-index:0;"></div>
-
-    <div style="text-align:center;padding:0 12px;position:relative;z-index:1;">
-      <div style="width:52px;height:52px;background:#0071e3;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 4px 14px rgba(0,113,227,.3);">
-        <span style="color:#fff;font-size:16px;font-weight:700;">1</span>
-      </div>
-      <div style="font-size:13px;font-weight:600;color:#000;margin-bottom:6px;">무료 상담</div>
-      <div style="font-size:11px;color:#86868b;line-height:1.6;">현재 상황과 필요하신 부분을 말씀해 주시면 맞춤 솔루션을 안내드립니다</div>
-      <div style="font-size:10px;color:#0071e3;margin-top:8px;font-weight:500;">1주일 이내 응대</div>
-    </div>
-
-    <div style="text-align:center;padding:0 12px;position:relative;z-index:1;">
-      <div style="width:52px;height:52px;background:#0071e3;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 4px 14px rgba(0,113,227,.3);">
-        <span style="color:#fff;font-size:16px;font-weight:700;">2</span>
-      </div>
-      <div style="font-size:13px;font-weight:600;color:#000;margin-bottom:6px;">무료 POC 시연</div>
-      <div style="font-size:11px;color:#86868b;line-height:1.6;">고객사 환경에 맞춘 2주 시범 운영으로 도입 효과를 직접 체감하실 수 있습니다</div>
-      <div style="font-size:10px;color:#0071e3;margin-top:8px;font-weight:500;">비용 없음</div>
-    </div>
-
-    <div style="text-align:center;padding:0 12px;position:relative;z-index:1;">
-      <div style="width:52px;height:52px;background:#0071e3;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 4px 14px rgba(0,113,227,.3);">
-        <span style="color:#fff;font-size:16px;font-weight:700;">3</span>
-      </div>
-      <div style="font-size:13px;font-weight:600;color:#000;margin-bottom:6px;">계약 및 구축</div>
-      <div style="font-size:11px;color:#86868b;line-height:1.6;">확정 후 4~8주 내 고객사 서버에 설치·구축 완료. 데이터 이전 없이 현장 구동</div>
-      <div style="font-size:10px;color:#0071e3;margin-top:8px;font-weight:500;">4~8주 소요</div>
-    </div>
-
-    <div style="text-align:center;padding:0 12px;position:relative;z-index:1;">
-      <div style="width:52px;height:52px;background:#0071e3;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 4px 14px rgba(0,113,227,.3);">
-        <span style="color:#fff;font-size:16px;font-weight:700;">4</span>
-      </div>
-      <div style="font-size:13px;font-weight:600;color:#000;margin-bottom:6px;">운영 지원</div>
-      <div style="font-size:11px;color:#86868b;line-height:1.6;">연간 유지보수 계약으로 지속 업데이트·장애 대응·성능 최적화를 제공합니다</div>
-      <div style="font-size:10px;color:#0071e3;margin-top:8px;font-weight:500;">연간 계약</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ────────── 요금 및 문의 ────────── -->
-<div class="divider"></div>
-<div class="sec">
-  <div class="sec-label">PRICING &amp; CONTACT</div>
-  <div class="sec-title">도입 <strong>규모별 안내</strong></div>
-  <div class="sec-sub">모든 솔루션은 고객사 환경에 맞춰 견적을 제공합니다. 아래는 참고용 기준입니다.</div>
-  <div class="pricing-grid">
-
-    <div style="background:#fff;border:.5px solid rgba(0,0,0,.08);border-radius:14px;padding:22px 20px;box-shadow:0 2px 8px rgba(0,0,0,.04);">
-      <div style="font-size:9px;letter-spacing:2px;color:#86868b;text-transform:uppercase;font-weight:600;margin-bottom:8px;">Starter</div>
-      <div style="font-size:22px;font-weight:700;color:#000;margin-bottom:4px;">문의 후 결정</div>
-      <div style="font-size:11px;color:#86868b;margin-bottom:16px;">소규모 사업장 / POC 후 협의</div>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#000;">
-          <span style="color:#0071e3;font-weight:700;">✓</span> 단일 매장 또는 부서 단위
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#000;">
-          <span style="color:#0071e3;font-weight:700;">✓</span> 솔루션 1개 도입
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#000;">
-          <span style="color:#0071e3;font-weight:700;">✓</span> 기술 지원 포함
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#000;">
-          <span style="color:#0071e3;font-weight:700;">✓</span> 2주 무료 POC
-        </div>
-      </div>
-      <button onclick="openInquiryModal('Starter 상담')" style="display:block;width:100%;text-align:center;padding:10px;border:.5px solid rgba(0,113,227,.3);border-radius:8px;font-size:12px;color:#0071e3;font-weight:500;cursor:pointer;background:none;transition:all .2s;" onmouseover="this.style.background='rgba(0,113,227,.06)'" onmouseout="this.style.background='none'">상담 신청</button>
-    </div>
-
-    <div style="background:#0071e3;border-radius:14px;padding:22px 20px;box-shadow:0 8px 28px rgba(0,113,227,.25);position:relative;overflow:hidden;">
-      <div style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,.2);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:1px;">추천</div>
-      <div style="font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.7);text-transform:uppercase;font-weight:600;margin-bottom:8px;">Business</div>
-      <div style="font-size:22px;font-weight:700;color:#fff;margin-bottom:4px;">견적 협의</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.7);margin-bottom:16px;">중견기업 / 멀티 사이트</div>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.9);">
-          <span style="font-weight:700;">✓</span> 복수 매장·지점 통합 운영
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.9);">
-          <span style="font-weight:700;">✓</span> 솔루션 2~3개 복합 도입
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.9);">
-          <span style="font-weight:700;">✓</span> 전담 기술 매니저 배정
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.9);">
-          <span style="font-weight:700;">✓</span> 맞춤 대시보드 개발
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.9);">
-          <span style="font-weight:700;">✓</span> 연간 유지보수 포함
-        </div>
-      </div>
-      <button onclick="openInquiryModal('Business 도입 문의')" style="display:block;width:100%;text-align:center;padding:10px;background:#fff;border:none;border-radius:8px;font-size:12px;color:#0071e3;font-weight:600;cursor:pointer;">도입 문의하기</button>
-    </div>
-
-    <div style="background:#fff;border:.5px solid rgba(0,0,0,.08);border-radius:14px;padding:22px 20px;box-shadow:0 2px 8px rgba(0,0,0,.04);">
-      <div style="font-size:9px;letter-spacing:2px;color:#86868b;text-transform:uppercase;font-weight:600;margin-bottom:8px;">Enterprise</div>
-      <div style="font-size:22px;font-weight:700;color:#000;margin-bottom:4px;">별도 협의</div>
-      <div style="font-size:11px;color:#86868b;margin-bottom:16px;">대기업·그룹사 / 공공기관</div>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#000;">
-          <span style="color:#0071e3;font-weight:700;">✓</span> 그룹 전사 통합 적용
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#000;">
-          <span style="color:#0071e3;font-weight:700;">✓</span> 전 솔루션 패키지
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#000;">
-          <span style="color:#0071e3;font-weight:700;">✓</span> 특허 기술 라이선싱
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#000;">
-          <span style="color:#0071e3;font-weight:700;">✓</span> 전용 서버 구축 지원
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#000;">
-          <span style="color:#0071e3;font-weight:700;">✓</span> NDA 체결 후 기술 공개
-        </div>
-      </div>
-      <button onclick="openInquiryModal('Enterprise 별도 문의')" style="display:block;width:100%;text-align:center;padding:10px;border:.5px solid rgba(0,113,227,.3);border-radius:8px;font-size:12px;color:#0071e3;font-weight:500;cursor:pointer;background:none;transition:all .2s;" onmouseover="this.style.background='rgba(0,113,227,.06)'" onmouseout="this.style.background='none'">별도 문의</button>
-    </div>
-
-  </div>
-
-  <!-- 문의 박스 -->
-  <div style="background:#f5f5f7;border-radius:16px;padding:32px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;">
-    <div>
-      <div style="font-size:18px;font-weight:600;color:#000;margin-bottom:6px;">지금 바로 상담을 시작하세요</div>
-      <div style="font-size:13px;color:#000;line-height:1.6;">궁금한 점은 무엇이든 물어보세요. 도입 가능 여부, 기술 사양, 예산 등 <strong style="color:#000;">24시간 이내 답변</strong>을 드립니다.</div>
-      <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;">
-        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#000;">
-          <span style="color:#0071e3;">✉</span> ceo@aigstack.kr
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#000;">
-          <span style="color:#0071e3;">◎</span> 서울 / 온라인 미팅 가능
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#000;">
-          <span style="color:#0071e3;">⊕</span> POC 2주 무료
-        </div>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      <button onclick="openInquiryModal('도입 문의')" style="padding:12px 24px;background:#0071e3;color:#fff;border:none;border-radius:24px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;">도입 문의하기</button>
-      <button onclick="openInquiryModal('무료 데모 신청')" style="padding:12px 24px;background:#fff;color:#0071e3;border:.5px solid rgba(0,113,227,.3);border-radius:24px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;">무료 데모 신청</button>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- ────────── 문의 모달 (도입 문의 / 데모 신청 공용) ────────── -->
-<div id="inquiry-modal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;">
-  <div style="background:#fff;border-radius:20px;width:min(520px,92vw);max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.18);position:relative;">
-    <div style="padding:24px 28px 0;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-        <div style="font-size:10px;letter-spacing:2px;color:#0071e3;text-transform:uppercase;font-weight:600;">INQUIRY</div>
-        <button onclick="closeInquiryModal()" style="background:none;border:none;font-size:18px;color:#86868b;cursor:pointer;padding:4px;line-height:1;">✕</button>
-      </div>
-      <div style="font-size:20px;font-weight:700;color:#000;margin-bottom:4px;">문의하기</div>
-      <div style="font-size:13px;color:#86868b;margin-bottom:20px;">작성하신 내용은 즉시 담당자에게 전달됩니다.</div>
-    </div>
-    <form id="inquiry-form" style="padding:0 28px 28px;display:flex;flex-direction:column;gap:14px;">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div>
-          <label style="font-size:11px;font-weight:600;color:#000;display:block;margin-bottom:5px;">이름 <span style="color:#0071e3;">*</span></label>
-          <input id="iq-name" type="text" placeholder="홍길동" required style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#000;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:600;color:#000;display:block;margin-bottom:5px;">회사명</label>
-          <input id="iq-company" type="text" placeholder="(주)AIGSTACK" style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#000;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div>
-          <label style="font-size:11px;font-weight:600;color:#000;display:block;margin-bottom:5px;">전화번호 <span style="color:#0071e3;">*</span></label>
-          <input id="iq-phone" type="tel" placeholder="010-0000-0000" required style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#000;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
-        </div>
-        <div>
-          <label style="font-size:11px;font-weight:600;color:#000;display:block;margin-bottom:5px;">이메일 <span style="color:#0071e3;">*</span></label>
-          <input id="iq-email" type="email" placeholder="email@company.com" required style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#000;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
-        </div>
-      </div>
-      <div>
-        <label style="font-size:11px;font-weight:600;color:#000;display:block;margin-bottom:5px;">
-          카카오톡 아이디
-          <span style="font-size:10px;font-weight:400;color:#86868b;margin-left:4px;">입력 시 카톡으로 먼저 연락드립니다</span>
-        </label>
-        <div style="position:relative;">
-          <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;">💬</span>
-          <input id="iq-kakao" type="text" placeholder="카카오톡 아이디 (선택)" style="width:100%;padding:10px 12px 10px 34px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#000;outline:none;box-sizing:border-box;font-family:inherit;" onfocus="this.style.borderColor='#FEE500'" onblur="this.style.borderColor='rgba(0,0,0,.15)'">
-        </div>
-      </div>
-      <div>
-        <label style="font-size:11px;font-weight:600;color:#000;display:block;margin-bottom:8px;">관심 솔루션 (복수 선택 가능)</label>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;" id="iq-solutions">
-          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#000;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;"><input type="checkbox" value="Logos Eye (CCTV 비식별화)" style="accent-color:#0071e3;"> Logos Eye</label>
-          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#000;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;"><input type="checkbox" value="온프레미스 AI 구축" style="accent-color:#0071e3;"> 온프레미스 AI</label>
-          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#000;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;"><input type="checkbox" value="AI 자동화 파이프라인" style="accent-color:#0071e3;"> AI 자동화</label>
-          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#000;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;"><input type="checkbox" value="데이터 인텔리전스" style="accent-color:#0071e3;"> 데이터 인텔리전스</label>
-          <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#000;cursor:pointer;background:#f5f5f7;padding:6px 12px;border-radius:20px;"><input type="checkbox" value="기타 / 복합" style="accent-color:#0071e3;"> 기타</label>
-        </div>
-      </div>
-      <div>
-        <label style="font-size:11px;font-weight:600;color:#000;display:block;margin-bottom:5px;">문의 내용 <span style="color:#0071e3;">*</span></label>
-        <textarea id="iq-message" placeholder="도입 배경, 현재 상황, 궁금하신 점을 자유롭게 작성해 주세요." required rows="4" style="width:100%;padding:10px 12px;border:.5px solid rgba(0,0,0,.15);border-radius:8px;font-size:13px;color:#000;outline:none;resize:vertical;box-sizing:border-box;font-family:inherit;line-height:1.6;" onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='rgba(0,0,0,.15)'"></textarea>
-      </div>
-      <button type="submit" id="iq-submit" style="padding:14px;background:#0071e3;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s;" onmouseover="this.style.background='#0077ed'" onmouseout="this.style.background='#0071e3'">
-        문의 접수하기
-      </button>
-      <div id="iq-result" style="display:none;text-align:center;padding:12px;border-radius:8px;font-size:13px;font-weight:500;"></div>
-      <div style="font-size:11px;color:#86868b;text-align:center;line-height:1.6;">접수된 문의는 24시간 이내 ceo@aigstack.kr 또는 기재하신 연락처로 답변드립니다.</div>
-    </form>
-  </div>
-</div>
-
-<script>
-const INQUIRY_API = window.location.protocol + '//' + window.location.hostname + '/submit';
-
-function openInquiryModal(preset) {
-  const modal = document.getElementById('inquiry-modal');
-  modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-  const msg = document.getElementById('iq-message');
-  if (preset && !msg.value) {
-    if (preset.includes('데모')) msg.placeholder = '어떤 솔루션의 데모를 보고 싶으신지 알려주세요. 고객사 환경에 맞게 준비해 드립니다.';
-    else if (preset.includes('Enterprise')) msg.placeholder = '그룹사 또는 대규모 도입을 검토 중이시면 현재 인프라 규모와 필요 솔루션을 알려주세요.';
-  }
-}
-function closeInquiryModal() {
-  document.getElementById('inquiry-modal').style.display = 'none';
-  document.body.style.overflow = '';
-}
-document.getElementById('inquiry-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeInquiryModal();
-});
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeInquiryModal();
-});
-document.getElementById('inquiry-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const btn = document.getElementById('iq-submit');
-  const result = document.getElementById('iq-result');
-  btn.disabled = true;
-  btn.textContent = '접수 중...';
-
-  const solutions = [...document.querySelectorAll('#iq-solutions input:checked')].map(c => c.value);
-  const body = {
-    name:      document.getElementById('iq-name').value.trim(),
-    phone:     document.getElementById('iq-phone').value.trim(),
-    email:     document.getElementById('iq-email').value.trim(),
-    company:   document.getElementById('iq-company').value.trim(),
-    kakao_id:  document.getElementById('iq-kakao').value.trim(),
-    solutions: solutions,
-    message:   document.getElementById('iq-message').value.trim(),
-  };
-
-  try {
-    const res = await fetch(INQUIRY_API + '/submit', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(body)
-    });
-    const data = await res.json();
-    if (res.ok && data.ok) {
-      result.style.display = 'block';
-      result.style.background = 'rgba(52,199,89,.08)';
-      result.style.color = '#34c759';
-      result.style.border = '.5px solid rgba(52,199,89,.3)';
-      result.textContent = '✅ ' + data.message;
-      this.reset();
-      setTimeout(closeInquiryModal, 2500);
-    } else {
-      throw new Error(data.detail || '오류가 발생했습니다.');
-    }
-  } catch(err) {
-    result.style.display = 'block';
-    result.style.background = 'rgba(255,59,48,.08)';
-    result.style.color = '#ff3b30';
-    result.style.border = '.5px solid rgba(255,59,48,.3)';
-    result.textContent = '⚠️ ' + (err.message || '잠시 후 다시 시도해 주세요.');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '문의 접수하기';
+const $=id=>document.getElementById(id);
+const ENDPOINT="https://aigstack.kr/submit/survey";
+const go=$("go"), err=$("err");
+function fail(m){err.textContent=m;err.classList.add("err")}
+go.addEventListener("click", async ()=>{
+  err.classList.remove("err");
+  const email=$("email").value.trim();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return fail("올바른 이메일을 입력해 주세요.");
+  if(!$("consent").checked) return fail("마케팅 정보 수신 동의가 필요합니다.");
+  go.disabled=true; go.textContent="보내는 중…";
+  try{
+    const r=await fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        email, consent:true,
+        role:$("role").value.trim(),
+        ai_tool:$("ai_tool").value,
+        pain:$("pain").value.trim(),
+        source:"homepage"
+      })});
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok){ go.disabled=false; go.textContent="설문 완료하고 무료로 받기 →"; return fail(d.detail||"전송에 실패했어요. 잠시 후 다시 시도해 주세요."); }
+    if(d.message) $("doneMsg").innerHTML="당신만의 ‘비서IN’ 설정 프롬프트를<br>입력하신 이메일로 보내드릴게요. 메일함을 확인해 주세요.";
+    $("formView").style.display="none";
+    $("doneView").classList.add("show");
+    window.scrollTo({top:document.getElementById("survey").offsetTop-40,behavior:"smooth"});
+  }catch(e){
+    go.disabled=false; go.textContent="설문 완료하고 무료로 받기 →";
+    fail("네트워크 오류예요. 잠시 후 다시 시도해 주세요.");
   }
 });
 </script>
-</body></html>
+</body>
+</html>
