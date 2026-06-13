@@ -126,6 +126,27 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
 .done h2{color:var(--ok)}
 .done p{color:var(--t2);margin-top:12px}
 
+/* trend lab card */
+.tlab-section{padding:60px 0;border-top:1px solid var(--br)}
+.tlab-card{position:relative;margin-top:40px;background:linear-gradient(135deg,var(--bg2) 0%,rgba(58,139,255,.06) 100%);
+  border:1px solid rgba(58,139,255,.28);border-radius:20px;padding:36px 40px;
+  box-shadow:0 0 48px rgba(58,139,255,.10);overflow:hidden}
+.tlab-card::before{content:"";position:absolute;top:-60px;right:-40px;width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(58,139,255,.12) 0%,transparent 70%);pointer-events:none}
+.tlab-top{display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap}
+.tlab-icon{font-size:36px;line-height:1;flex-shrink:0}
+.tlab-info{flex:1;min-width:200px}
+.tlab-label{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1px;color:var(--em2);
+  background:rgba(58,139,255,.12);border:1px solid rgba(58,139,255,.25);border-radius:20px;
+  padding:4px 12px;margin-bottom:10px;text-transform:uppercase}
+.tlab-title{font-size:clamp(20px,3vw,26px);font-weight:800;letter-spacing:-.5px}
+.tlab-desc{margin-top:8px;color:var(--t2);font-size:15px;line-height:1.6}
+.tlab-chips{margin-top:18px;display:flex;gap:8px;flex-wrap:wrap}
+.tlab-chip{font-size:12px;color:var(--t3);background:var(--card);border:1px solid var(--br);
+  border-radius:8px;padding:5px 11px}
+.tlab-cta{margin-top:24px}
+@media(max-width:560px){.tlab-card{padding:26px 22px}}
+
 /* footer */
 footer{border-top:1px solid var(--br);padding:40px 0;color:var(--t3);font-size:13px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
@@ -268,6 +289,33 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
       <div class="ico">✓</div>
       <h2>설문 완료!</h2>
       <p id="doneMsg">당신만의 ‘비서IN’ 설정 프롬프트를<br>입력하신 이메일로 보내드릴게요. 메일함을 확인해 주세요.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- SONAR 트렌드 연구소 카드뉴스 -->
+<section class="tlab-section"><div class="wrap">
+  <h2 style="font-size:clamp(22px,3.5vw,32px);font-weight:800;letter-spacing:-1px;text-align:center">내부 연구소</h2>
+  <p style="text-align:center;color:var(--t2);margin:12px auto 0;max-width:480px;font-size:15px">K-컬처 트렌드를 매일 자동 분석해 AI 음악 제작 브리프를 생성합니다</p>
+
+  <div class="tlab-card">
+    <div class="tlab-top">
+      <div class="tlab-icon">📡</div>
+      <div class="tlab-info">
+        <div class="tlab-label">SONAR Studio</div>
+        <div class="tlab-title">트렌드 연구소</div>
+        <p class="tlab-desc">YouTube KR·글로벌, 멜론 차트, Naver DataLab, Reddit을 매일 06:30 자동 수집 —<br>LLM이 K-컬처 흐름을 분석해 주간 제작 브리프를 자동 생성합니다.</p>
+        <div class="tlab-chips">
+          <span class="tlab-chip">📺 YouTube 트렌딩</span>
+          <span class="tlab-chip">🎵 멜론 TOP20</span>
+          <span class="tlab-chip">📊 Naver DataLab</span>
+          <span class="tlab-chip">🌐 글로벌 US·JP·GB·TW</span>
+          <span class="tlab-chip">💬 Reddit K-컬처</span>
+        </div>
+        <div class="tlab-cta">
+          <a href="/trend-lab/" class="btn btn-main" style="font-size:15px;padding:13px 26px">연구소 바로가기 →</a>
+        </div>
+      </div>
     </div>
   </div>
 </div></section>
