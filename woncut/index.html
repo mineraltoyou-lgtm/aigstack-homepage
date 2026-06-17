@@ -1,0 +1,176 @@
+<!doctype html><html lang=ko><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>원컷 WONCUT — 작동방식</title>
+<style>
+:root{--bg:#070b12;--bg2:#0b1320;--ink:#e7f1ff;--blue:#5ab8ff;--blue2:#2e7dd1;--mut:#7e93b3}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans KR',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+a{color:var(--blue)}
+.glow{color:var(--blue);text-shadow:0 0 18px #5ab8ff66}
+/* HERO */
+.hero{position:relative;min-height:92vh;display:grid;place-items:center;text-align:center;overflow:hidden}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.32;filter:saturate(1.2)}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 30%,#070b1200,#070b12 78%)}
+.hero .in{position:relative;z-index:2;padding:40px 20px}
+.brand{font-weight:900;letter-spacing:.06em;font-size:clamp(40px,9vw,92px);line-height:.95}
+.brand small{display:block;font-size:.28em;letter-spacing:.5em;color:var(--mut);font-weight:700;margin-top:10px}
+.promise{font-size:clamp(18px,2.7vw,30px);font-weight:800;margin:26px auto 8px;max-width:760px;line-height:1.5}
+.sub{color:var(--mut);font-size:clamp(13px,1.8vw,17px);max-width:620px;margin:0 auto}
+.tag{margin-top:30px;font-size:clamp(15px,2.2vw,22px);font-weight:800}
+.cta{display:inline-block;margin-top:28px;background:linear-gradient(180deg,#6cc0ff,#2e7dd1);color:#041020;font-weight:900;
+ padding:14px 30px;border-radius:999px;text-decoration:none;box-shadow:0 8px 30px #2e7dd166}
+/* STEPS */
+section.step{padding:88px 0;border-top:1px solid #12203400}
+.kick{color:var(--blue);font-weight:900;letter-spacing:.2em;font-size:13px}
+.head{font-size:clamp(24px,4vw,40px);font-weight:900;margin:8px 0 6px;line-height:1.2}
+.lead{color:var(--mut);font-size:clamp(15px,2vw,19px);margin:0 0 28px;max-width:680px}
+/* SELECT GRID — ★제품 UI 컴포넌트(승격 시 그대로 재사용). 클릭 선택은 제품 로직(규칙⑤). */
+.wc-select{}
+.wc-bar{position:sticky;top:0;z-index:5;display:flex;gap:12px;align-items:center;
+ background:#070b12d9;backdrop-filter:blur(8px);padding:12px 0;margin-bottom:14px}
+.wc-bar .cnt{font-weight:900;color:var(--blue)}
+.wc-bar .hint{color:var(--mut);font-size:14px}
+.wc-select-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.wc-tile{position:relative;margin:0;border:2px solid #18283f;border-radius:14px;overflow:hidden;cursor:pointer;
+ aspect-ratio:9/16;background:#0b1320;transition:transform .15s,border-color .15s,box-shadow .15s}
+.wc-tile:hover{transform:translateY(-3px)}
+.wc-tile img{width:100%;height:100%;object-fit:cover;display:block}
+.wc-tile figcaption{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(0deg,#000c,#0000);
+ font-size:12px;font-weight:700;padding:18px 8px 7px}
+.wc-tile.sel{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue),0 0 24px #5ab8ff77}
+.wc-tile.sel::after{content:"✓";position:absolute;top:7px;right:9px;width:26px;height:26px;border-radius:50%;
+ background:var(--blue);color:#041020;font-weight:900;display:grid;place-items:center;box-shadow:0 0 14px #5ab8ff}
+/* BEFORE/AFTER */
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ba figure{margin:0} .ba img{width:100%;border-radius:14px;border:1px solid #18283f}
+.ba .lbl{font-weight:800;margin:10px 2px;font-size:15px}
+.ba .bad{color:#ff7a7a} .ba .good{color:var(--blue)}
+/* STILL->MOTION */
+.morph{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center}
+.morph img,.morph video{width:100%;border-radius:16px;border:1px solid #18283f;aspect-ratio:9/16;object-fit:cover}
+.morph .arrow{font-size:34px;color:var(--blue);text-shadow:0 0 14px #5ab8ff88}
+/* FINAL */
+.final{display:grid;place-items:center}
+.final video{width:min(420px,90vw);border-radius:20px;border:1px solid #243a59;box-shadow:0 20px 60px #2e7dd13a}
+footer{text-align:center;padding:70px 20px 90px;color:var(--mut);border-top:1px solid #122034}
+.note{max-width:1080px;margin:0 auto;color:#46587a;font-size:12px;padding:0 20px 40px}
+@media(max-width:620px){.morph{grid-template-columns:1fr;gap:10px}.morph .arrow{transform:rotate(90deg)}.ba{grid-template-columns:1fr}}
+/* 상단 공유바 */
+.share{position:sticky;top:0;z-index:60;display:flex;align-items:center;gap:8px;padding:8px 14px;background:#060912ee;backdrop-filter:blur(10px);border-bottom:1px solid #14233c}
+.share .u{flex:1;min-width:0;color:#9fd0ff;font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.share button{padding:7px 12px;font-size:13px;border-radius:8px}
+.share .ghost{background:#13233b;color:#bcdcff;box-shadow:none}
+.share .qrmini{width:34px;height:34px;border-radius:6px;background:#fff;padding:2px;cursor:pointer;box-shadow:0 0 0 1px #2a4a6e}
+.qrmodal{position:fixed;inset:0;z-index:100;display:none;place-items:center;background:#020509f2;backdrop-filter:blur(6px)}
+.qrmodal.on{display:grid}
+.qrbox{text-align:center;background:#0c1422;border:1px solid #254060;border-radius:18px;padding:26px 26px 20px}
+.qrbox img{width:min(70vw,300px);height:auto;background:#fff;padding:12px;border-radius:12px}
+.qru{margin-top:14px;color:#9fd0ff;font-weight:800;font-size:15px;word-break:break-all}
+.qrhint{color:var(--mut);font-size:13px;margin-top:6px}
+.qrbox button{margin-top:16px}
+.toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;background:#0d1f33;color:#bfe0ff;border:1px solid #2a4a6e;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:700;transition:.25s;z-index:120}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+</style></head><body>
+
+<div class="share">
+ <span class="u">🔒 aigstack.kr/woncut</span>
+ <a href="/woncut/casting/" style="text-decoration:none"><button class="ghost" style="border-color:#5ab8ff;color:#5ab8ff;">🎭 캐스팅</button></a>
+ <a href="/woncut/gallery/" target="_blank" style="text-decoration:none"><button class="ghost" style="border-color:#5ab8ff;color:#5ab8ff;">🖼️ 갤러리</button></a>
+ <button onclick="wcShare()">공유</button>
+ <button class="ghost" onclick="wcCopy()">링크 복사</button>
+ <img class="qrmini" src="woncut_qr.png" alt="QR" onclick="wcQR(1)" title="QR 크게 보기">
+</div>
+<div id="qrModal" class="qrmodal" onclick="wcQR(0)">
+ <div class="qrbox" onclick="event.stopPropagation()">
+  <img src="woncut_qr.png" alt="QR">
+  <div class="qru">https://aigstack.kr/woncut/</div>
+  <div class="qrhint">휴대폰 카메라로 스캔 · 접속엔 비밀번호 필요</div>
+  <button onclick="wcQR(0)">닫기</button>
+ </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<header class="hero">
+ <video src="woncut_i2v_kling/04_funnel_916.mp4" autoplay loop muted playsinline></video>
+ <div class="in">
+  <div class="brand">원컷<small>WONCUT</small></div>
+  <p class="promise">마음에 드실 때까지 <span class="glow">시안은 무제한</span>,<br>완성은 <span class="glow">단 한 컷</span>.</p>
+  <p class="sub">한 줄만 넣으세요. 수십 개의 시안을 만들어 드리고, 마음에 드는 한 컷만 영상으로 완성합니다.</p>
+  <div class="tag glow">싸게 많이 만들어, 편하게 고르고, 한 컷으로 완성.</div>
+  <a class="cta" href="#how">작동방식 보기 ↓</a>
+  <a class="cta" href="/woncut/cast/" style="background:linear-gradient(180deg,#b06cff,#6b2ed1);box-shadow:0 8px 30px #6b2ed166;margin-left:12px">캐릭터로 영상 만들기 →</a>
+ </div>
+</header>
+
+<main class="wrap" id="how">
+
+ <section class="step">
+  <div class="kick">STEP 1 · 02</div>
+  <h2 class="head">아이디어만 넣고, <span class="glow">눈으로 고르세요</span></h2>
+  <p class="lead">한 줄이면 충분합니다. AI가 수십 개의 시안을 순식간에 만들고 —
+   복잡한 설정 없이, 보고 클릭 한 번으로 고릅니다. <b>이 '편하게 고르기'가 원컷의 심장입니다.</b></p>
+  <div class="wc-select">
+   <div class="wc-bar"><span class="cnt" id="wcCnt">0개 선택</span>
+    <span class="hint">마음에 드는 컷을 탭하세요 — 여러 개 가능</span></div>
+   <div class="wc-select-grid" id="wcGrid"><figure class="wc-tile" data-id="0" onclick="wcPick(this)"><img loading="lazy" src="woncut_img/04_funnel_916.png" alt=""><figcaption>콘텐츠가 쏟아진다</figcaption></figure><figure class="wc-tile" data-id="1" onclick="wcPick(this)"><img loading="lazy" src="woncut_img/07_gallery.png" alt=""><figcaption>골라담기</figcaption></figure><figure class="wc-tile" data-id="2" onclick="wcPick(this)"><img loading="lazy" src="woncut_img/16_filmstrip.png" alt=""><figcaption>필름 스트립</figcaption></figure><figure class="wc-tile" data-id="3" onclick="wcPick(this)"><img loading="lazy" src="woncut_img/17_creator.png" alt=""><figcaption>크리에이터</figcaption></figure><figure class="wc-tile" data-id="4" onclick="wcPick(this)"><img loading="lazy" src="woncut_img/21_cascade.png" alt=""><figcaption>쏟아지는 시안</figcaption></figure><figure class="wc-tile" data-id="5" onclick="wcPick(this)"><img loading="lazy" src="woncut_img/23_megaphone.png" alt=""><figcaption>광고 확산</figcaption></figure><figure class="wc-tile" data-id="6" onclick="wcPick(this)"><img loading="lazy" src="woncut_img/24_clapper.png" alt=""><figcaption>촬영</figcaption></figure><figure class="wc-tile" data-id="7" onclick="wcPick(this)"><img loading="lazy" src="woncut_img/22_one.png" alt=""><figcaption>단 한 컷</figcaption></figure><figure class="wc-tile" data-id="8" onclick="wcPick(this)"><img loading="lazy" src="woncut_img/19_speed.png" alt=""><figcaption>초고속 생성</figcaption></figure><figure class="wc-tile" data-id="9" onclick="wcPick(this)"><img loading="lazy" src="woncut_img/15_product.png" alt=""><figcaption>제품 컷</figcaption></figure><figure class="wc-tile" data-id="10" onclick="wcPick(this)"><img loading="lazy" src="woncut_img/11_storefront.png" alt=""><figcaption>매장 광고</figcaption></figure><figure class="wc-tile" data-id="11" onclick="wcPick(this)"><img loading="lazy" src="woncut_img/05_owner.png" alt=""><figcaption>사장님 광고</figcaption></figure><figure class="wc-tile" data-id="12" onclick="wcPick(this)"><img loading="lazy" src="woncut_img/18_wand.png" alt=""><figcaption>매직 완드</figcaption></figure><figure class="wc-tile" data-id="13" onclick="wcPick(this)"><img loading="lazy" src="woncut_img/13_beforeafter.png" alt=""><figcaption>비포·애프터</figcaption></figure></div>
+  </div>
+ </section>
+
+ <section class="step">
+  <div class="kick">STEP 3</div>
+  <h2 class="head">브랜드는 <span class="glow">정확하게</span></h2>
+  <p class="lead">로고도 한글도 깨지지 않게. AI가 흉내 낸 글자가 아니라, 진짜 그대로 또렷하게 얹습니다.</p>
+  <div class="ba">
+   <figure><img src="woncut_img/25_hangul_v2.png" alt=""><div class="lbl bad">✕ AI가 그린 글자 — 왜곡·오타</div></figure>
+   <figure><img src="woncut_img/_logo_composed.png" alt=""><div class="lbl good">✓ 원컷 — 또렷하고 정확</div></figure>
+  </div>
+ </section>
+
+ <section class="step">
+  <div class="kick">STEP 4</div>
+  <h2 class="head">고른 장면이 <span class="glow">살아 움직입니다</span></h2>
+  <p class="lead">정지된 그림이 한 컷의 영상으로. 고른 그 느낌 그대로 자연스럽게.</p>
+  <div class="morph">
+   <img src="woncut_img/06_brain.png" alt="">
+   <div class="arrow">→</div>
+   <video src="woncut_i2v/06_brain.mp4" autoplay loop muted playsinline></video>
+  </div>
+ </section>
+
+ <section class="step">
+  <div class="kick">STEP 5</div>
+  <h2 class="head">단 한 컷으로 <span class="glow">완성</span></h2>
+  <p class="lead">고른 그 하나만 고화질로 끝냅니다. 세로 한 편, 바로 올릴 수 있게.</p>
+  <div class="final"><video src="woncut_i2v_kling/04_funnel_916.mp4" autoplay loop muted playsinline controls></video></div>
+ </section>
+
+ <section class="step">
+  <div class="kick">완성 예시</div>
+  <h2 class="head">한 편이 <span class="glow">이렇게</span> 나옵니다</h2>
+  <p class="lead">여러 장면을 한 흐름으로 엮어, 세로 한 편으로. 만들어서 바로 광고로 올립니다.</p>
+  <div class="final"><video src="woncut_reel.mp4" autoplay loop muted playsinline controls></video></div>
+ </section>
+
+</main>
+
+<footer>
+ <div class="tag glow" style="font-size:clamp(18px,3vw,26px)">그래서, <b>원컷</b>.</div>
+ <p style="margin-top:14px">마음에 드실 때까지 — 추가비용 없이, 시안은 무제한, 완성은 한 컷.</p>
+ <p style="margin-top:18px;color:#5a6f92;font-size:13px">© WONCUT · woncut.ai</p>
+</footer>
+
+<script>
+// 상단 공유바: 링크 복사 / 네이티브 공유 / QR 확대
+const SHARE_URL="https://aigstack.kr/woncut/";
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),1600);}
+function wcCopy(){navigator.clipboard.writeText(SHARE_URL).then(()=>toast('링크 복사됨')).catch(()=>toast(SHARE_URL));}
+function wcShare(){if(navigator.share){navigator.share({title:'원컷 WONCUT',url:SHARE_URL}).catch(()=>{});}else{wcCopy();}}
+function wcQR(s){document.getElementById('qrModal').classList.toggle('on',!!s);}
+// ★제품 로직 자리표시(규칙⑤): 선택→다음 단계 트리거. 데모에선 카운트만.
+const wcSel=new Set();
+function wcPick(el){const id=el.dataset.id;
+ if(wcSel.has(id)){wcSel.delete(id);el.classList.remove('sel')}else{wcSel.add(id);el.classList.add('sel')}
+ document.getElementById('wcCnt').textContent=wcSel.size+'개 선택';}
+</script>
+</body></html>
