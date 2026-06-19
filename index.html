@@ -304,6 +304,10 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
         <span>(필수) 설정 프롬프트 발송 및 <b>마케팅·광고성 정보 수신</b>에 동의합니다.
         직군 맞춤 정보와 신규 기능 안내를 이메일로 받습니다. 언제든 수신거부 가능.</span>
       </label>
+      <label class="consent" style="margin-top:10px;background:rgba(245,200,66,.06);border:1px solid rgba(245,200,66,.2);border-radius:10px;padding:12px 14px">
+        <input type="checkbox" id="founderJoin" style="accent-color:#f5c842">
+        <span>🏅 <b style="color:#f5c842">창립멤버 신청하시겠습니까?</b> 체크하면 대기명단에 함께 등록됩니다. (무입금 · 한정 50명)</span>
+      </label>
 
       <button class="submit" id="go">설문 완료하고 무료로 받기 →</button>
       <p class="msg err" id="err"></p>
@@ -459,6 +463,10 @@ go.addEventListener("click", async ()=>{
       })});
     const d=await r.json().catch(()=>({}));
     if(!d.ok){ go.disabled=false; go.textContent="설문 완료하고 무료로 받기 →"; return fail(d.detail||"전송에 실패했어요. 잠시 후 다시 시도해 주세요."); }
+    if($("founderJoin").checked){
+      await fetch(WAITLIST_EP,{method:"POST",
+        body:JSON.stringify({email,role:$("position").value||$("role").value})}).catch(()=>{});
+    }
     const doneMessages={
       "초급":"복붙 1장짜리 비서IN 설정을<br>이메일로 보내드릴게요. 3분이면 세팅 완료!",
       "중급":"커스텀 지침·프로젝트 세팅 가이드를<br>이메일로 보내드릴게요.",
