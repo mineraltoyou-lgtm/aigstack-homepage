@@ -126,6 +126,42 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
 .done h2{color:var(--ok)}
 .done p{color:var(--t2);margin-top:12px}
 
+/* T0 창립멤버 섹션 */
+.founder{padding:80px 0;border-top:1px solid var(--br);position:relative;overflow:hidden}
+.founder::before{content:"";position:absolute;top:-30%;right:-10%;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,184,0,.07) 0%,transparent 65%);pointer-events:none}
+.founder-badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;color:#f5c842;
+  background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.3);
+  border-radius:20px;padding:6px 14px;margin-bottom:20px}
+.founder h2{font-size:clamp(26px,4.5vw,42px);font-weight:850;letter-spacing:-1px}
+.founder h2 .gold{background:linear-gradient(110deg,#f5c842,#ffe896);-webkit-background-clip:text;background-clip:text;color:transparent}
+.founder .lead{margin:16px auto 0;max-width:560px;font-size:clamp(15px,2vw,18px);color:var(--t2)}
+.perks{margin:40px auto;max-width:640px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:540px){.perks{grid-template-columns:1fr}}
+.perk{background:var(--card);border:1px solid rgba(245,200,66,.15);border-radius:16px;padding:20px 22px;display:flex;gap:14px;align-items:flex-start}
+.perk-ico{font-size:24px;flex-shrink:0;margin-top:2px}
+.perk h4{font-size:15px;font-weight:750;margin-bottom:4px}
+.perk p{font-size:13px;color:var(--t2)}
+.founder-form{max-width:480px;margin:0 auto}
+.founder-form h3{font-size:20px;font-weight:800;text-align:center;margin-bottom:6px}
+.founder-form .sub{text-align:center;color:var(--t3);font-size:13px;margin-bottom:24px}
+.founder-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:480px){.founder-fields{grid-template-columns:1fr}}
+.founder-seat{text-align:center;font-size:12px;color:var(--t3);margin-bottom:18px}
+.founder-seat b{color:#f5c842}
+.btn-gold{background:linear-gradient(110deg,#d4a017,#f5c842);color:#06080f;font-weight:800;
+  width:100%;font-size:16px;padding:16px;border-radius:13px;border:0;cursor:pointer;
+  box-shadow:0 8px 30px rgba(245,200,66,.25);transition:.2s}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(245,200,66,.35)}
+.btn-gold:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.founder-done{display:none;text-align:center;padding:24px 0}
+.founder-done.show{display:block;animation:pop .4s ease}
+.founder-done .ico{width:72px;height:72px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;
+  font-size:34px;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.4);box-shadow:0 0 40px rgba(245,200,66,.2)}
+.founder-done h3{color:#f5c842;font-size:22px;font-weight:800}
+.founder-done p{color:var(--t2);margin-top:10px;font-size:15px}
+
 /* trend lab card */
 .tlab-section{padding:60px 0;border-top:1px solid var(--br)}
 .tlab-card{position:relative;margin-top:40px;background:linear-gradient(135deg,var(--bg2) 0%,rgba(58,139,255,.06) 100%);
@@ -159,7 +195,8 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
 <nav><div class="wrap">
   <div class="brand">AIG<b>STACK</b></div>
   <span class="tag">AI 비서 세팅</span>
-  <a href="#survey" class="nav-cta">무료로 내 비서 받기</a>
+  <a href="#founder" class="nav-cta" style="background:linear-gradient(110deg,#d4a017,#f5c842);color:#06080f">🏅 창립멤버 신청</a>
+  <a href="#survey" class="nav-cta" style="margin-left:8px">무료로 받기</a>
 </div></nav>
 
 <!-- HERO -->
@@ -170,8 +207,8 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
   <div class="brandbig">AI 비서 <b>비서IN</b><small>BISEO·IN — 당신 안의 비서</small></div>
 
   <div class="cta-row">
-    <a href="#survey" class="btn btn-main">▶ 설문하고 무료로 받기</a>
-    <a href="#how" class="btn btn-ghost">어떻게 되나요?</a>
+    <a href="#founder" class="btn btn-main" style="background:linear-gradient(110deg,#d4a017,#f5c842);color:#06080f;box-shadow:0 8px 30px rgba(245,200,66,.3)">🏅 창립멤버 신청 (한정)</a>
+    <a href="#survey" class="btn btn-ghost">▶ 무료 비서 먼저 받기</a>
   </div>
 
   <div class="badges">
@@ -293,6 +330,48 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
   </div>
 </div></section>
 
+<!-- T0 창립멤버 사전예약 -->
+<section class="founder" id="founder"><div class="wrap" style="text-align:center">
+  <div class="founder-badge">🏅 창립멤버 · 한정 모집</div>
+  <h2>비서인 플랫폼 <span class="gold">창립멤버</span>로<br>가장 먼저 시작하세요</h2>
+  <p class="lead">CEO·임원·전문직을 위한 AI 개인비서 플랫폼.<br>창립멤버는 정가 대비 최대 <b style="color:#f5c842">50% 할인</b> + 얼리 접근 + 직접 온보딩을 받습니다.</p>
+
+  <div class="perks">
+    <div class="perk"><div class="perk-ico">🔓</div><div><h4>플랫폼 얼리 접근</h4><p>정식 오픈 전 베타 우선 입장. 피드백이 제품에 직접 반영됩니다.</p></div></div>
+    <div class="perk"><div class="perk-ico">💳</div><div><h4>창립 할인 구독</h4><p>정가 대비 최대 50% 할인 구독 — 창립멤버 기간 동안 유지.</p></div></div>
+    <div class="perk"><div class="perk-ico">🤝</div><div><h4>설립팀 직접 온보딩</h4><p>설립팀이 직접 1:1로 세팅 도와드립니다. (화상·대면 선택)</p></div></div>
+    <div class="perk"><div class="perk-ico">📣</div><div><h4>로드맵 결정권</h4><p>신기능 우선순위 투표 참여. 창립멤버 의견이 제품을 만듭니다.</p></div></div>
+  </div>
+
+  <div class="founder-form">
+    <div id="founderFormView">
+      <h3>대기명단 등록 (무입금)</h3>
+      <p class="sub">지금은 자리만 잡아두세요. 펀딩 오픈 시 가장 먼저 연락드립니다.</p>
+      <div class="founder-fields">
+        <input type="text" id="f_name" placeholder="이름 (선택)" autocomplete="name">
+        <select id="f_role">
+          <option value="">직책 선택</option>
+          <option>대표·CEO</option>
+          <option>임원·이사</option>
+          <option>변호사·의사·전문직</option>
+          <option>팀장·관리자</option>
+          <option>개발자</option>
+          <option>기타</option>
+        </select>
+      </div>
+      <input type="email" id="f_email" placeholder="이메일 *" autocomplete="email" style="width:100%;margin-bottom:12px">
+      <p class="founder-seat">현재 대기 신청 가능 · 펀딩 오픈 시 이메일 안내</p>
+      <button class="btn-gold" id="f_go">창립멤버 대기명단 등록 →</button>
+      <p class="msg err" id="f_err" style="margin-top:10px;font-size:13px"></p>
+    </div>
+    <div class="founder-done" id="founderDoneView">
+      <div class="ico">🏅</div>
+      <h3>대기명단 등록 완료!</h3>
+      <p>펀딩 오픈 시 가장 먼저 연락드립니다.<br>문의: <a href="mailto:ceo@aigstack.kr" style="color:var(--em2)">ceo@aigstack.kr</a></p>
+    </div>
+  </div>
+</div></section>
+
 <!-- SONAR 트렌드 연구소 카드뉴스 -->
 <section class="tlab-section"><div class="wrap">
   <h2 style="font-size:clamp(22px,3.5vw,32px);font-weight:800;letter-spacing:-1px;text-align:center">내부 연구소</h2>
@@ -329,7 +408,28 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
 
 <script>
 const $=id=>document.getElementById(id);
-const ENDPOINT="https://aigstack.kr/submit/survey";
+const ENDPOINT="https://api.aigstack.kr/survey";
+const WAITLIST_EP="https://api.aigstack.kr/waitlist";
+
+// ── T0 창립멤버 대기명단 ─────────────────────────
+const fg=$("f_go"), fe=$("f_err");
+fg.addEventListener("click", async()=>{
+  fe.textContent="";
+  const email=$("f_email").value.trim();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){fe.textContent="올바른 이메일을 입력해 주세요.";return;}
+  fg.disabled=true; fg.textContent="등록 중…";
+  try{
+    const r=await fetch(WAITLIST_EP,{method:"POST",
+      body:JSON.stringify({name:$("f_name").value.trim(),email,role:$("f_role").value})});
+    const d=await r.json().catch(()=>({}));
+    if(!d.ok){fg.disabled=false;fg.textContent="창립멤버 대기명단 등록 →";fe.textContent=d.detail||"오류가 발생했어요. 다시 시도해 주세요.";return;}
+    $("founderFormView").style.display="none";
+    $("founderDoneView").classList.add("show");
+  }catch(e){
+    fg.disabled=false;fg.textContent="창립멤버 대기명단 등록 →";
+    fe.textContent="네트워크 오류. 잠시 후 다시 시도해 주세요.";
+  }
+});
 const go=$("go"), err=$("err");
 function fail(m){err.textContent=m;err.classList.add("err")}
 go.addEventListener("click", async ()=>{

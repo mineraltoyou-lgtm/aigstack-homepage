@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>내부자료 보드 — AIGSTACK</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--em:#0071e3;--bg:#f5f5f7;--bg2:#ffffff;--br:rgba(0,0,0,.08);--t1:#1d1d1f;--t2:#86868b}
+body{background:var(--bg);color:var(--t1);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue','Apple SD Gothic Neo',sans-serif;-webkit-font-smoothing:antialiased}
+/* nav (패밀리 공통 룩) */
+nav{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:.5px solid var(--br)}
+.nav-inner{display:flex;align-items:center;padding:0 16px 0 12px;height:48px;max-width:1280px;margin:0 auto}
+.logo{display:flex;align-items:center;cursor:pointer;margin-right:8px;flex-shrink:0}
+.logo-main{font-size:13px;font-weight:700;letter-spacing:2.5px;color:#1d1d1f;line-height:1}
+.logo-sub{font-size:8px;font-weight:300;letter-spacing:1px;color:rgba(0,0,0,.4);text-transform:uppercase;margin-left:6px}
+.nav-menu{display:flex;align-items:center;gap:3px;flex-wrap:nowrap;flex:1}
+.nav-item{position:relative}
+.nav-btn{background:none;border:none;color:#1d1d1f;font-size:11.5px;font-weight:400;padding:4px 9px;cursor:pointer;transition:color .2s,background .2s;font-family:inherit;letter-spacing:.2px;display:flex;align-items:center;white-space:nowrap;border-radius:6px}
+.nav-btn:hover{color:#0071e3;background:rgba(0,113,227,.06)}
+/* 보드 */
+.board-wrap{max-width:1100px;margin:0 auto;padding:40px 24px 90px}
+.board-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.board-title{font-size:26px;font-weight:700;letter-spacing:-.3px}
+.board-sub{color:var(--t2);font-size:13px}
+.section{margin-top:34px}
+.section h2{font-size:13px;font-weight:600;color:var(--t2);letter-spacing:.4px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section h2::after{content:"";flex:1;height:1px;background:var(--br)}
+/* .row : 카드 자동 축소 + 줄바꿈 (12칸 초과 시 카드만 추가하면 됨) */
+.row{display:flex;flex-wrap:wrap;gap:16px}
+.card{flex:1 1 200px;min-width:170px;max-width:250px;min-height:128px;border-radius:16px;padding:18px;
+ display:flex;flex-direction:column;justify-content:space-between;text-decoration:none;transition:transform .15s,box-shadow .15s,border-color .15s}
+/* 채워진 카드 (실제 자료) */
+.card.filled{background:var(--bg2);border:.5px solid var(--br);box-shadow:0 2px 10px rgba(0,0,0,.05);color:var(--t1)}
+.card.filled:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,113,227,.14);border-color:rgba(0,113,227,.3)}
+.card .ico{font-size:26px}
+.card .ctit{font-size:15px;font-weight:700;margin-top:8px}
+.card .csub{font-size:12px;color:var(--t2);margin-top:3px;line-height:1.5}
+.card .cgo{font-size:12px;color:var(--em);font-weight:600;margin-top:10px}
+.card .ctag{align-self:flex-start;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(0,113,227,.1);color:var(--em)}
+/* 빈 자리(슬롯) : 점선 + 가운데 ＋ + 자리번호 */
+.slot{flex:1 1 200px;min-width:170px;max-width:250px;min-height:128px;border-radius:16px;
+ border:2px dashed rgba(0,0,0,.16);background:rgba(0,0,0,.012);
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:default;transition:border-color .15s,background .15s}
+.slot:hover{border-color:rgba(0,113,227,.4);background:rgba(0,113,227,.04)}
+.slot .plus{font-size:30px;font-weight:300;color:rgba(0,0,0,.28);line-height:1}
+.slot:hover .plus{color:var(--em)}
+.slot .num{font-size:11px;color:var(--t2);letter-spacing:.5px}
+.foot{max-width:1100px;margin:0 auto;padding:0 24px 60px;color:#9aa0a8;font-size:12px}
+@media(max-width:520px){.card,.slot{max-width:none}}
+</style></head><body>
+<nav>
+  <div class="nav-inner">
+    <div class="logo" onclick="location.href='/'"><span class="logo-main">AIGSTACK</span><span class="logo-sub">INTEGRITY INFRASTRUCTURE</span></div>
+    <div class="nav-menu">
+      <div class="nav-item"><a href="/pages/logos.html" style="text-decoration:none;"><button class="nav-btn">로고스 엔진</button></a></div>
+      <div class="nav-item"><a href="/pages/saas.html" style="text-decoration:none;"><button class="nav-btn">S/W 허브</button></a></div>
+      <div class="nav-item"><a href="/pages/dashboard.html" style="text-decoration:none;"><button class="nav-btn" style="background:#1d1d1f;color:#fff;font-weight:600;padding:4px 14px;border-radius:6px;">중앙관제</button></a></div>
+      <div class="nav-item" style="position:relative;">
+        <button class="nav-btn" onclick="toggleDD('internal-dropdown',event)" style="color:#c07800;">내부자료 ▾</button>
+        <div id="internal-dropdown" style="display:none;position:fixed;top:0;left:0;background:#fff;border:.5px solid rgba(0,0,0,.12);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.12);min-width:150px;z-index:99999;overflow:hidden;">
+          <a href="/pages/internal-board.html" style="text-decoration:none;display:block;padding:11px 16px;font-size:13px;color:#0071e3;font-weight:700;border-bottom:.5px solid rgba(0,0,0,.06);background:rgba(0,113,227,.04)" onmouseover="this.style.background='#eef5ff'" onmouseout="this.style.background='rgba(0,113,227,.04)'">🗂️ 내부자료 보드</a>
+          <a href="/schedule/" target="_blank" style="text-decoration:none;display:block;padding:11px 16px;font-size:13px;color:#c07800;font-weight:600;border-bottom:.5px solid rgba(0,0,0,.06);" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''">🗓️ 일정관리</a>
+          <a href="/venture/" style="text-decoration:none;display:block;padding:11px 16px;font-size:13px;color:#0071e3;font-weight:600;border-bottom:.5px solid rgba(0,0,0,.06);" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''">🚀 사업 파이프라인</a>
+          <a href="/pages/internal.html" style="text-decoration:none;display:block;padding:11px 16px;font-size:13px;color:#1d1d1f;border-bottom:.5px solid rgba(0,0,0,.06);" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''">로고스_아이 시연</a>
+          <a href="https://aigstack.kr/content/" target="_blank" style="text-decoration:none;display:block;padding:11px 16px;font-size:13px;color:#1d1d1f;" onmouseover="this.style.background='#f5f5f7'" onmouseout="this.style.background=''">광고카피</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<script>
+function toggleDD(id,e){e.stopPropagation();var d=document.getElementById(id);if(d.style.display==="block"){d.style.display="none";return;}var rect=e.currentTarget.getBoundingClientRect();d.style.display="block";d.style.top=(rect.bottom+6)+"px";d.style.left=rect.left+"px";}
+document.addEventListener('click',function(e){if(e.target.closest('nav'))return;var d=document.getElementById('internal-dropdown');if(d)d.style.display='none';});
+</script>
+
+<div class="board-wrap">
+  <div class="board-head">
+    <div class="board-title">🗂️ 내부자료 보드</div>
+    <div class="board-sub">바로 띄울 자료를 카드로. 빈 자리는 채워질 슬롯입니다.</div>
+  </div>
+
+  <div class="section">
+    <h2>영업 · 제품</h2>
+    <div class="row">
+      <a class="card filled" href="https://aigstack.kr/woncut/" target="_blank" rel="noopener">
+        <span class="ctag">영업용</span>
+        <div>
+          <div class="ico">🎬</div>
+          <div class="ctit">원컷 WONCUT</div>
+          <div class="csub">거래처 미팅 시연용 홈페이지<br>(접속 비밀번호 필요)</div>
+        </div>
+        <div class="cgo">열기 →</div>
+      </a>
+      <div class="slot"><span class="plus">＋</span><span class="num">자리 2</span></div>
+      <div class="slot"><span class="plus">＋</span><span class="num">자리 3</span></div>
+      <div class="slot"><span class="plus">＋</span><span class="num">자리 4</span></div>
+      <div class="slot"><span class="plus">＋</span><span class="num">자리 5</span></div>
+      <div class="slot"><span class="plus">＋</span><span class="num">자리 6</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🎨 이미지 · 영상 제작</h2>
+    <div class="row">
+
+      <a class="card filled" href="https://aigstack.kr/woncut/" target="_blank" rel="noopener">
+        <span class="ctag">브랜드</span>
+        <div>
+          <div class="ico">✂️</div>
+          <div class="ctit">원컷 WONCUT</div>
+          <div class="csub">소비자 출시 브랜드 페이지<br>영상 제작 서비스 우산</div>
+        </div>
+        <div class="cgo">열기 →</div>
+      </a>
+
+      <a class="card filled" href="/pages/youtube-radar.html" target="_blank" rel="noopener">
+        <span class="ctag">분석</span>
+        <div>
+          <div class="ico">📡</div>
+          <div class="ctit">유튜브 공략 레이더</div>
+          <div class="csub">섹션별 공략 분석기<br>Grafana 연동</div>
+        </div>
+        <div class="cgo">열기 →</div>
+      </a>
+
+      <a class="card filled" href="/scenario-studio/" target="_blank" rel="noopener">
+        <span class="ctag">제작</span>
+        <div>
+          <div class="ico">🎭</div>
+          <div class="ctit">시나리오 스튜디오</div>
+          <div class="csub">AI 시나리오 · 스크립트<br>생성 워크스페이스</div>
+        </div>
+        <div class="cgo">열기 →</div>
+      </a>
+
+      <a class="card filled" href="/s10pm/" target="_blank" rel="noopener">
+        <span class="ctag">캐릭터</span>
+        <div>
+          <div class="ico">🌃</div>
+          <div class="ctit">서울10pm 캐릭터</div>
+          <div class="csub">6인 주인공 소스·페이스 레프<br>비주얼 토큰 일람</div>
+        </div>
+        <div class="cgo">열기 →</div>
+      </a>
+
+      <a class="card filled" href="/trend-lab/" target="_blank" rel="noopener">
+        <span class="ctag">리서치</span>
+        <div>
+          <div class="ico">🔬</div>
+          <div class="ctit">트렌드 연구소</div>
+          <div class="csub">K컬처 트렌드 수집기<br>SFX 파이프라인 (s912)</div>
+        </div>
+        <div class="cgo">열기 →</div>
+      </a>
+
+      <div class="slot"><span class="plus">＋</span><span class="num">소냐스튜디오</span></div>
+
+      <a class="card filled" href="https://zero.aigstack.kr/" target="_blank" rel="noopener">
+        <span class="ctag">제작중</span>
+        <div>
+          <div class="ico">🖼️</div>
+          <div class="ctit">이미지 제작</div>
+          <div class="csub">아이돌 캐스팅 갤러리<br>LoRA 학습 대기풀 (26명)</div>
+        </div>
+        <div class="cgo">열기 →</div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  자리 추가법: 이 페이지의 해당 <code>.row</code> 안에 <code>&lt;a class="card filled"&gt;</code> 카드를 더 넣으면 됩니다(자동 축소·줄바꿈). 새 섹션은 <code>.section</code> 블록을 복제하세요.
+</div>
+</body></html>
