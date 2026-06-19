@@ -162,26 +162,14 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
 .founder-done h3{color:#f5c842;font-size:22px;font-weight:800}
 .founder-done p{color:var(--t2);margin-top:10px;font-size:15px}
 
-/* trend lab card */
-.tlab-section{padding:60px 0;border-top:1px solid var(--br)}
-.tlab-card{position:relative;margin-top:40px;background:linear-gradient(135deg,var(--bg2) 0%,rgba(58,139,255,.06) 100%);
-  border:1px solid rgba(58,139,255,.28);border-radius:20px;padding:36px 40px;
-  box-shadow:0 0 48px rgba(58,139,255,.10);overflow:hidden}
-.tlab-card::before{content:"";position:absolute;top:-60px;right:-40px;width:280px;height:280px;border-radius:50%;
-  background:radial-gradient(circle,rgba(58,139,255,.12) 0%,transparent 70%);pointer-events:none}
-.tlab-top{display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap}
-.tlab-icon{font-size:36px;line-height:1;flex-shrink:0}
-.tlab-info{flex:1;min-width:200px}
-.tlab-label{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1px;color:var(--em2);
-  background:rgba(58,139,255,.12);border:1px solid rgba(58,139,255,.25);border-radius:20px;
-  padding:4px 12px;margin-bottom:10px;text-transform:uppercase}
-.tlab-title{font-size:clamp(20px,3vw,26px);font-weight:800;letter-spacing:-.5px}
-.tlab-desc{margin-top:8px;color:var(--t2);font-size:15px;line-height:1.6}
-.tlab-chips{margin-top:18px;display:flex;gap:8px;flex-wrap:wrap}
-.tlab-chip{font-size:12px;color:var(--t3);background:var(--card);border:1px solid var(--br);
-  border-radius:8px;padding:5px 11px}
-.tlab-cta{margin-top:24px}
-@media(max-width:560px){.tlab-card{padding:26px 22px}}
+/* real cases */
+.cases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:40px}
+.case-card{background:var(--card);border:1px solid var(--br);border-radius:16px;padding:28px 26px}
+.case-icon{font-size:32px;margin-bottom:14px}
+.case-card h3{font-size:17px;font-weight:800;letter-spacing:-.4px;margin-bottom:10px}
+.case-card p{color:var(--t2);font-size:14px;line-height:1.7;margin:0}
+.case-result{color:var(--em2);font-weight:700;margin-top:10px!important}
+.case-note{text-align:center;color:var(--t3);font-size:12px;margin-top:22px}
 
 /* footer */
 footer{border-top:1px solid var(--br);padding:40px 0;color:var(--t3);font-size:13px}
@@ -372,31 +360,35 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
   </div>
 </div></section>
 
-<!-- SONAR 트렌드 연구소 카드뉴스 -->
-<section class="tlab-section"><div class="wrap">
-  <h2 style="font-size:clamp(22px,3.5vw,32px);font-weight:800;letter-spacing:-1px;text-align:center">내부 연구소</h2>
-  <p style="text-align:center;color:var(--t2);margin:12px auto 0;max-width:480px;font-size:15px">K-컬처 트렌드를 매일 자동 분석해 AI 음악 제작 브리프를 생성합니다</p>
-
-  <div class="tlab-card">
-    <div class="tlab-top">
-      <div class="tlab-icon">📡</div>
-      <div class="tlab-info">
-        <div class="tlab-label">SONAR Studio</div>
-        <div class="tlab-title">트렌드 연구소</div>
-        <p class="tlab-desc">YouTube KR·글로벌, 멜론 차트, Naver DataLab, Reddit을 매일 06:30 자동 수집 —<br>LLM이 K-컬처 흐름을 분석해 주간 제작 브리프를 자동 생성합니다.</p>
-        <div class="tlab-chips">
-          <span class="tlab-chip">📺 YouTube 트렌딩</span>
-          <span class="tlab-chip">🎵 멜론 TOP20</span>
-          <span class="tlab-chip">📊 Naver DataLab</span>
-          <span class="tlab-chip">🌐 글로벌 US·JP·GB·TW</span>
-          <span class="tlab-chip">💬 Reddit K-컬처</span>
-        </div>
-        <div class="tlab-cta">
-          <a href="/trend-lab/" class="btn btn-main" style="font-size:15px;padding:13px 26px">연구소 바로가기 →</a>
-        </div>
-      </div>
+<!-- 실제 사례 -->
+<section class="section" id="cases"><div class="wrap">
+  <h2>실제 사례 — AI가 다 하고, 사람은 결정만</h2>
+  <p class="lead">말만 하지 않습니다. AIGSTACK은 우리 일부터 AI로 이렇게 풀었습니다.</p>
+  <div class="cases-grid">
+    <div class="case-card">
+      <div class="case-icon">🧾</div>
+      <h3>계약 분쟁, AI가 처리</h3>
+      <p>장비 임대 중도해지에서 상대가 위약금 <b style="color:var(--t1)">약 370만원</b>을 청구.
+      AI가 계약서를 검토해 <b style="color:var(--em2)">근거 없는 조항을 찾아내고</b> 반박 이메일까지 작성.
+      대표가 한 일은 "보낼까요?"에 <b style="color:var(--t1)">OK 한 번</b>.</p>
+      <p class="case-result">→ 상대 주장 완전 철회 · 위약금 절반 이상 절감</p>
+    </div>
+    <div class="case-card">
+      <div class="case-icon">💸</div>
+      <h3>오버스펙 → 데이터로 다운사이징</h3>
+      <p>AI 장비를 넉넉히 도입했지만, 성능을 <b style="color:var(--em2)">직접 실측</b>하니 과잉이라는 게
+      데이터로 드러남. 현실에 맞게 다운사이징해 매달 나가는 운영비를 절감.</p>
+      <p class="case-result">→ 과잉투자 NO · 딱 필요한 만큼만</p>
+    </div>
+    <div class="case-card">
+      <div class="case-icon">🎯</div>
+      <h3>당신의 일에도</h3>
+      <p>계약·문서·반복업무·자동화 — 당신 직군에 맞춰 AI가 일하고, 결정은 당신이.
+      무료 비서IN부터 받아보세요.</p>
+      <p style="margin-top:10px"><a href="#survey" style="color:var(--em2);font-weight:700">↑ 위에서 무료로 받기</a></p>
     </div>
   </div>
+  <p class="case-note">실제 AIGSTACK 운영 사례 · 거래처 정보와 정확한 금액은 사생활 보호를 위해 일반화했습니다.</p>
 </div></section>
 
 <footer><div class="wrap">
