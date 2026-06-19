@@ -135,6 +135,24 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
 .case-result{color:var(--em2);font-weight:700;margin-top:10px!important}
 .case-note{text-align:center;color:var(--t3);font-size:12px;margin-top:22px}
 
+/* survey form */
+.survey-box{max-width:580px;margin:42px auto 0;background:var(--card);border:1px solid var(--br);border-radius:20px;padding:36px}
+@media(max-width:600px){.survey-box{padding:26px 18px}}
+.survey-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px}
+@media(max-width:540px){.survey-fields{grid-template-columns:1fr}}
+.sf-group{display:flex;flex-direction:column;gap:6px}
+.sf-group label{font-size:13px;color:var(--t2);font-weight:600}
+.sf-full{grid-column:1/-1}
+.survey-checks{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.check-row{display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:14px;color:var(--t2);line-height:1.5}
+.check-row input[type=checkbox]{width:17px;height:17px;flex-shrink:0;margin-top:2px;accent-color:var(--em)}
+.founder-check{background:rgba(245,200,66,.06);border:1px solid rgba(245,200,66,.2);border-radius:10px;padding:12px 14px}
+.founder-check input[type=checkbox]{accent-color:#f5c842}
+.survey-done{text-align:center;padding:20px 0;animation:pop .4s ease}
+.survey-done .ico{font-size:48px;margin-bottom:16px}
+.survey-done h3{font-size:22px;font-weight:800;color:var(--ok)}
+.survey-done p{color:var(--t2);margin-top:10px;font-size:15px;line-height:1.7}
+
 /* footer */
 footer{border-top:1px solid var(--br);padding:40px 0;color:var(--t3);font-size:13px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
@@ -158,7 +176,8 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
   <div class="brandbig">AI 비서 <b>비서IN</b><small>BISEO·IN — 당신 안의 비서</small></div>
 
   <div class="cta-row">
-    <a href="#founder" class="btn btn-main" style="background:linear-gradient(110deg,#d4a017,#f5c842);color:#06080f;box-shadow:0 8px 30px rgba(245,200,66,.3)">🏅 창립멤버 자리 잡기 (한정 50명)</a>
+    <a href="#survey" class="btn btn-main">무료로 AI 비서 받기 →</a>
+    <a href="#founder" class="btn btn-ghost" style="border-color:rgba(245,200,66,.4);color:#f5c842">🏅 창립멤버 신청</a>
   </div>
 
   <div class="badges">
@@ -183,6 +202,66 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
       <p>창립멤버 가격과 혜택이 확정되면 가장 먼저 이메일로 안내드립니다.</p></div>
     <div class="step"><div class="n">3</div><h3>1:1 직접 온보딩</h3>
       <p>설립팀이 직접 당신 업무에 맞게 AI 비서를 세팅해 드립니다.</p></div>
+  </div>
+</div></section>
+
+<!-- 설문 → 무료 AI 비서 세팅 -->
+<section class="section" id="survey"><div class="wrap">
+  <h2>무료로 먼저 경험해 보세요</h2>
+  <p class="lead">설문 한 번이면 됩니다 — 당신 직군에 맞게 세팅한 AI 비서 프롬프트를 이메일로 보내드립니다.</p>
+  <div class="survey-box">
+    <div id="surveyFormView">
+      <div class="survey-fields">
+        <div class="sf-group">
+          <label>직군 *</label>
+          <select id="s_role">
+            <option value="">선택하세요</option>
+            <option>대표·CEO</option>
+            <option>임원·이사</option>
+            <option>변호사·의사·전문직</option>
+            <option>팀장·관리자</option>
+            <option>개발자</option>
+            <option>기타</option>
+          </select>
+        </div>
+        <div class="sf-group">
+          <label>주로 쓰는 AI</label>
+          <select id="s_ai_tool">
+            <option value="">선택 (선택사항)</option>
+            <option>ChatGPT</option>
+            <option>Claude (클로드)</option>
+            <option>Gemini (제미나이)</option>
+            <option>복수 사용</option>
+            <option>아직 안 씀</option>
+          </select>
+        </div>
+        <div class="sf-group sf-full">
+          <label>AI가 대신 해줬으면 하는 업무 (선택)</label>
+          <input type="text" id="s_pain" placeholder="예: 회의록 정리, 이메일 초안, 계약서 검토…">
+        </div>
+        <div class="sf-group sf-full">
+          <label>이메일 *</label>
+          <input type="email" id="s_email" placeholder="설정 프롬프트를 받을 이메일">
+        </div>
+      </div>
+      <div class="survey-checks">
+        <label class="check-row">
+          <input type="checkbox" id="s_consent">
+          <span>마케팅 정보 수신 동의 (필수) — AI 비서 세팅 결과물을 이메일로 받습니다.</span>
+        </label>
+        <label class="check-row founder-check">
+          <input type="checkbox" id="s_founder">
+          <span>🏅 창립멤버 신청하시겠습니까? <b style="color:#f5c842">네</b> — 체크 시 대기명단에 함께 등록됩니다. (최대 50명 한정)</span>
+        </label>
+      </div>
+      <button class="btn btn-main" id="s_go" style="width:100%;font-size:16px;padding:17px;margin-top:22px;border-radius:13px">무료로 받기 →</button>
+      <p class="msg err" id="s_err" style="margin-top:10px;font-size:13px"></p>
+    </div>
+    <div class="survey-done" id="surveyDoneView" style="display:none">
+      <div class="ico">✅</div>
+      <h3>완료! 이메일을 확인해 주세요</h3>
+      <p id="surveyDoneMsg">AI 비서 설정 프롬프트를 곧 보내드릴게요.</p>
+    </div>
   </div>
 </div></section>
 
@@ -283,6 +362,36 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
 <script>
 const $=id=>document.getElementById(id);
 const WAITLIST_EP="https://api.aigstack.kr/waitlist";
+const SURVEY_EP="https://api.aigstack.kr/survey";
+
+// ── 설문 제출 ──────────────────────────────────────
+const sg=$("s_go"),se=$("s_err");
+sg.addEventListener("click",async()=>{
+  se.textContent="";
+  const email=$("s_email").value.trim();
+  const consent=$("s_consent").checked;
+  const founderWish=$("s_founder").checked;
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){se.textContent="올바른 이메일을 입력해 주세요.";return;}
+  if(!consent){se.textContent="마케팅 정보 수신 동의가 필요합니다.";return;}
+  sg.disabled=true;sg.textContent="제출 중…";
+  try{
+    const r=await fetch(SURVEY_EP,{method:"POST",
+      body:JSON.stringify({email,consent,role:$("s_role").value,
+        ai_tool:$("s_ai_tool").value,pain:$("s_pain").value.trim(),source:"homepage"})});
+    const d=await r.json().catch(()=>({}));
+    if(!d.ok){sg.disabled=false;sg.textContent="무료로 받기 →";se.textContent=d.detail||"오류가 발생했어요. 다시 시도해 주세요.";return;}
+    if(founderWish){
+      await fetch(WAITLIST_EP,{method:"POST",
+        body:JSON.stringify({email,role:$("s_role").value})}).catch(()=>{});
+    }
+    $("surveyFormView").style.display="none";
+    $("surveyDoneView").style.display="block";
+    if(founderWish)$("surveyDoneMsg").textContent="AI 비서 프롬프트와 창립멤버 대기명단 등록 완료! 이메일로 안내드릴게요.";
+  }catch(e){
+    sg.disabled=false;sg.textContent="무료로 받기 →";
+    se.textContent="네트워크 오류. 잠시 후 다시 시도해 주세요.";
+  }
+});
 
 // ── T0 창립멤버 대기명단 ─────────────────────────
 const fg=$("f_go"), fe=$("f_err");
