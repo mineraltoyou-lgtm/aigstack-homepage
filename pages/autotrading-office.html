@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>자동매매 오피스 — AIGSTACK</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#FFD700;--green:#00E676;--red:#FF5252;
+  --dark:#090912;--card:#0f0f1a;--border:#1a1a2e;
+  --blue:#3a8bff;--text:#e0e0e0;
+}
+html,body{background:var(--dark);color:var(--text);font-family:'Apple SD Gothic Neo','Pretendard','Noto Sans KR',sans-serif;min-height:100vh}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:2rem;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(58,139,255,.13) 0%,transparent 70%);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.02) 40px),
+             repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.02) 40px);
+}
+.tag{font-size:.7rem;letter-spacing:.2em;color:var(--blue);font-weight:700;text-transform:uppercase;margin-bottom:1rem;position:relative}
+.hero h1{font-size:clamp(2.5rem,7vw,5rem);font-weight:900;letter-spacing:-.03em;line-height:1.1;position:relative}
+.hero h1 span{background:linear-gradient(90deg,var(--gold),#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero .sub{margin-top:1.2rem;font-size:clamp(1rem,2.5vw,1.3rem);color:#888;max-width:560px;line-height:1.7;position:relative}
+.hero-badges{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;margin-top:2rem;position:relative}
+.hbadge{padding:.4rem 1rem;border-radius:20px;font-size:.8rem;font-weight:700;letter-spacing:.05em}
+.hbadge.green{background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.3);color:var(--green)}
+.hbadge.blue{background:rgba(58,139,255,.1);border:1px solid rgba(58,139,255,.3);color:var(--blue)}
+.hbadge.gold{background:rgba(255,215,0,.1);border:1px solid rgba(255,215,0,.3);color:var(--gold)}
+
+/* ── SECTIONS ── */
+section{max-width:960px;margin:0 auto;padding:5rem 1.5rem}
+.sec-label{font-size:.7rem;letter-spacing:.2em;color:var(--blue);font-weight:700;text-transform:uppercase;margin-bottom:.75rem}
+.sec-title{font-size:clamp(1.6rem,4vw,2.5rem);font-weight:900;letter-spacing:-.02em;line-height:1.2;margin-bottom:.75rem}
+.sec-title b{color:var(--gold)}
+.sec-sub{color:#777;font-size:1rem;line-height:1.8;max-width:600px;margin-bottom:3rem}
+hr.divider{border:none;border-top:1px solid var(--border);margin:0}
+
+/* ── HOW IT WORKS ── */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.step{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;position:relative;transition:.2s}
+.step:hover{border-color:var(--blue);transform:translateY(-3px)}
+.step-num{font-size:2.5rem;font-weight:900;color:rgba(58,139,255,.15);line-height:1;margin-bottom:.75rem}
+.step-icon{font-size:1.8rem;margin-bottom:.5rem}
+.step h3{font-size:1rem;font-weight:700;margin-bottom:.4rem}
+.step p{font-size:.85rem;color:#666;line-height:1.6}
+.step-arrow{position:absolute;right:-1.2rem;top:50%;transform:translateY(-50%);color:#333;font-size:1rem;z-index:1}
+@media(max-width:600px){.step-arrow{display:none}}
+
+/* ── FEE MODEL ── */
+.fee-box{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.fee-top{padding:2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:1.5rem}
+.fee-icon{font-size:2.5rem}
+.fee-top h2{font-size:1.4rem;font-weight:800}
+.fee-top p{color:#666;font-size:.9rem;margin-top:.2rem}
+.fee-grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border)}
+.fee-cell{padding:2rem;border-right:1px solid var(--border)}
+.fee-cell:last-child{border-right:none}
+.fee-cell .label{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:#555;margin-bottom:.5rem}
+.fee-cell .value{font-size:2rem;font-weight:900;margin-bottom:.3rem}
+.fee-cell .value.green{color:var(--green)}
+.fee-cell .value.gray{color:#333}
+.fee-cell .desc{font-size:.82rem;color:#666;line-height:1.6}
+@media(max-width:520px){.fee-grid{grid-template-columns:1fr}.fee-cell{border-right:none;border-bottom:1px solid var(--border)}}
+
+/* ── REVENUE MODEL ── */
+.rev-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.75rem;margin-bottom:1rem}
+.rev-row{display:flex;align-items:baseline;gap:.75rem;margin-bottom:.4rem}
+.rev-label{font-size:.8rem;color:#666;min-width:120px}
+.rev-val{font-size:1.2rem;font-weight:800;color:var(--green)}
+.rev-note{font-size:.8rem;color:#444;margin-top:.4rem;line-height:1.5}
+.rev-total{background:rgba(0,230,118,.05);border:1px solid rgba(0,230,118,.2);border-radius:14px;padding:1.75rem;text-align:center}
+.rev-total .t-label{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:.5rem}
+.rev-total .t-val{font-size:2.8rem;font-weight:900;color:var(--green);line-height:1}
+.rev-total .t-sub{font-size:.85rem;color:#555;margin-top:.5rem}
+
+/* ── LEGAL ── */
+.legal-grid{display:grid;gap:.75rem}
+.legal-item{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;transition:.2s}
+.legal-item:hover{border-color:rgba(0,230,118,.3)}
+.legal-q{font-size:.85rem;color:#666;font-weight:600}
+.legal-a{font-size:.85rem;color:#aaa;line-height:1.6;margin-top:.2rem}
+.legal-badge{padding:.2rem .7rem;border-radius:10px;font-size:.7rem;font-weight:700;white-space:nowrap;align-self:center}
+.safe{background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.25);color:var(--green)}
+
+/* ── SPEC ── */
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}
+.spec-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center}
+.spec-card .s-icon{font-size:1.8rem;margin-bottom:.5rem}
+.spec-card .s-label{font-size:.75rem;color:#555;margin-bottom:.3rem;letter-spacing:.05em}
+.spec-card .s-val{font-size:1.1rem;font-weight:800;color:var(--gold)}
+
+/* ── CTA ── */
+.cta{background:linear-gradient(135deg,rgba(58,139,255,.08),rgba(255,215,0,.05));border:1px solid rgba(58,139,255,.2);border-radius:20px;padding:3rem;text-align:center}
+.cta h2{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:900;margin-bottom:.75rem}
+.cta p{color:#666;font-size:1rem;margin-bottom:2rem;line-height:1.7}
+.cta-btn{display:inline-block;padding:.85rem 2.5rem;background:var(--gold);color:#000;font-weight:800;border-radius:30px;text-decoration:none;font-size:1rem;transition:.2s}
+.cta-btn:hover{background:#FFA500;transform:translateY(-2px)}
+
+/* ── FOOTER ── */
+footer{text-align:center;padding:2rem;color:#333;font-size:.8rem;border-top:1px solid var(--border)}
+footer span{color:var(--blue)}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="tag">AIGSTACK × 자동매매 사무소</div>
+  <h1>수익이 나야<br><span>우리도 받는다</span></h1>
+  <p class="sub">키움증권 CANSLIM 자동매매 PC 20대 운영.<br>사용자 본인 계좌 로그인 — 운영사는 수익이 날 때만 PC 이용료 청구.</p>
+  <div class="hero-badges">
+    <span class="hbadge green">✓ 투자자문업 해당 없음</span>
+    <span class="hbadge blue">✓ 사용자 본인 계좌</span>
+    <span class="hbadge gold">✓ 성과 연동 과금</span>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="sec-label">How It Works</div>
+  <h2 class="sec-title">어떻게 돌아가나</h2>
+  <p class="sec-sub">4단계. 복잡한 것 없다.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-icon">🏢</div>
+      <h3>사무실 입장</h3>
+      <p>PC 20대 완비. 지정석 or 당일 배정.</p>
+      <span class="step-arrow">›</span>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-icon">🔑</div>
+      <h3>본인 계좌 로그인</h3>
+      <p>키움증권 계좌 직접 로그인. 운영사는 접근 불가.</p>
+      <span class="step-arrow">›</span>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-icon">🤖</div>
+      <h3>CANSLIM 봇 가동</h3>
+      <p>08:00 장전 수급 스캔 → 대장주 → 자동 익절·손절.</p>
+      <span class="step-arrow">›</span>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-icon">💰</div>
+      <h3>수익 날 때만 정산</h3>
+      <p>당일 수익 발생 시 사용료 청구. 손실 · 보합 = 무료.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- FEE MODEL -->
+<section>
+  <div class="sec-label">Fee Structure</div>
+  <h2 class="sec-title">요금 구조</h2>
+  <p class="sec-sub">수익이 없으면 0원. 수익이 나면 함께 나눈다.</p>
+
+  <div class="fee-box">
+    <div class="fee-top">
+      <div class="fee-icon">⚖️</div>
+      <div>
+        <h2>성과 연동 PC 이용료</h2>
+        <p>당일 실현 수익 기준 청구 — 미실현 수익 포함 안 함</p>
+      </div>
+    </div>
+    <div class="fee-grid">
+      <div class="fee-cell">
+        <div class="label">수익 발생 시</div>
+        <div class="value green">수익의 20%</div>
+        <div class="desc">당일 실현 수익 기준.<br>예: 50만원 수익 → 10만원 청구.<br>텔레그램 자동 정산 알림 발송.</div>
+      </div>
+      <div class="fee-cell">
+        <div class="label">손실 · 보합 시</div>
+        <div class="value gray">₩0</div>
+        <div class="desc">손실 또는 수익 없을 시 이용료 없음.<br>입장료·고정비 일절 없음.<br>부담 없이 매일 사용 가능.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- REVENUE MODEL -->
+<section>
+  <div class="sec-label">Revenue Projection</div>
+  <h2 class="sec-title">수익 시뮬레이션</h2>
+  <p class="sec-sub">PC 20대 × 일 평균 수익 가정치 (보수적 산정)</p>
+
+  <div class="rev-card">
+    <div class="rev-row">
+      <span class="rev-label">PC 1대 평균 일 수익</span>
+      <span class="rev-val">+300,000원</span>
+    </div>
+    <div class="rev-note">CANSLIM 1회 매매 목표 수익 (1백만원 투자 × +20~25% 익절 × 부분 실현)</div>
+  </div>
+  <div class="rev-card">
+    <div class="rev-row">
+      <span class="rev-label">수익 발생 PC 비율</span>
+      <span class="rev-val">50% (10대)</span>
+    </div>
+    <div class="rev-note">20대 중 당일 수익 발생 PC만 과금 → 보수적 50% 가정</div>
+  </div>
+  <div class="rev-card">
+    <div class="rev-row">
+      <span class="rev-label">운영사 수취 (20%)</span>
+      <span class="rev-val">60,000원 × 10대</span>
+    </div>
+    <div class="rev-note">300,000 × 20% = 60,000원 / 대</div>
+  </div>
+  <div class="rev-total">
+    <div class="t-label">운영사 일 수입 (추정)</div>
+    <div class="t-val">600,000원</div>
+    <div class="t-sub">월 22거래일 기준 → <b style="color:var(--green)">월 약 1,320만원</b><br><span style="color:#333">임대료·관리비 제외 전 추정치</span></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- LEGAL -->
+<section>
+  <div class="sec-label">Legal</div>
+  <h2 class="sec-title">법적 안전성</h2>
+  <p class="sec-sub">5가지 우려 사항 — 전부 반박 가능.</p>
+
+  <div class="legal-grid">
+    <div class="legal-item">
+      <div>
+        <div class="legal-q">❓ 투자자문업 무등록 아닌가?</div>
+        <div class="legal-a">투자자문업 = 사람이 특정인에게 투자 판단 제공. 소프트웨어 도구 제공은 해당 없음. 키움 HTS도 자동매매 모듈 탑재하지만 투자자문업 아님.</div>
+      </div>
+      <span class="legal-badge safe">안전</span>
+    </div>
+    <div class="legal-item">
+      <div>
+        <div class="legal-q">❓ 투자일임업 아닌가?</div>
+        <div class="legal-a">투자일임 = 운용자가 재량 보유. 계좌는 사용자 본인, 운영사는 계좌 접근 불가, ON/OFF도 사용자가 결정. 재량 개입 없음.</div>
+      </div>
+      <span class="legal-badge safe">안전</span>
+    </div>
+    <div class="legal-item">
+      <div>
+        <div class="legal-q">❓ 성과보수가 불법인가?</div>
+        <div class="legal-a">자본시장법 성과보수 규제는 투자자문업자·투자일임업자에 한정. 이 모델은 PC·소프트웨어 이용료 (일반 상거래). 조건부 요금제는 합법.</div>
+      </div>
+      <span class="legal-badge safe">안전</span>
+    </div>
+    <div class="legal-item">
+      <div>
+        <div class="legal-q">❓ 20대 동시 매매 = 시세조종?</div>
+        <div class="legal-a">CANSLIM은 각자 다른 섹터·종목·타이밍. 동일 종목 동시진입 방지 옵션 코드로 추가 가능. 20대 동시 동일 종목 매수 구조 아님.</div>
+      </div>
+      <span class="legal-badge safe">안전</span>
+    </div>
+    <div class="legal-item">
+      <div>
+        <div class="legal-q">❓ 사업자 등록·세금?</div>
+        <div class="legal-a">소프트웨어 임대업 or 부가통신사업으로 등록. 수수료 수입은 종합소득세·부가세 일반 신고. 계약서에 "PC·소프트웨어 이용료" 명시.</div>
+      </div>
+      <span class="legal-badge safe">안전</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SPEC -->
+<section>
+  <div class="sec-label">Specifications</div>
+  <h2 class="sec-title">운영 스펙</h2>
+  <p class="sec-sub">초기 세팅 기준</p>
+
+  <div class="spec-grid">
+    <div class="spec-card">
+      <div class="s-icon">🖥️</div>
+      <div class="s-label">PC 대수</div>
+      <div class="s-val">20대</div>
+    </div>
+    <div class="spec-card">
+      <div class="s-icon">📈</div>
+      <div class="s-label">탑재 전략</div>
+      <div class="s-val">CANSLIM</div>
+    </div>
+    <div class="spec-card">
+      <div class="s-icon">🏦</div>
+      <div class="s-label">연동 증권사</div>
+      <div class="s-val">키움증권</div>
+    </div>
+    <div class="spec-card">
+      <div class="s-icon">⏰</div>
+      <div class="s-label">운영 시간</div>
+      <div class="s-val">08:00 ~ 16:00</div>
+    </div>
+    <div class="spec-card">
+      <div class="s-icon">🔔</div>
+      <div class="s-label">알림</div>
+      <div class="s-val">텔레그램</div>
+    </div>
+    <div class="spec-card">
+      <div class="s-icon">🛡️</div>
+      <div class="s-label">손절 기준</div>
+      <div class="s-val">-7% 자동</div>
+    </div>
+    <div class="spec-card">
+      <div class="s-icon">💹</div>
+      <div class="s-label">1차 익절</div>
+      <div class="s-val">+20% 절반</div>
+    </div>
+    <div class="spec-card">
+      <div class="s-icon">🎯</div>
+      <div class="s-label">2차 익절</div>
+      <div class="s-val">+25% 전량</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CTA -->
+<section>
+  <div class="cta">
+    <h2>지금 세팅 문의</h2>
+    <p>소프트웨어 설치 · 계약서 · 법무 검토 패키지<br>PC 1대 세팅부터 사무실 전체 구축까지</p>
+    <a href="mailto:ceo@aigstack.kr" class="cta-btn">ceo@aigstack.kr 문의하기</a>
+  </div>
+</section>
+
+<footer>
+  <span>AIGSTACK</span> · 자동매매 오피스 솔루션 · aigstack.kr<br>
+  <span style="color:#333;font-size:.75rem;margin-top:.3rem;display:block">본 자료는 사업 제안용입니다. 투자 수익을 보장하지 않습니다.</span>
+</footer>
+
+</body>
+</html>
