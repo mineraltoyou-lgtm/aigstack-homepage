@@ -80,6 +80,28 @@ h1 .hl{background:linear-gradient(110deg,var(--em2),#c9e0ff);-webkit-background-
 .step h3{font-size:19px;font-weight:750;margin-bottom:8px}
 .step p{color:var(--t2);font-size:15px}
 
+/* compare — 무료 즉시 vs 유료 커스텀 */
+.compare-grid{margin-top:46px;display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:880px;margin-left:auto;margin-right:auto}
+@media(max-width:680px){.compare-grid{grid-template-columns:1fr}}
+.cmp{background:var(--card);border:1px solid var(--br);border-radius:20px;padding:32px 28px;display:flex;flex-direction:column;position:relative}
+.cmp-pro{border-color:rgba(58,139,255,.5);box-shadow:0 0 60px rgba(58,139,255,.13)}
+.cmp-tag{align-self:flex-start;font-size:12px;font-weight:700;color:var(--em2);background:rgba(58,139,255,.1);
+  border:1px solid var(--br);border-radius:20px;padding:5px 12px;margin-bottom:16px}
+.cmp-tag-pro{color:#06080f;background:linear-gradient(110deg,var(--em),var(--em2));border-color:transparent}
+.cmp h3{font-size:23px;font-weight:800;letter-spacing:-.5px;line-height:1.25}
+.cmp-price{font-size:29px;font-weight:850;margin:14px 0 2px;color:var(--t1)}
+.cmp-price small{font-size:14px;font-weight:600;color:var(--t3)}
+.cmp-pro .cmp-price{color:var(--em2)}
+.cmp-list{list-style:none;margin:18px 0 24px;padding:0;display:flex;flex-direction:column;gap:11px;flex:1}
+.cmp-list li{font-size:14px;color:var(--t2);line-height:1.5}
+.cmp-list li b{color:var(--t1)}
+.cmp-btn{display:block;text-align:center;font-weight:750;font-size:15px;padding:15px;border-radius:13px;transition:.2s}
+.cmp-btn-free{background:rgba(58,139,255,.12);color:var(--em2);border:1px solid var(--br)}
+.cmp-btn-free:hover{background:rgba(58,139,255,.2)}
+.cmp-btn-pro{background:var(--em);color:#06080f;box-shadow:0 8px 30px var(--glow)}
+.cmp-btn-pro:hover{background:var(--em2);transform:translateY(-2px)}
+.cmp-foot{text-align:center;color:var(--t3);font-size:12px;margin-top:12px}
+
 /* survey */
 #survey{padding:78px 0}
 .form-card{max-width:600px;margin:0 auto;background:linear-gradient(180deg,var(--bg2),var(--card));
@@ -209,6 +231,45 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
     <div class="ais"><span>🟣 제미나이</span><span>🟠 클로드</span><span>🟢 챗GPT</span></div>
   </div>
 </div></header>
+
+<!-- 무료 즉시 vs 유료 커스텀 비교 -->
+<section class="section" id="compare"><div class="wrap">
+  <h2>두 가지로 받으세요</h2>
+  <p class="lead">먼저 무료로 받아보고, 더 깊은 세팅이 필요하면 맞춤 제작으로.</p>
+  <div class="compare-grid">
+
+    <!-- 무료 -->
+    <div class="cmp cmp-free">
+      <span class="cmp-tag">무료 · 즉시</span>
+      <h3>설정 프롬프트<br>즉시 받기</h3>
+      <div class="cmp-price">₩0 <small>· 가입 불필요</small></div>
+      <ul class="cmp-list">
+        <li>✓ 1분 설문 → <b>이메일로 자동 발송</b></li>
+        <li>✓ 직군·숙련도 맞춤 템플릿</li>
+        <li>✓ 챗GPT·클로드·제미나이 그대로 사용</li>
+        <li>✓ 지금 바로, 기다림 없이</li>
+      </ul>
+      <a href="#survey" class="cmp-btn cmp-btn-free">무료로 받기 →</a>
+      <p class="cmp-foot">바로 붙여넣고 쓰는 기성 프롬프트</p>
+    </div>
+
+    <!-- 유료 커스텀 -->
+    <div class="cmp cmp-pro">
+      <span class="cmp-tag cmp-tag-pro">1:1 맞춤 · 프리미엄</span>
+      <h3>커스텀 프롬프트<br>개발 후 개별 발송</h3>
+      <div class="cmp-price">맞춤 견적 <small>· 범위에 따라</small></div>
+      <ul class="cmp-list">
+        <li>★ <b>당신 업무를 직접 분석</b>해 제작</li>
+        <li>★ 하드웨어·폴더·자동화까지 설계</li>
+        <li>★ 며칠 내 <b>개별 이메일로 발송</b></li>
+        <li>★ 기성품이 아닌, 사람이 만든 전용 프롬프트</li>
+      </ul>
+      <a href="https://api.aigstack.kr/setup-survey" class="cmp-btn cmp-btn-pro">커스텀 신청하기 →</a>
+      <p class="cmp-foot">당신만을 위한 맞춤 세팅</p>
+    </div>
+
+  </div>
+</div></section>
 
 <!-- HOW -->
 <section class="section" id="how"><div class="wrap">
@@ -444,7 +505,7 @@ const go=$("go"), err=$("err");
 function fail(m){err.textContent=m;err.classList.add("err")}
 go.addEventListener("click", async ()=>{
   err.classList.remove("err");
-  const ai_level=(document.querySelector(‘input[name="ai_level"]:checked’)||{}).value||"";
+  const ai_level=(document.querySelector('input[name="ai_level"]:checked')||{}).value||"";
   if(!ai_level) return fail("AI 사용 수준을 선택해 주세요.");
   const email=$("email").value.trim();
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return fail("올바른 이메일을 입력해 주세요.");
