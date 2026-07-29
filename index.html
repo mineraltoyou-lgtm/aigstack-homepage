@@ -207,6 +207,7 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
   <span class="tag">AI 비서 세팅</span>
   <a href="#founder" class="nav-cta" style="background:linear-gradient(110deg,#d4a017,#f5c842);color:#06080f">🏅 창립멤버 신청</a>
   <a href="#survey" class="nav-cta" style="margin-left:8px">무료로 받기</a>
+  <a href="#contact" class="nav-cta" style="margin-left:8px;background:transparent;color:var(--em2);border:1px solid var(--br);box-shadow:none">문의하기</a>
 </div></nav>
 
 <!-- HERO -->
@@ -372,7 +373,7 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
 
       <button class="submit" id="go">설문 완료하고 무료로 받기 →</button>
       <p class="msg err" id="err"></p>
-      <p class="note">스팸 없이, 약속한 내용만 보냅니다 · 문의 ceo@aigstack.kr</p>
+      <p class="note">스팸 없이, 약속한 내용만 보냅니다 · <a href="#contact" style="color:var(--em2)">문의하기</a></p>
     </div>
 
     <div class="done" id="doneView">
@@ -420,7 +421,7 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
     <div class="founder-done" id="founderDoneView">
       <div class="ico">🏅</div>
       <h3>대기명단 등록 완료!</h3>
-      <p>펀딩 오픈 시 가장 먼저 연락드립니다.<br>문의: <a href="mailto:ceo@aigstack.kr" style="color:var(--em2)">ceo@aigstack.kr</a></p>
+      <p>펀딩 오픈 시 가장 먼저 연락드립니다.<br><a href="#contact" style="color:var(--em2)">문의하기 →</a></p>
     </div>
   </div>
 </div></section>
@@ -470,10 +471,62 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
   <p class="case-note">실제 AIGSTACK 운영 사례 · 거래처 정보와 정확한 금액은 사생활 보호를 위해 일반화했습니다.</p>
 </div></section>
 
+<!-- CONTACT -->
+<section id="contact"><div class="wrap">
+  <div class="form-card">
+    <div id="cView">
+      <h2>문의하기</h2>
+      <p class="lead" style="text-align:center;color:var(--t2)">도입 상담 · 견적 · 제휴 — 영업일 기준 24시간 내 회신드립니다.</p>
+
+      <div class="field">
+        <label>이름 <span class="req">*</span></label>
+        <input type="text" id="c_name" placeholder="홍길동" autocomplete="name">
+      </div>
+      <div class="field">
+        <label>연락처 <span class="req">*</span></label>
+        <input type="text" id="c_phone" placeholder="010-0000-0000" autocomplete="tel">
+      </div>
+      <div class="field">
+        <label>이메일 <span class="req">*</span></label>
+        <input type="email" id="c_email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>회사 / 소속</label>
+        <input type="text" id="c_company" placeholder="(선택)" autocomplete="organization">
+      </div>
+      <div class="field">
+        <label>관심 분야</label>
+        <select id="c_solution">
+          <option value="일반 문의">일반 문의</option>
+          <option value="온프레미스 AI 구축">온프레미스 AI 구축</option>
+          <option value="AI 비서 커스텀 세팅">AI 비서 커스텀 세팅</option>
+          <option value="AI 영상 제작 (SONAR STUDIO)">AI 영상 제작 (SONAR STUDIO)</option>
+          <option value="데이터 인텔리전스">데이터 인텔리전스</option>
+          <option value="제휴 · 투자">제휴 · 투자</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>문의 내용 <span class="req">*</span></label>
+        <textarea id="c_message" placeholder="어떤 점이 궁금하신지 편하게 적어주세요." style="min-height:120px"></textarea>
+      </div>
+
+      <button class="submit" id="c_go">문의 보내기 →</button>
+      <p class="msg err" id="c_err"></p>
+      <p class="note">보내주신 내용은 담당자 메일로 즉시 전달됩니다.</p>
+    </div>
+
+    <div class="done" id="cDoneView">
+      <div class="ico">✉️</div>
+      <h2>문의가 접수되었습니다</h2>
+      <p>영업일 기준 24시간 이내에<br>남겨주신 연락처로 회신드리겠습니다.</p>
+    </div>
+  </div>
+</div></section>
+
 <footer><div class="wrap">
   <div>© 2026 AIGSTACK · 온프레미스 AI 비서 플랫폼</div>
   <div class="foot-links">
-    <a href="mailto:ceo@aigstack.kr">ceo@aigstack.kr</a>
+    <a href="#contact">문의하기</a>
   </div>
 </div></footer>
 
@@ -481,6 +534,27 @@ footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
 const $=id=>document.getElementById(id);
 const ENDPOINT="https://api.aigstack.kr/survey";
 const WAITLIST_EP="https://api.aigstack.kr/waitlist";
+const SUBMIT_EP="https://api.aigstack.kr/submit";
+
+// ── 일반 문의 → inquiry API (DB + 메일 + 디스코드) ──
+$("c_go").onclick=async()=>{
+  const name=$("c_name").value.trim(), phone=$("c_phone").value.trim(),
+        email=$("c_email").value.trim(), message=$("c_message").value.trim();
+  const err=$("c_err");
+  err.textContent="";
+  if(!name||!phone||!email||!message){ err.textContent="이름·연락처·이메일·문의내용은 필수입니다."; return; }
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ err.textContent="이메일 형식을 확인해 주세요."; return; }
+  $("c_go").disabled=true; $("c_go").textContent="보내는 중…";
+  try{
+    const r=await fetch(SUBMIT_EP,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({name,phone,email,company:$("c_company").value.trim(),
+        solutions:["[aigstack.kr] "+$("c_solution").value],message})});
+    const j=await r.json();
+    if(j.ok){ $("cView").style.display="none"; $("cDoneView").classList.add("show"); }
+    else{ err.textContent=j.detail||"접수 실패 — 잠시 후 다시 시도해 주세요."; }
+  }catch(e){ err.textContent="전송 오류 — 잠시 후 다시 시도해 주세요."; }
+  $("c_go").disabled=false; $("c_go").textContent="문의 보내기 →";
+};
 
 // ── T0 창립멤버 대기명단 ─────────────────────────
 const fg=$("f_go"), fe=$("f_err");
