@@ -1,621 +1,386 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>비서IN — 당신만의 AI 개인비서</title>
-<meta name="description" content="가입 없이 설문 한 번이면, 제미나이·클로드·챗GPT에 바로 쓰는 당신만의 AI 비서 설정 프롬프트를 이메일로 보내드립니다.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>주식회사 에이아이지스택 (AIGSTACK) — 서버 한 대에서 시작한 AI 회사</title>
+<meta name="description" content="온프레미스 서버 한 대에서 AI 운영 체계를 직접 세우고, 영상 제작·정보 수집·업무 자동화 도구를 만들어 운영하고 있습니다. 주식회사 에이아이지스택 회사 소개.">
+<meta name="keywords" content="에이아이지스택,AIGSTACK,AI 개발 회사,온프레미스 AI,AI 자동화,AI 영상제작,소냐스튜디오,성남 AI 회사">
+<link rel="canonical" href="https://aigstack.kr/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aigstack.kr/">
+<meta property="og:site_name" content="주식회사 에이아이지스택">
+<meta property="og:title" content="주식회사 에이아이지스택 — 서버 한 대에서 시작한 AI 회사">
+<meta property="og:description" content="온프레미스 서버 한 대에서 AI 운영 체계를 직접 세우고, 도구를 만들어 운영하고 있습니다.">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://aigstack.kr/#org","name":"주식회사 에이아이지스택","alternateName":["AIGSTACK","에이아이지스택"],"url":"https://aigstack.kr/","email":"ceo@aigstack.kr","identifier":"291-87-03996","sameAs":["https://www.youtube.com/@AI_GSTACK","https://sonarstudio.kr/"],"address":{"@type":"PostalAddress","streetAddress":"자혜로64번길 8","addressLocality":"성남시 중원구","addressRegion":"경기도","addressCountry":"KR"},"description":"온프레미스 서버 기반으로 AI 운영 체계를 직접 구축하고, 영상 제작·정보 수집·업무 자동화 도구를 만들어 운영하는 회사."}</script>
 <style>
-:root{
-  --bg:#07070c; --bg2:#0e0e16; --card:#12121c;
-  --em:#3a8bff; --em2:#7ab8ff; --glow:rgba(58,139,255,.55);
-  --t1:#f2f4f8; --t2:#aab1c2; --t3:#6b7384; --br:rgba(122,184,255,.14);
-  --ok:#34d399;
-}
 *{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#100C09;--surf:#1B1511;--bg2:#150F0B;
+  --ink:#F6EFE8;--ink2:#C3B4A5;--ink3:#93826F;--line:#33291F;--line2:#241C15;
+  --pri:#FF7A2F;--prid:#FF9556;--pril:rgba(255,122,47,.15);--mark:rgba(255,122,47,.34);
+  --btnink:#1A1206}
 html{scroll-behavior:smooth}
-body{
-  background:var(--bg); color:var(--t1);
-  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Pretendard','Helvetica Neue',sans-serif;
-  -webkit-font-smoothing:antialiased; line-height:1.5; overflow-x:hidden;
+body{background:var(--bg);color:var(--ink);line-height:1.72;-webkit-font-smoothing:antialiased;
+  font-family:'Pretendard','Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',system-ui,-apple-system,sans-serif;
+  word-break:keep-all}
+a{color:var(--pri);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* 상단바 */
+.gnb{position:sticky;top:0;z-index:80;background:rgba(16,12,9,.92);border-bottom:1px solid var(--line);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.gnb-in{max-width:1120px;margin:0 auto;padding:0 20px;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;min-height:58px}
+.logo{display:inline-flex;align-items:center;gap:9px;min-height:44px;color:var(--ink);
+  font-weight:900;font-size:18px;letter-spacing:.06em}
+.logo:hover{text-decoration:none}
+.logo b{font-weight:900}
+.logo i{font-style:normal;color:var(--pri)}
+.logo span{color:var(--ink3);font-size:12px;font-weight:600;letter-spacing:0}
+.gnb-nav{display:none;gap:22px;font-size:14px}
+.gnb-nav a{color:var(--ink2);display:inline-flex;align-items:center;min-height:44px}
+.gnb-nav a:hover{color:var(--ink);text-decoration:none}
+@media(min-width:860px){.gnb-nav{display:flex}}
+.gnb-cta{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:8px;
+  background:var(--pri);color:var(--btnink);font-weight:700;font-size:14.5px}
+.gnb-cta:hover{background:var(--prid);text-decoration:none}
+
+/* 히어로 */
+.hero{padding:clamp(44px,7vw,84px) 0 clamp(30px,4vw,44px);border-bottom:1px solid var(--line2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.chip{display:inline-flex;align-items:center;height:29px;padding:0 12px;border-radius:999px;
+  background:var(--pril);color:var(--pri);font-size:13px;font-weight:700}
+h1{font-size:clamp(29px,5vw,50px);font-weight:800;letter-spacing:-1.6px;line-height:1.28}
+h1 em{font-style:normal;background:linear-gradient(transparent 56%,var(--mark) 56%)}
+.lead{margin-top:18px;font-size:clamp(16px,2vw,19px);color:var(--ink2);max-width:760px}
+.lead b{color:var(--ink);font-weight:700}
+.hcta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+
+/* 숫자 */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:26px 0 0}
+@media(min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--surf);padding:18px 12px;text-align:center}
+.stat b{display:block;font-size:clamp(20px,3vw,26px);font-weight:800;letter-spacing:-.8px;color:var(--pri)}
+.stat span{display:block;margin-top:2px;font-size:13px;color:var(--ink3);font-weight:600}
+.stat i{display:block;font-style:normal;font-size:11.5px;color:var(--ink3);opacity:.75;margin-top:3px}
+
+/* 섹션 */
+section{padding:clamp(46px,6vw,72px) 0 4px;scroll-margin-top:74px}
+.sec-k{font-size:12px;font-weight:800;letter-spacing:.28em;color:var(--pri);text-transform:uppercase;margin-bottom:10px}
+h2{font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-1px;line-height:1.38;margin:0 0 6px}
+h2 em{font-style:normal;background:linear-gradient(transparent 56%,var(--mark) 56%)}
+h3{font-size:17.5px;font-weight:700;margin:28px 0 8px}
+p{color:var(--ink2);margin:12px 0;font-size:16px;max-width:820px}
+p b{color:var(--ink);font-weight:700}
+.small{font-size:13.5px;color:var(--ink3)}
+
+/* 타임라인 */
+.tl{margin:26px 0 0;border-left:2px solid var(--line);padding-left:22px}
+.tl-row{position:relative;padding:0 0 26px}
+.tl-row:last-child{padding-bottom:4px}
+.tl-row::before{content:"";position:absolute;left:-29px;top:7px;width:12px;height:12px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--pri)}
+.tl-row.now::before{background:var(--pri);box-shadow:0 0 0 5px rgba(255,122,47,.18)}
+.tl-d{font-size:13px;font-weight:800;color:var(--pri);letter-spacing:.02em}
+.tl-t{font-size:17px;font-weight:700;margin:3px 0 5px}
+.tl-row p{margin:0;font-size:15px}
+
+/* 카드 */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin:20px 0}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card .k{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;
+  letter-spacing:.06em;color:var(--pri)}
+.card h4{font-size:17px;font-weight:700;margin:9px 0 8px}
+.card p{font-size:14.5px;margin:0;color:var(--ink2)}
+.card ul{list-style:none;margin:10px 0 0;font-size:14.5px;color:var(--ink2)}
+.card li{padding:6px 0;border-top:1px solid var(--line2);line-height:1.62}
+.card li:first-child{border-top:0}
+.card li b{color:var(--ink);font-weight:700}
+.card li em{font-style:normal;color:var(--ink3);font-size:13px}
+
+/* 표 */
+.tw{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:14px}
+table{width:100%;min-width:520px;border-collapse:collapse;background:var(--surf);font-size:15px}
+th,td{padding:13px 14px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top}
+th{background:var(--bg2);color:var(--ink);font-weight:700;font-size:14px;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td b{color:var(--ink);font-weight:700}
+td a{display:inline-flex;align-items:center;min-height:44px}
+.st{display:inline-flex;align-items:center;height:24px;padding:0 9px;border-radius:6px;
+  font-size:12.5px;font-weight:800;white-space:nowrap}
+.st.run{background:rgba(120,200,140,.14);color:#8FD9A4}
+.st.prep{background:var(--pril);color:var(--prid)}
+
+/* 버튼 */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 24px;
+  border-radius:10px;background:var(--pri);color:var(--btnink);font-weight:800;font-size:16px}
+.btn:hover{background:var(--prid);text-decoration:none}
+.btn.ghost{background:transparent;color:var(--pri);border:1px solid var(--line)}
+.btn.ghost:hover{background:var(--pril)}
+
+/* 최종 CTA */
+.finalcta{margin:52px 0 8px;padding:40px 28px;text-align:center;border-radius:18px;
+  background:linear-gradient(180deg,var(--bg2),var(--surf));border:1px solid var(--line)}
+.finalcta h2{margin-bottom:6px}
+.finalcta p{margin-left:auto;margin-right:auto}
+.finalcta .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+
+footer{border-top:1px solid var(--line);margin-top:44px;padding:30px 0 44px;background:var(--bg2)}
+footer p{color:var(--ink3);font-size:13.5px;margin:5px 0}
+footer b{color:var(--ink2);font-weight:700}
+.flinks{display:flex;flex-wrap:wrap;gap:0 14px;margin:6px 0}
+.flinks a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;font-size:14px}
+
+/* 하단 고정 CTA */
+.ctabar{position:fixed;left:0;right:0;bottom:0;z-index:99;display:flex;gap:8px;
+  padding:9px 14px;padding-bottom:calc(9px + env(safe-area-inset-bottom,0px));
+  background:rgba(16,12,9,.95);border-top:1px solid var(--line);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.ctabar a{flex:1;display:inline-flex;align-items:center;justify-content:center;min-height:52px;
+  border-radius:12px;font-weight:800;font-size:16px;background:var(--pri);color:var(--btnink)}
+.ctabar a:hover{text-decoration:none}
+body{padding-bottom:86px}
+@media(min-width:860px){.ctabar{display:none}body{padding-bottom:0}}
+
+@media(max-width:640px){
+  .hcta .btn{flex:1 1 100%}
+  .card{padding:18px}
+  .finalcta{padding:30px 18px}
+  .tl{padding-left:18px}
 }
-a{color:inherit;text-decoration:none}
-.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
-
-/* nav */
-nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
-  background:rgba(7,7,12,.72);border-bottom:1px solid var(--br)}
-nav .wrap{display:flex;align-items:center;height:60px;gap:14px}
-.brand{font-weight:800;letter-spacing:.5px;font-size:18px}
-.brand b{color:var(--em2)}
-.tag{font-size:11px;color:var(--t3);border:1px solid var(--br);border-radius:20px;padding:3px 10px}
-.nav-cta{margin-left:auto;font-size:13px;font-weight:600;color:#06080f;
-  background:var(--em);padding:9px 16px;border-radius:10px;transition:.2s}
-.nav-cta:hover{background:var(--em2);box-shadow:0 0 24px var(--glow)}
-
-/* hero */
-.hero{position:relative;padding:92px 0 60px;text-align:center;overflow:hidden}
-.hero::before{content:"";position:absolute;top:-40%;left:50%;transform:translateX(-50%);
-  width:900px;height:900px;border-radius:50%;
-  background:radial-gradient(circle,var(--glow) 0%,rgba(58,139,255,.06) 38%,transparent 65%);
-  filter:blur(8px);z-index:0;pointer-events:none}
-.hero>*{position:relative;z-index:1}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--em2);
-  border:1px solid var(--br);background:rgba(58,139,255,.06);border-radius:30px;padding:7px 15px;margin-bottom:24px}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok)}
-h1{font-size:clamp(34px,6vw,62px);font-weight:850;letter-spacing:-1.5px;line-height:1.1}
-h1 .hl{background:linear-gradient(110deg,var(--em2),#c9e0ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sub{margin:22px auto 0;max-width:620px;font-size:clamp(16px,2.3vw,20px);color:var(--t2)}
-.brandbig{margin-top:30px;font-size:clamp(40px,8vw,76px);font-weight:850;letter-spacing:-2px}
-.brandbig b{color:var(--em2);text-shadow:0 0 40px var(--glow)}
-.brandbig small{display:block;font-size:14px;font-weight:600;letter-spacing:2px;color:var(--t3);margin-top:8px}
-
-.cta-row{margin-top:38px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:9px;font-size:16px;font-weight:700;
-  padding:16px 30px;border-radius:13px;cursor:pointer;border:0;transition:.2s}
-.btn-main{background:var(--em);color:#06080f;box-shadow:0 8px 30px var(--glow)}
-.btn-main:hover{background:var(--em2);transform:translateY(-2px)}
-.btn-ghost{background:transparent;color:var(--t1);border:1px solid var(--br)}
-.btn-ghost:hover{border-color:var(--em);color:var(--em2)}
-
-.badges{margin-top:42px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.badge{font-size:13px;color:var(--t2);background:var(--card);border:1px solid var(--br);
-  border-radius:10px;padding:10px 16px;display:inline-flex;align-items:center;gap:8px}
-.badge b{color:var(--t1)}
-
-/* compat strip */
-.compat{margin-top:30px;color:var(--t3);font-size:13px}
-.compat .ais{margin-top:10px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap;font-size:15px;font-weight:600;color:var(--t2)}
-.compat .ais span{display:inline-flex;align-items:center;gap:7px}
-
-/* how */
-.section{padding:74px 0;border-top:1px solid var(--br)}
-.section h2{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-1px;text-align:center}
-.section .lead{text-align:center;color:var(--t2);margin:14px auto 0;max-width:560px}
-.steps{margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-@media(max-width:760px){.steps{grid-template-columns:1fr}}
-.step{background:var(--card);border:1px solid var(--br);border-radius:18px;padding:30px 26px}
-.step .n{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-  font-weight:800;color:var(--em2);background:rgba(58,139,255,.1);border:1px solid var(--br);margin-bottom:18px}
-.step h3{font-size:19px;font-weight:750;margin-bottom:8px}
-.step p{color:var(--t2);font-size:15px}
-
-/* compare — 무료 즉시 vs 유료 커스텀 */
-.compare-grid{margin-top:46px;display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:880px;margin-left:auto;margin-right:auto}
-@media(max-width:680px){.compare-grid{grid-template-columns:1fr}}
-.cmp{background:var(--card);border:1px solid var(--br);border-radius:20px;padding:32px 28px;display:flex;flex-direction:column;position:relative}
-.cmp-pro{border-color:rgba(58,139,255,.5);box-shadow:0 0 60px rgba(58,139,255,.13)}
-.cmp-tag{align-self:flex-start;font-size:12px;font-weight:700;color:var(--em2);background:rgba(58,139,255,.1);
-  border:1px solid var(--br);border-radius:20px;padding:5px 12px;margin-bottom:16px}
-.cmp-tag-pro{color:#06080f;background:linear-gradient(110deg,var(--em),var(--em2));border-color:transparent}
-.cmp h3{font-size:23px;font-weight:800;letter-spacing:-.5px;line-height:1.25}
-.cmp-price{font-size:29px;font-weight:850;margin:14px 0 2px;color:var(--t1)}
-.cmp-price small{font-size:14px;font-weight:600;color:var(--t3)}
-.cmp-pro .cmp-price{color:var(--em2)}
-.cmp-list{list-style:none;margin:18px 0 24px;padding:0;display:flex;flex-direction:column;gap:11px;flex:1}
-.cmp-list li{font-size:14px;color:var(--t2);line-height:1.5}
-.cmp-list li b{color:var(--t1)}
-.cmp-btn{display:block;text-align:center;font-weight:750;font-size:15px;padding:15px;border-radius:13px;transition:.2s}
-.cmp-btn-free{background:rgba(58,139,255,.12);color:var(--em2);border:1px solid var(--br)}
-.cmp-btn-free:hover{background:rgba(58,139,255,.2)}
-.cmp-btn-pro{background:var(--em);color:#06080f;box-shadow:0 8px 30px var(--glow)}
-.cmp-btn-pro:hover{background:var(--em2);transform:translateY(-2px)}
-.cmp-foot{text-align:center;color:var(--t3);font-size:12px;margin-top:12px}
-
-/* survey */
-#survey{padding:78px 0}
-.form-card{max-width:600px;margin:0 auto;background:linear-gradient(180deg,var(--bg2),var(--card));
-  border:1px solid var(--br);border-radius:22px;padding:40px 34px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
-.form-card h2{text-align:center;font-size:clamp(24px,4vw,32px)}
-.form-card .lead{margin-bottom:28px}
-.field{margin-bottom:18px}
-.field label{display:block;font-size:13px;font-weight:600;color:var(--t2);margin-bottom:8px}
-.field label .req{color:var(--em2)}
-input[type=email],input[type=text],select,textarea{
-  width:100%;background:#0a0a12;border:1px solid var(--br);border-radius:11px;
-  padding:14px 15px;color:var(--t1);font-size:15px;font-family:inherit;transition:.15s}
-input:focus,select:focus,textarea:focus{outline:0;border-color:var(--em);box-shadow:0 0 0 3px rgba(58,139,255,.15)}
-textarea{resize:vertical;min-height:70px}
-select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%237ab8ff'><path d='M2 4l4 4 4-4'/></svg>");background-repeat:no-repeat;background-position:right 15px center}
-.consent{display:flex;gap:11px;align-items:flex-start;background:rgba(58,139,255,.05);
-  border:1px solid var(--br);border-radius:12px;padding:14px;margin:6px 0 22px;font-size:13px;color:var(--t2)}
-.consent input{margin-top:2px;width:18px;height:18px;accent-color:var(--em);flex-shrink:0}
-.consent a{color:var(--em2);text-decoration:underline}
-.submit{width:100%;font-size:16px;font-weight:750;padding:16px;border-radius:13px;border:0;cursor:pointer;
-  background:var(--em);color:#06080f;box-shadow:0 8px 30px var(--glow);transition:.2s}
-.submit:hover{background:var(--em2)}
-.submit:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
-.note{text-align:center;color:var(--t3);font-size:12px;margin-top:14px}
-.msg{text-align:center;margin-top:14px;font-size:14px;display:none}
-.msg.err{display:block;color:#ff8a8a}
-/* ai level cards */
-.level-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px}
-@media(max-width:540px){.level-cards{grid-template-columns:1fr}}
-.lcard{position:relative;cursor:pointer}
-.lcard input{position:absolute;opacity:0;width:0;height:0}
-.lcard-inner{border:2px solid var(--br);border-radius:13px;padding:14px 12px;background:var(--card);transition:.15s;text-align:center}
-.lcard input:checked + .lcard-inner{border-color:var(--em);background:rgba(58,139,255,.08);box-shadow:0 0 0 2px rgba(58,139,255,.18)}
-.lcard-inner .li{font-size:20px;margin-bottom:5px}
-.lcard-inner .lt{font-size:14px;font-weight:700;color:var(--t1)}
-.lcard-inner .ld{font-size:11px;color:var(--t3);margin-top:3px}
-.lcard:hover .lcard-inner{border-color:rgba(122,184,255,.35)}
-/* success */
-.done{display:none;text-align:center;padding:20px 0}
-.done.show{display:block;animation:pop .4s ease}
-@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
-.done .ico{width:78px;height:78px;border-radius:50%;margin:0 auto 22px;display:flex;align-items:center;justify-content:center;
-  font-size:38px;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.4);box-shadow:0 0 40px rgba(52,211,153,.3)}
-.done h2{color:var(--ok)}
-.done p{color:var(--t2);margin-top:12px}
-
-/* T0 창립멤버 섹션 */
-.founder{padding:80px 0;border-top:1px solid var(--br);position:relative;overflow:hidden}
-.founder::before{content:"";position:absolute;top:-30%;right:-10%;width:600px;height:600px;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,184,0,.07) 0%,transparent 65%);pointer-events:none}
-.founder-badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;
-  letter-spacing:1.5px;text-transform:uppercase;color:#f5c842;
-  background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.3);
-  border-radius:20px;padding:6px 14px;margin-bottom:20px}
-.founder h2{font-size:clamp(26px,4.5vw,42px);font-weight:850;letter-spacing:-1px}
-.founder h2 .gold{background:linear-gradient(110deg,#f5c842,#ffe896);-webkit-background-clip:text;background-clip:text;color:transparent}
-.founder .lead{margin:16px auto 0;max-width:560px;font-size:clamp(15px,2vw,18px);color:var(--t2)}
-.perks{margin:40px auto;max-width:640px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-@media(max-width:540px){.perks{grid-template-columns:1fr}}
-.perk{background:var(--card);border:1px solid rgba(245,200,66,.15);border-radius:16px;padding:20px 22px;display:flex;gap:14px;align-items:flex-start}
-.perk-ico{font-size:24px;flex-shrink:0;margin-top:2px}
-.perk h4{font-size:15px;font-weight:750;margin-bottom:4px}
-.perk p{font-size:13px;color:var(--t2)}
-.founder-form{max-width:480px;margin:0 auto}
-.founder-form h3{font-size:20px;font-weight:800;text-align:center;margin-bottom:6px}
-.founder-form .sub{text-align:center;color:var(--t3);font-size:13px;margin-bottom:24px}
-.founder-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-@media(max-width:480px){.founder-fields{grid-template-columns:1fr}}
-.founder-seat{text-align:center;font-size:12px;color:var(--t3);margin-bottom:18px}
-.founder-seat b{color:#f5c842}
-.btn-gold{background:linear-gradient(110deg,#d4a017,#f5c842);color:#06080f;font-weight:800;
-  width:100%;font-size:16px;padding:16px;border-radius:13px;border:0;cursor:pointer;
-  box-shadow:0 8px 30px rgba(245,200,66,.25);transition:.2s}
-.btn-gold:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(245,200,66,.35)}
-.btn-gold:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.founder-done{display:none;text-align:center;padding:24px 0}
-.founder-done.show{display:block;animation:pop .4s ease}
-.founder-done .ico{width:72px;height:72px;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;
-  font-size:34px;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.4);box-shadow:0 0 40px rgba(245,200,66,.2)}
-.founder-done h3{color:#f5c842;font-size:22px;font-weight:800}
-.founder-done p{color:var(--t2);margin-top:10px;font-size:15px}
-
-/* real cases */
-.cases-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:40px}
-.case-card{background:var(--card);border:1px solid var(--br);border-radius:16px;padding:28px 26px}
-.case-icon{font-size:32px;margin-bottom:14px}
-.case-card h3{font-size:17px;font-weight:800;letter-spacing:-.4px;margin-bottom:10px}
-.case-card p{color:var(--t2);font-size:14px;line-height:1.7;margin:0}
-.case-result{color:var(--em2);font-weight:700;margin-top:10px!important}
-.case-note{text-align:center;color:var(--t3);font-size:12px;margin-top:22px}
-
-/* footer */
-footer{border-top:1px solid var(--br);padding:40px 0;color:var(--t3);font-size:13px}
-footer .wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
-footer a{color:var(--t3)}footer a:hover{color:var(--em2)}
-.foot-links{display:flex;gap:18px;flex-wrap:wrap}
 </style>
 </head>
 <body>
 
-<nav><div class="wrap">
-  <div class="brand">AIG<b>STACK</b></div>
-  <span class="tag">AI 비서 세팅</span>
-  <a href="#founder" class="nav-cta" style="background:linear-gradient(110deg,#d4a017,#f5c842);color:#06080f">🏅 창립멤버 신청</a>
-  <a href="#survey" class="nav-cta" style="margin-left:8px">무료로 받기</a>
-  <a href="#contact" class="nav-cta" style="margin-left:8px;background:transparent;color:var(--em2);border:1px solid var(--br);box-shadow:none">문의하기</a>
-</div></nav>
-
-<!-- HERO -->
-<header class="hero"><div class="wrap">
-  <div class="eyebrow"><span class="dot"></span> 가입 없이 · 설문 한 번 · 이메일로 즉시</div>
-  <h1>여러분의 개인비서를<br><span class="hl">만들어 드립니다</span></h1>
-  <p class="sub">복잡한 세팅도, 가입도 필요 없습니다. 설문에 답하면<br>당신의 일에 꼭 맞는 <b>AI 비서 설정 프롬프트</b>를 이메일로 보내드려요.</p>
-  <div class="brandbig">AI 비서 <b>비서IN</b><small>BISEO·IN — 당신 안의 비서</small></div>
-
-  <div class="cta-row">
-    <a href="#founder" class="btn btn-main" style="background:linear-gradient(110deg,#d4a017,#f5c842);color:#06080f;box-shadow:0 8px 30px rgba(245,200,66,.3)">🏅 창립멤버 신청 (한정)</a>
-    <a href="#survey" class="btn btn-ghost">▶ 무료 비서 먼저 받기</a>
-  </div>
-
-  <div class="badges">
-    <span class="badge">✅ <b>가입 불필요</b></span>
-    <span class="badge">📧 <b>이메일로 즉시 발송</b></span>
-    <span class="badge">🎯 <b>직군 맞춤</b> 설정</span>
-  </div>
-
-  <div class="compat">하나의 설문, 어떤 AI에서도 그대로
-    <div class="ais"><span>🟣 제미나이</span><span>🟠 클로드</span><span>🟢 챗GPT</span></div>
-  </div>
+<header class="gnb"><div class="gnb-in">
+  <a class="logo" href="/"><b>AIG<i>S</i>TACK</b> <span>주식회사 에이아이지스택</span></a>
+  <nav class="gnb-nav">
+    <a href="#story">시작</a><a href="#built">만든 것</a><a href="#now">지금</a><a href="#company">회사</a>
+  </nav>
+  <a class="gnb-cta" href="#contact">문의</a>
 </div></header>
 
-<!-- 무료 즉시 vs 유료 커스텀 비교 -->
-<section class="section" id="compare"><div class="wrap">
-  <h2>두 가지로 받으세요</h2>
-  <p class="lead">먼저 무료로 받아보고, 더 깊은 세팅이 필요하면 맞춤 제작으로.</p>
-  <div class="compare-grid">
+<div class="hero"><div class="wrap">
+  <div class="chips">
+    <span class="chip">온프레미스</span><span class="chip">직접 구축 · 직접 운영</span><span class="chip">2026년 5월 ~</span>
+  </div>
+  <h1>AI 회사를,<br><em>서버 한 대에서</em> 시작했습니다</h1>
+  <p class="lead">빌려 쓰는 대시보드가 아니라 <b>운영 체계를 직접 세웠습니다.</b>
+    로그 수집기, 오류 데이터베이스, 작업 오케스트레이터, 감시 데몬을 먼저 깔고
+    그 위에 도구를 하나씩 올렸습니다. 지금은 그 도구들로 <b>실제 제품을 만들어 팔고 있습니다.</b></p>
+  <div class="hcta">
+    <a class="btn" href="#built">만든 것 보기</a>
+    <a class="btn ghost" href="https://sonarstudio.kr/">영상 제작 — 소냐스튜디오 →</a>
+  </div>
 
-    <!-- 무료 -->
-    <div class="cmp cmp-free">
-      <span class="cmp-tag">무료 · 즉시</span>
-      <h3>설정 프롬프트<br>즉시 받기</h3>
-      <div class="cmp-price">₩0 <small>· 가입 불필요</small></div>
-      <ul class="cmp-list">
-        <li>✓ 1분 설문 → <b>이메일로 자동 발송</b></li>
-        <li>✓ 직군·숙련도 맞춤 템플릿</li>
-        <li>✓ 챗GPT·클로드·제미나이 그대로 사용</li>
-        <li>✓ 지금 바로, 기다림 없이</li>
+  <div class="stats">
+    <div class="stat"><b>25개</b><span>상시 가동 서비스</span><i>24시간 도는 것</i></div>
+    <div class="stat"><b>66개</b><span>플랫폼</span><i>직접 29 · 자동생성 37</i></div>
+    <div class="stat"><b>17.7만 줄</b><span>직접 쓴 코드</span><i>파이썬 943개 파일</i></div>
+    <div class="stat"><b>588회</b><span>커밋</span><i>작업일지 60일치</i></div>
+  </div>
+  <p class="small" style="margin-top:10px">2026-08-02 기준 실측입니다. 코드 규모는 외부 라이브러리를 뺀
+    자체 디렉토리 기준입니다.</p>
+</div></div>
+
+<div class="wrap">
+
+<section id="story">
+  <div class="sec-k">How it started</div>
+  <h2>도구보다 <em>바닥을 먼저</em> 깔았습니다</h2>
+  <p>대부분은 AI로 뭘 만들지부터 정합니다. 저는 반대로 갔습니다.
+    <b>무엇을 만들든 결국 로그가 남고, 오류가 나고, 누군가 지켜봐야 한다</b>는 것을 알고 있었기 때문입니다.
+    그래서 첫날 만든 것은 제품이 아니라 <b>공장의 바닥</b>이었습니다.</p>
+
+  <div class="tl">
+    <div class="tl-row">
+      <div class="tl-d">2026년 5월 25일 — 첫날</div>
+      <div class="tl-t">작업 오케스트레이터 · 로그 훅 · 검증 게이트</div>
+      <p>일감을 분해해 순서대로 실행하는 오케스트레이터, 모든 동작을 끊김 없이 적재하는 로그 훅,
+        결과를 다른 모델이 검증해야만 통과시키는 게이트를 먼저 만들었습니다.
+        AI가 만든 것을 AI가 검사하는 구조를 이날 세웠습니다.</p>
+    </div>
+    <div class="tl-row">
+      <div class="tl-d">2026년 5월 26일 — 외부 개통</div>
+      <div class="tl-t">관측 파이프라인 · 오류 데이터베이스 · 감시 데몬</div>
+      <p>외부 접속을 열고, 로그를 수집기 → 저장소 → 대시보드로 흘리는 관측 파이프라인을 붙였습니다.
+        같은 날 <b>오류 패턴 데이터베이스</b>를 만들어 초기 15건을 넣었습니다.
+        같은 실수를 두 번 하지 않기 위한 장치이고, 지금도 모든 작업이 이 DB를 먼저 검색합니다.</p>
+    </div>
+    <div class="tl-row">
+      <div class="tl-d">2026년 6월</div>
+      <div class="tl-t">GPU 서버 반납 · 라우터 구조로 전환</div>
+      <p>처음에는 로컬 GPU 서버에서 언어모델 세 대를 직접 돌렸습니다(생성·코드·검증).
+        비용 대비 효율을 실측한 뒤 서버를 반납하고, <b>여러 제공자를 자동으로 갈아타는 라우터</b>로 바꿨습니다.
+        무료 자원을 먼저 쓰고 실패할 때만 유료로 내려가는 구조라, 고정비가 사용량을 따라 움직입니다.</p>
+    </div>
+    <div class="tl-row">
+      <div class="tl-d">2026년 7월</div>
+      <div class="tl-t">파는 물건과 받는 창구</div>
+      <p>영상 제작 브랜드(소냐스튜디오) 판매 페이지를 열고,
+        문의 폼 → 데이터베이스 → 메일·메신저로 이어지는 <b>접수 파이프라인</b>을 붙였습니다.
+        자료 첨부, 유입 경로 기록, 미처리 건 자동 집계까지 한 줄로 이어집니다.</p>
+    </div>
+    <div class="tl-row now">
+      <div class="tl-d">2026년 8월 — 지금</div>
+      <div class="tl-t">법인으로 운영 중</div>
+      <p>주식회사로 등록해 운영하고 있습니다. 도구는 계속 늘고 있고,
+        결제 통로와 정식 서비스화를 준비하는 단계입니다.</p>
+    </div>
+  </div>
+</section>
+
+<section id="built">
+  <div class="sec-k">What we built</div>
+  <h2>만든 것 — <em>전부 직접 짜서 서버에 올렸습니다</em></h2>
+  <p>외주도, 노코드 도구도 쓰지 않았습니다. 아래는 지금 이 서버에서 실제로 도는 것들입니다.
+    이름 옆 숫자는 서비스가 붙어 있는 포트입니다.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="k">🎬 영상 제작</div>
+      <h4>기획부터 출고까지 한 줄로</h4>
+      <ul>
+        <li><b>소냐스튜디오</b> — 촬영 없이 만드는 AI 영상 제작. 판매 페이지 5종·작업일지·영상 갤러리 <em>sonarstudio.kr</em></li>
+        <li><b>캐스팅 · 얼굴 고정</b> — 캐릭터를 만들고 얼굴을 고정해 여러 영상에 재사용</li>
+        <li><b>스토리보드 관문</b> — 콘티 없이는 렌더로 못 넘어가게 막는 강제 게이트</li>
+        <li><b>시나리오 스튜디오 · 배치 생성 라인</b> — 대본에서 컷 목록, 컷 목록에서 이미지·영상을 줄지어 생성</li>
+        <li><b>로컬 생성 서버</b> — 콘티·시안용 이미지를 이 컴퓨터에서 직접 생성(비용 0)</li>
       </ul>
-      <a href="#survey" class="cmp-btn cmp-btn-free">무료로 받기 →</a>
-      <p class="cmp-foot">바로 붙여넣고 쓰는 기성 프롬프트</p>
     </div>
 
-    <!-- 유료 커스텀 -->
-    <div class="cmp cmp-pro">
-      <span class="cmp-tag cmp-tag-pro">1:1 맞춤 · 프리미엄</span>
-      <h3>커스텀 프롬프트<br>개발 후 개별 발송</h3>
-      <div class="cmp-price">맞춤 견적 <small>· 범위에 따라</small></div>
-      <ul class="cmp-list">
-        <li>★ <b>당신 업무를 직접 분석</b>해 제작</li>
-        <li>★ 하드웨어·폴더·자동화까지 설계</li>
-        <li>★ 며칠 내 <b>개별 이메일로 발송</b></li>
-        <li>★ 기성품이 아닌, 사람이 만든 전용 프롬프트</li>
+    <div class="card">
+      <div class="k">🏢 사업 운영</div>
+      <h4>돈과 일이 새지 않게</h4>
+      <ul>
+        <li><b>문의 접수 API</b> <em>8016</em> — 폼 → DB → 메일·메신저. 자료 첨부·유입 경로·미처리 집계</li>
+        <li><b>구독 · 과금</b> <em>8034</em> — 요금제와 사용량 집계</li>
+        <li><b>일정 허브 · 전체 보고서</b> <em>8090</em> — 매일 아침 자동 생성되는 운영 보고서</li>
+        <li><b>지원사업 레이더</b> <em>9064</em> — 정부·기관 공고를 모아 마감일 역순으로 감시</li>
+        <li><b>광고 카피 생성</b> <em>8030</em> · <b>웹 자동화</b> <em>8038</em></li>
       </ul>
-      <a href="https://api.aigstack.kr/setup-survey" class="cmp-btn cmp-btn-pro">커스텀 신청하기 →</a>
-      <p class="cmp-foot">당신만을 위한 맞춤 세팅</p>
     </div>
 
-  </div>
-</div></section>
-
-<!-- HOW -->
-<section class="section" id="how"><div class="wrap">
-  <h2>3단계면 끝납니다</h2>
-  <p class="lead">설치도, 계정도, 결제도 없습니다. 딱 1분.</p>
-  <div class="steps">
-    <div class="step"><div class="n">1</div><h3>설문에 답하기</h3>
-      <p>직업과 가장 시간 뺏기는 일을 알려주세요. 이메일만 있으면 됩니다.</p></div>
-    <div class="step"><div class="n">2</div><h3>맞춤 프롬프트 수신</h3>
-      <p>당신의 일에 맞춘 ‘비서IN’ 설정 프롬프트를 이메일로 보내드립니다.</p></div>
-    <div class="step"><div class="n">3</div><h3>붙여넣고 바로 사용</h3>
-      <p>제미나이·클로드·챗GPT 어디든 붙여넣으면, 그 순간 당신의 개인비서.</p></div>
-  </div>
-</div></section>
-
-<!-- SURVEY -->
-<section id="survey"><div class="wrap">
-  <div class="form-card">
-    <div id="formView">
-      <h2>내 AI 비서 받기</h2>
-      <p class="lead" style="text-align:center;color:var(--t2)">1분 설문 → 이메일로 설정 프롬프트 발송</p>
-
-      <div class="field">
-        <label>AI 사용 수준 <span class="req">*</span></label>
-        <div class="level-cards">
-          <label class="lcard">
-            <input type="radio" name="ai_level" value="초급">
-            <div class="lcard-inner"><div class="li">💬</div><div class="lt">초급</div><div class="ld">채팅으로만 씁니다</div></div>
-          </label>
-          <label class="lcard">
-            <input type="radio" name="ai_level" value="중급">
-            <div class="lcard-inner"><div class="li">⚙️</div><div class="lt">중급</div><div class="ld">커스텀 지침·프로젝트 씁니다</div></div>
-          </label>
-          <label class="lcard">
-            <input type="radio" name="ai_level" value="고급">
-            <div class="lcard-inner"><div class="li">🧠</div><div class="lt">고급</div><div class="ld">시스템 프롬프트 직접 짭니다</div></div>
-          </label>
-        </div>
-      </div>
-      <div class="field">
-        <label>이메일 <span class="req">*</span></label>
-        <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
-      </div>
-      <div class="field">
-        <label>직군</label>
-        <select id="role">
-          <option value="">선택해 주세요</option>
-          <option>AI개발자·개발자</option>
-          <option>의사·의료</option>
-          <option>변호사·법률</option>
-          <option>세무사·회계사</option>
-          <option>자영업·소상공인</option>
-          <option>쇼핑몰·온라인셀러</option>
-          <option>공인중개사·부동산</option>
-          <option>강사·교사</option>
-          <option>마케터·디자이너</option>
-          <option>회사원·직장인</option>
-          <option>프리랜서·1인기업</option>
-          <option>학생·취업준비</option>
-          <option>그외(기타)</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>직책</label>
-        <select id="position">
-          <option value="">선택해 주세요</option>
-          <option>대표·CEO</option>
-          <option>임원·이사</option>
-          <option>팀장·관리자</option>
-          <option>실무자(사원~과장)</option>
-          <option>프리랜서·1인</option>
-          <option>학생·취준생</option>
-          <option>그외(기타)</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>주로 쓰는 AI</label>
-        <select id="ai_tool">
-          <option value="">선택 안 함 / 아직 없음</option>
-          <option value="gemini">제미나이 (Gemini)</option>
-          <option value="claude">클로드 (Claude)</option>
-          <option value="chatgpt">챗GPT (ChatGPT)</option>
-          <option value="여러개">여러 개 같이</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>가장 시간 뺏기는 업무 한 가지</label>
-        <textarea id="pain" placeholder="예: 이메일 답장, 보고서 초안, 진료기록 정리, 상품 설명 작성…"></textarea>
-      </div>
-
-      <label class="consent">
-        <input type="checkbox" id="consent">
-        <span>(필수) 설정 프롬프트 발송 및 <b>마케팅·광고성 정보 수신</b>에 동의합니다.
-        직군 맞춤 정보와 신규 기능 안내를 이메일로 받습니다. 언제든 수신거부 가능.</span>
-      </label>
-      <label class="consent" style="margin-top:10px;background:rgba(245,200,66,.06);border:1px solid rgba(245,200,66,.2);border-radius:10px;padding:12px 14px">
-        <input type="checkbox" id="founderJoin" style="accent-color:#f5c842">
-        <span>🏅 <b style="color:#f5c842">창립멤버 신청하시겠습니까?</b> 체크하면 대기명단에 함께 등록됩니다. (무입금 · 한정 50명)</span>
-      </label>
-
-      <button class="submit" id="go">설문 완료하고 무료로 받기 →</button>
-      <p class="msg err" id="err"></p>
-      <p class="note">스팸 없이, 약속한 내용만 보냅니다 · <a href="#contact" style="color:var(--em2)">문의하기</a></p>
+    <div class="card">
+      <div class="k">📡 정보 수집 · 분석</div>
+      <h4>매일 알아서 물어옵니다</h4>
+      <ul>
+        <li><b>인텔리전스 엔진</b> <em>8010</em> — 수집한 데이터를 요약해 판단 재료로</li>
+        <li><b>뉴스 수집 · 스크립트 수집 · 트렌드 연구소</b> <em>8502 · 9065</em></li>
+        <li><b>유튜브 · 앱스토어 · 쇼핑 레이더</b> — 경쟁·시장 신호를 자동 정찰</li>
+        <li><b>공공 데이터 파이프라인</b> — 기상청 지진·날씨, 한국은행, 미 연준 지표를 주기적으로 적재</li>
+      </ul>
     </div>
 
-    <div class="done" id="doneView">
-      <div class="ico">✓</div>
-      <h2>설문 완료!</h2>
-      <p id="doneMsg">당신만의 ‘비서IN’ 설정 프롬프트를<br>입력하신 이메일로 보내드릴게요. 메일함을 확인해 주세요.</p>
+    <div class="card">
+      <div class="k">🛡️ 관측 · 안전장치</div>
+      <h4>혼자 운영해도 안 무너지게</h4>
+      <ul>
+        <li><b>로그 파이프라인</b> — 모든 서비스 로그를 한 곳에 모아 대시보드로</li>
+        <li><b>오류 데이터베이스</b> — 겪은 오류와 해결책을 쌓아두고, 작업 전에 먼저 검색</li>
+        <li><b>감시 데몬 · 알림 봇</b> — 서비스가 죽거나 자원이 위험하면 즉시 통보</li>
+        <li><b>중앙 관제 · 운영 스위치보드</b> — 무엇이 도는지 한 화면에서 확인</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="k">🧪 제품 실험</div>
+      <h4>만들어서 실제로 띄워봤습니다</h4>
+      <ul>
+        <li><b>K-뮤지엄 가이드</b> — 전시 안내 웹앱 <em>k-tour.aigstack.kr</em></li>
+        <li><b>운전면허 학습 앱(러시아어)</b> · <b>동네 재정 비교 지도</b></li>
+        <li><b>당구 자세 코치</b> — 자세 분석 프로토타입</li>
+        <li><b>에이전트 룸</b> <em>8037</em> — AI 작업자들이 붙어서 일하는 작업실</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="k">⚙️ 운영 체계</div>
+      <h4>사람이 기억하지 않아도 되게</h4>
+      <ul>
+        <li><b>슬래시 명령 19개 · 작업 스킬 67개</b> — 반복 작업을 말 한마디로</li>
+        <li><b>데이터베이스 26개</b> — 문의·과금·지식·자산을 종류별로 분리 보관</li>
+        <li><b>문서 2,248건</b> — 작업 기준과 판단 근거를 글로 남겨 재현 가능하게</li>
+        <li><b>자동 백업 · 정기 실행</b> — 정해진 시각에 알아서 도는 작업들</li>
+      </ul>
     </div>
   </div>
-</div></section>
+</section>
 
-<!-- T0 창립멤버 사전예약 -->
-<section class="founder" id="founder"><div class="wrap" style="text-align:center">
-  <div class="founder-badge">🏅 창립멤버 · 한정 모집</div>
-  <h2>비서인 플랫폼 <span class="gold">창립멤버</span>로<br>가장 먼저 시작하세요</h2>
-  <p class="lead">CEO·임원·전문직을 위한 AI 개인비서 플랫폼.<br>창립멤버는 정가 대비 최대 <b style="color:#f5c842">50% 할인</b> + 얼리 접근 + 직접 온보딩을 받습니다.</p>
+<section id="now">
+  <div class="sec-k">Now</div>
+  <h2>지금은 <em>법인으로 운영하며</em> 정식 서비스를 준비 중입니다</h2>
+  <p>만든 것을 파는 단계로 넘어가고 있습니다. 아래가 지금 상태 그대로입니다 —
+    <b>되는 것과 준비 중인 것을 섞어 적지 않았습니다.</b></p>
 
-  <div class="perks">
-    <div class="perk"><div class="perk-ico">🔓</div><div><h4>플랫폼 얼리 접근</h4><p>정식 오픈 전 베타 우선 입장. 피드백이 제품에 직접 반영됩니다.</p></div></div>
-    <div class="perk"><div class="perk-ico">💳</div><div><h4>창립 할인 구독</h4><p>정가 대비 최대 50% 할인 구독 — 창립멤버 기간 동안 유지.</p></div></div>
-    <div class="perk"><div class="perk-ico">🤝</div><div><h4>설립팀 직접 온보딩</h4><p>설립팀이 직접 1:1로 세팅 도와드립니다. (화상·대면 선택)</p></div></div>
-    <div class="perk"><div class="perk-ico">📣</div><div><h4>로드맵 결정권</h4><p>신기능 우선순위 투표 참여. 창립멤버 의견이 제품을 만듭니다.</p></div></div>
+  <div class="tw">
+    <table>
+      <tr><th>구분</th><th>내용</th><th>상태</th></tr>
+      <tr><td><b>법인 운영</b></td><td>주식회사 에이아이지스택 · 사업자등록 완료</td><td><span class="st run">운영 중</span></td></tr>
+      <tr><td><b>영상 제작 판매</b></td><td>소냐스튜디오 — 착공식·가맹모집·크라우드펀딩·분양 4개 분야 판매 페이지 운영</td><td><span class="st run">운영 중</span></td></tr>
+      <tr><td><b>문의 접수</b></td><td>홈페이지 폼 → 데이터베이스 → 담당자 메일·메신저 자동 전달(자료 첨부 포함)</td><td><span class="st run">운영 중</span></td></tr>
+      <tr><td><b>서비스 서버</b></td><td>온프레미스 상시 가동 · 로그·오류·자원 자동 감시</td><td><span class="st run">운영 중</span></td></tr>
+      <tr><td><b>온라인 결제</b></td><td>PG 가입 및 통신판매업 신고 진행 · 연동 개발 단계</td><td><span class="st prep">준비 중</span></td></tr>
+      <tr><td><b>CEO AI 세팅 대행</b></td><td>대표 업무를 AI로 옮기는 셋업 서비스</td><td><span class="st prep">준비 중</span></td></tr>
+      <tr><td><b>자체 영상 IP</b></td><td>캐릭터·시리즈 자체 제작 및 채널 운영</td><td><span class="st prep">준비 중</span></td></tr>
+    </table>
   </div>
 
-  <div class="founder-form">
-    <div id="founderFormView">
-      <h3>대기명단 등록 (무입금)</h3>
-      <p class="sub">지금은 자리만 잡아두세요. 펀딩 오픈 시 가장 먼저 연락드립니다.</p>
-      <div class="founder-fields">
-        <input type="text" id="f_name" placeholder="이름 (선택)" autocomplete="name">
-        <select id="f_role">
-          <option value="">직책 선택</option>
-          <option>대표·CEO</option>
-          <option>임원·이사</option>
-          <option>변호사·의사·전문직</option>
-          <option>팀장·관리자</option>
-          <option>개발자</option>
-          <option>기타</option>
-        </select>
-      </div>
-      <input type="email" id="f_email" placeholder="이메일 *" autocomplete="email" style="width:100%;margin-bottom:12px">
-      <p class="founder-seat">현재 대기 신청 가능 · 펀딩 오픈 시 이메일 안내</p>
-      <button class="btn-gold" id="f_go">창립멤버 대기명단 등록 →</button>
-      <p class="msg err" id="f_err" style="margin-top:10px;font-size:13px"></p>
-    </div>
-    <div class="founder-done" id="founderDoneView">
-      <div class="ico">🏅</div>
-      <h3>대기명단 등록 완료!</h3>
-      <p>펀딩 오픈 시 가장 먼저 연락드립니다.<br><a href="#contact" style="color:var(--em2)">문의하기 →</a></p>
-    </div>
+  <h3>일하는 방식 3가지</h3>
+  <div class="grid">
+    <div class="card"><div class="k">01</div><h4>기록이 먼저</h4>
+      <p>모든 작업은 로그와 문서로 남습니다. 반 년 뒤에 봐도 왜 그렇게 했는지 알 수 있습니다.</p></div>
+    <div class="card"><div class="k">02</div><h4>같은 실수는 한 번만</h4>
+      <p>오류는 데이터베이스에 쌓입니다. 같은 상황이 오면 검색이 먼저이고, 발명은 그다음입니다.</p></div>
+    <div class="card"><div class="k">03</div><h4>내 서버 안에</h4>
+      <p>데이터와 산출물이 남의 서비스에 인질로 잡히지 않습니다. 필요한 만큼만 외부를 빌려 씁니다.</p></div>
   </div>
-</div></section>
+</section>
 
-<!-- 실제 사례 -->
-<section class="section" id="cases"><div class="wrap">
-  <h2>실제 사례 — AI가 다 하고, 사람은 결정만</h2>
-  <p class="lead">말만 하지 않습니다. AIGSTACK은 우리 일부터 AI로 이렇게 풀었습니다.</p>
-  <div class="cases-grid">
-    <div class="case-card">
-      <div class="case-icon">🧾</div>
-      <h3>계약 분쟁, AI가 처리</h3>
-      <p>장비 임대 중도해지에서 상대가 위약금 <b style="color:var(--t1)">약 370만원</b>을 청구. AI가 계약서를 전수 검토해 <b style="color:var(--em2)">근거 없는 조항을 간파</b>하고 판례 7건 근거로 반박 이메일을 작성. 대표가 한 일은 "보낼까요?"에 <b style="color:var(--t1)">OK 한 번</b>.</p>
-      <p class="case-result">→ 상대 주장 완전 철회 · 약 206만원 절감 확정</p>
-    </div>
-    <div class="case-card">
-      <div class="case-icon">🎤</div>
-      <h3>86분 회의, 보고서 3종으로</h3>
-      <p>86분짜리 음성 회의를 AI가 <b style="color:var(--em2)">자동 전사</b>하고, 회의록·원가 분석·고객 브리핑용 보고서를 <b style="color:var(--t1)">3종 동시 생성</b>. 담당자가 한 일은 녹음 파일 전달과 최종 검토뿐.</p>
-      <p class="case-result">→ 반나절 작업을 10분으로 · 3종 즉시 납품</p>
-    </div>
-    <div class="case-card">
-      <div class="case-icon">✍️</div>
-      <h3>SNS 콘텐츠 250편, 하루에</h3>
-      <p>6개월치 SNS 포스팅 콘텐츠를 AI가 시리즈 3종(거짓말·사례·이유)으로 <b style="color:var(--em2)">250편 완성</b>. 주제·구조·캘린더까지 세트로. 담당자는 게시 버튼만 누르면 됨.</p>
-      <p class="case-result">→ 6개월치 콘텐츠를 1일 작업으로</p>
-    </div>
-    <div class="case-card">
-      <div class="case-icon">💸</div>
-      <h3>비용 데이터 → 즉시 의사결정</h3>
-      <p>10일치 AI 사용 로그를 분석해 <b style="color:var(--em2)">API 동급 비용 $445</b>를 산출. 데이터 근거로 더 나은 요금제로 전환 결정. "느낌"이 아닌 <b style="color:var(--t1)">숫자로 결정</b>.</p>
-      <p class="case-result">→ 비용 분석부터 결정까지 당일 완료</p>
-    </div>
-    <div class="case-card">
-      <div class="case-icon">🖥️</div>
-      <h3>서비스 장애, AI가 원인 진단</h3>
-      <p>홈페이지 530 오류·내부 앱 7개 장애를 AI가 <b style="color:var(--em2)">계층별 원인 분리</b>(DNS·nginx·프로세스)해 순서대로 복구. 담당자는 "확인해줘" 한 마디로 시작.</p>
-      <p class="case-result">→ 전 서비스 정상 복구 · 재발 방지 항구화</p>
-    </div>
-    <div class="case-card">
-      <div class="case-icon">🎯</div>
-      <h3>당신의 일에도</h3>
-      <p>계약·회의록·콘텐츠·비용분석·장애대응 — 당신 직군에 맞춰 AI가 일하고, 결정은 당신이. 무료 비서IN부터 받아보세요.</p>
-      <p style="margin-top:10px"><a href="#survey" style="color:var(--em2);font-weight:700">↑ 위에서 무료로 받기</a></p>
-    </div>
+<section id="company">
+  <div class="sec-k">Company</div>
+  <h2>회사 정보</h2>
+  <div class="tw">
+    <table>
+      <tr><td style="width:170px"><b>상호</b></td><td>주식회사 에이아이지스택 (AIGSTACK)</td></tr>
+      <tr><td><b>사업자등록번호</b></td><td>291-87-03996</td></tr>
+      <tr><td><b>주소</b></td><td>경기도 성남시 중원구 자혜로64번길 8</td></tr>
+      <tr><td><b>이메일</b></td><td>ceo@aigstack.kr</td></tr>
+      <tr><td><b>사업 분야</b></td><td>AI 영상 제작 · AI 업무 자동화 도구 개발 · 데이터 수집 및 분석</td></tr>
+      <tr><td><b>운영 사이트</b></td><td>
+        <a href="https://sonarstudio.kr/">소냐스튜디오</a> (영상 제작) ·
+        <a href="/pages/biseoin.html">비서IN</a> (CEO AI 세팅) ·
+        <a href="https://www.youtube.com/@AI_GSTACK" rel="me">유튜브 채널</a></td></tr>
+    </table>
   </div>
-  <p class="case-note">실제 AIGSTACK 운영 사례 · 거래처 정보와 정확한 금액은 사생활 보호를 위해 일반화했습니다.</p>
-</div></section>
+</section>
 
-<!-- CONTACT -->
-<section id="contact"><div class="wrap">
-  <div class="form-card">
-    <div id="cView">
-      <h2>문의하기</h2>
-      <p class="lead" style="text-align:center;color:var(--t2)">도입 상담 · 견적 · 제휴 — 영업일 기준 24시간 내 회신드립니다.</p>
-
-      <div class="field">
-        <label>이름 <span class="req">*</span></label>
-        <input type="text" id="c_name" placeholder="홍길동" autocomplete="name">
-      </div>
-      <div class="field">
-        <label>연락처 <span class="req">*</span></label>
-        <input type="text" id="c_phone" placeholder="010-0000-0000" autocomplete="tel">
-      </div>
-      <div class="field">
-        <label>이메일 <span class="req">*</span></label>
-        <input type="email" id="c_email" placeholder="you@example.com" autocomplete="email">
-      </div>
-      <div class="field">
-        <label>회사 / 소속</label>
-        <input type="text" id="c_company" placeholder="(선택)" autocomplete="organization">
-      </div>
-      <div class="field">
-        <label>관심 분야</label>
-        <select id="c_solution">
-          <option value="일반 문의">일반 문의</option>
-          <option value="온프레미스 AI 구축">온프레미스 AI 구축</option>
-          <option value="AI 비서 커스텀 세팅">AI 비서 커스텀 세팅</option>
-          <option value="AI 영상 제작 (SONAR STUDIO)">AI 영상 제작 (SONAR STUDIO)</option>
-          <option value="데이터 인텔리전스">데이터 인텔리전스</option>
-          <option value="제휴 · 투자">제휴 · 투자</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>문의 내용 <span class="req">*</span></label>
-        <textarea id="c_message" placeholder="어떤 점이 궁금하신지 편하게 적어주세요." style="min-height:120px"></textarea>
-      </div>
-
-      <button class="submit" id="c_go">문의 보내기 →</button>
-      <p class="msg err" id="c_err"></p>
-      <p class="note">보내주신 내용은 담당자 메일로 즉시 전달됩니다.</p>
-    </div>
-
-    <div class="done" id="cDoneView">
-      <div class="ico">✉️</div>
-      <h2>문의가 접수되었습니다</h2>
-      <p>영업일 기준 24시간 이내에<br>남겨주신 연락처로 회신드리겠습니다.</p>
-    </div>
+<div class="finalcta" id="contact">
+  <h2>같이 만들 것이 있으면 <em>연락 주십시오</em></h2>
+  <p>영상 제작 의뢰는 소냐스튜디오에서 바로 접수됩니다.
+    그 외 협업·제휴·개발 문의는 메일로 주시면 됩니다.</p>
+  <div class="row">
+    <a class="btn" href="https://sonarstudio.kr/#contact">영상 제작 문의 →</a>
+    <a class="btn ghost" href="mailto:ceo@aigstack.kr">메일 보내기</a>
   </div>
-</div></section>
+</div>
+
+</div>
 
 <footer><div class="wrap">
-  <div>© 2026 AIGSTACK · 온프레미스 AI 비서 플랫폼</div>
-  <div class="foot-links">
-    <a href="#contact">문의하기</a>
-  </div>
+  <p><b>주식회사 에이아이지스택</b> · AIGSTACK</p>
+  <p>사업자등록번호 291-87-03996 · 경기도 성남시 중원구 자혜로64번길 8 · ceo@aigstack.kr</p>
+  <nav class="flinks">
+    <a href="#story">시작</a><a href="#built">만든 것</a><a href="#now">지금</a><a href="#company">회사</a>
+    <a href="https://sonarstudio.kr/">소냐스튜디오</a><a href="/pages/biseoin.html">비서IN</a>
+    <a href="https://www.youtube.com/@AI_GSTACK" rel="me">유튜브</a>
+  </nav>
+  <p>본 사이트에서 소개하는 영상 산출물은 생성형 AI로 제작됩니다.</p>
 </div></footer>
 
-<script>
-const $=id=>document.getElementById(id);
-const ENDPOINT="https://api.aigstack.kr/survey";
-const WAITLIST_EP="https://api.aigstack.kr/waitlist";
-const SUBMIT_EP="https://api.aigstack.kr/submit";
-
-// ── 일반 문의 → inquiry API (DB + 메일 + 디스코드) ──
-$("c_go").onclick=async()=>{
-  const name=$("c_name").value.trim(), phone=$("c_phone").value.trim(),
-        email=$("c_email").value.trim(), message=$("c_message").value.trim();
-  const err=$("c_err");
-  err.textContent="";
-  if(!name||!phone||!email||!message){ err.textContent="이름·연락처·이메일·문의내용은 필수입니다."; return; }
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ err.textContent="이메일 형식을 확인해 주세요."; return; }
-  $("c_go").disabled=true; $("c_go").textContent="보내는 중…";
-  try{
-    const r=await fetch(SUBMIT_EP,{method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({name,phone,email,company:$("c_company").value.trim(),
-        solutions:["[aigstack.kr] "+$("c_solution").value],message})});
-    const j=await r.json();
-    if(j.ok){ $("cView").style.display="none"; $("cDoneView").classList.add("show"); }
-    else{ err.textContent=j.detail||"접수 실패 — 잠시 후 다시 시도해 주세요."; }
-  }catch(e){ err.textContent="전송 오류 — 잠시 후 다시 시도해 주세요."; }
-  $("c_go").disabled=false; $("c_go").textContent="문의 보내기 →";
-};
-
-// ── T0 창립멤버 대기명단 ─────────────────────────
-const fg=$("f_go"), fe=$("f_err");
-fg.addEventListener("click", async()=>{
-  fe.textContent="";
-  const email=$("f_email").value.trim();
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){fe.textContent="올바른 이메일을 입력해 주세요.";return;}
-  fg.disabled=true; fg.textContent="등록 중…";
-  try{
-    const r=await fetch(WAITLIST_EP,{method:"POST",
-      body:JSON.stringify({name:$("f_name").value.trim(),email,role:$("f_role").value})});
-    const d=await r.json().catch(()=>({}));
-    if(!d.ok){fg.disabled=false;fg.textContent="창립멤버 대기명단 등록 →";fe.textContent=d.detail||"오류가 발생했어요. 다시 시도해 주세요.";return;}
-    $("founderFormView").style.display="none";
-    $("founderDoneView").classList.add("show");
-  }catch(e){
-    fg.disabled=false;fg.textContent="창립멤버 대기명단 등록 →";
-    fe.textContent="네트워크 오류. 잠시 후 다시 시도해 주세요.";
-  }
-});
-const go=$("go"), err=$("err");
-function fail(m){err.textContent=m;err.classList.add("err")}
-go.addEventListener("click", async ()=>{
-  err.classList.remove("err");
-  const ai_level=(document.querySelector('input[name="ai_level"]:checked')||{}).value||"";
-  if(!ai_level) return fail("AI 사용 수준을 선택해 주세요.");
-  const email=$("email").value.trim();
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return fail("올바른 이메일을 입력해 주세요.");
-  if(!$("consent").checked) return fail("마케팅 정보 수신 동의가 필요합니다.");
-  go.disabled=true; go.textContent="보내는 중…";
-  try{
-    // 헤더 없이 보내면 text/plain 단순요청 → CORS 프리플라이트(OPTIONS) 미발생
-    const r=await fetch(ENDPOINT,{method:"POST",
-      body:JSON.stringify({
-        email, consent:true, ai_level,
-        role:$("role").value.trim(),
-        position:$("position").value.trim(),
-        ai_tool:$("ai_tool").value,
-        pain:$("pain").value.trim(),
-        source:"homepage"
-      })});
-    const d=await r.json().catch(()=>({}));
-    if(!d.ok){ go.disabled=false; go.textContent="설문 완료하고 무료로 받기 →"; return fail(d.detail||"전송에 실패했어요. 잠시 후 다시 시도해 주세요."); }
-    if($("founderJoin").checked){
-      await fetch(WAITLIST_EP,{method:"POST",
-        body:JSON.stringify({email,role:$("position").value||$("role").value})}).catch(()=>{});
-    }
-    const doneMessages={
-      "초급":"복붙 1장짜리 비서IN 설정을<br>이메일로 보내드릴게요. 3분이면 세팅 완료!",
-      "중급":"커스텀 지침·프로젝트 세팅 가이드를<br>이메일로 보내드릴게요.",
-      "고급":"구조화 시스템 프롬프트를 이메일로 보내드릴게요.<br>연동까지 원하시면 ceo@aigstack.kr 로 회신해 주세요."
-    };
-    $("doneMsg").innerHTML=doneMessages[ai_level]||"당신만의 ‘비서IN’ 설정 프롬프트를<br>입력하신 이메일로 보내드릴게요. 메일함을 확인해 주세요.";
-    $("formView").style.display="none";
-    $("doneView").classList.add("show");
-    window.scrollTo({top:document.getElementById("survey").offsetTop-40,behavior:"smooth"});
-  }catch(e){
-    go.disabled=false; go.textContent="설문 완료하고 무료로 받기 →";
-    fail("네트워크 오류예요. 잠시 후 다시 시도해 주세요.");
-  }
-});
-</script>
+<div class="ctabar" role="complementary" aria-label="문의"><a href="#contact">문의하기 →</a></div>
 </body>
 </html>
