@@ -14,7 +14,7 @@
 <meta property="og:description" content="온프레미스 서버 한 대에서 AI 운영 체계를 직접 세우고, 도구를 만들어 운영하고 있습니다.">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://aigstack.kr/#org","name":"주식회사 에이아이지스택","alternateName":["AIGSTACK","에이아이지스택"],"url":"https://aigstack.kr/","email":"ceo@aigstack.kr","identifier":"291-87-03996","sameAs":["https://www.youtube.com/@AI_GSTACK","https://sonarstudio.kr/"],"address":{"@type":"PostalAddress","streetAddress":"자혜로64번길 8","addressLocality":"성남시 중원구","addressRegion":"경기도","addressCountry":"KR"},"description":"온프레미스 서버 기반으로 AI 운영 체계를 직접 구축하고, 영상 제작·정보 수집·업무 자동화 도구를 만들어 운영하는 회사."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://aigstack.kr/#org","name":"주식회사 에이아이지스택","alternateName":["AIGSTACK","에이아이지스택"],"url":"https://aigstack.kr/","identifier":"291-87-03996","sameAs":["https://www.youtube.com/@AI_GSTACK","https://sonarstudio.kr/"],"address":{"@type":"PostalAddress","streetAddress":"자혜로64번길 8","addressLocality":"성남시 중원구","addressRegion":"경기도","addressCountry":"KR"},"description":"온프레미스 서버 기반으로 AI 운영 체계를 직접 구축하고, 영상 제작·정보 수집·업무 자동화 도구를 만들어 운영하는 회사."}</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#100C09;--surf:#1B1511;--bg2:#150F0B;
@@ -127,6 +127,21 @@ td a{display:inline-flex;align-items:center;min-height:44px}
 .finalcta h2{margin-bottom:6px}
 .finalcta p{margin-left:auto;margin-right:auto}
 .finalcta .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+
+/* 문의 폼 */
+.cform{max-width:520px;margin:24px auto 0;display:flex;flex-direction:column;gap:10px;text-align:left}
+.frow{display:flex;gap:10px}
+@media(max-width:560px){.frow{flex-direction:column}}
+/* 🔴 16px 미만이면 iOS Safari 가 포커스 시 화면을 확대하고 되돌리지 않는다. 내리지 마라. */
+.cform input,.cform textarea{width:100%;background:var(--bg);border:1px solid var(--line);
+  border-radius:12px;color:var(--ink);padding:14px 16px;font-size:16px;font-family:inherit;outline:none;
+  transition:border-color .2s,box-shadow .2s}
+.cform textarea{min-height:120px;resize:vertical}
+.cform input:focus,.cform textarea:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(255,122,47,.18)}
+.cform input::placeholder,.cform textarea::placeholder{color:var(--ink3)}
+.cform button{border:0;cursor:pointer;margin-top:2px}
+.cform button:disabled{opacity:.6;cursor:default}
+.fnote{min-height:20px;font-size:14px;text-align:center;color:var(--ink3)}
 
 footer{border-top:1px solid var(--line);margin-top:44px;padding:30px 0 44px;background:var(--bg2)}
 footer p{color:var(--ink3);font-size:13.5px;margin:5px 0}
@@ -348,7 +363,7 @@ body{padding-bottom:86px}
       <tr><td style="width:170px"><b>상호</b></td><td>주식회사 에이아이지스택 (AIGSTACK)</td></tr>
       <tr><td><b>사업자등록번호</b></td><td>291-87-03996</td></tr>
       <tr><td><b>주소</b></td><td>경기도 성남시 중원구 자혜로64번길 8</td></tr>
-      <tr><td><b>이메일</b></td><td>ceo@aigstack.kr</td></tr>
+      <tr><td><b>문의</b></td><td><a href="#contact">문의 폼</a>으로 접수됩니다 · 영상 제작은 <a href="https://sonarstudio.kr/#contact">소냐스튜디오</a></td></tr>
       <tr><td><b>사업 분야</b></td><td>AI 영상 제작 · AI 업무 자동화 도구 개발 · 데이터 수집 및 분석</td></tr>
       <tr><td><b>운영 사이트</b></td><td>
         <a href="https://sonarstudio.kr/">소냐스튜디오</a> (영상 제작) ·
@@ -361,10 +376,24 @@ body{padding-bottom:86px}
 <div class="finalcta" id="contact">
   <h2>같이 만들 것이 있으면 <em>연락 주십시오</em></h2>
   <p>영상 제작 의뢰는 소냐스튜디오에서 바로 접수됩니다.
-    그 외 협업·제휴·개발 문의는 메일로 주시면 됩니다.</p>
-  <div class="row">
-    <a class="btn" href="https://sonarstudio.kr/#contact">영상 제작 문의 →</a>
-    <a class="btn ghost" href="mailto:ceo@aigstack.kr">메일 보내기</a>
+    협업·제휴·개발 문의는 아래에 남겨주시면 담당자에게 바로 전달됩니다.</p>
+
+  <!-- 🔴 mailto: 를 쓰지 않는다 — 메일 앱이 없는 방문자에게는 '앱을 고르세요' 창만 뜨고
+       거기서 대부분 이탈한다(2026-08-02 회장 실측). 폼은 그 자리에서 끝난다. -->
+  <form class="cform" id="cform" novalidate>
+    <div class="frow">
+      <input name="name" placeholder="이름 *" autocomplete="name" required>
+      <input name="phone" placeholder="연락처 *" autocomplete="tel" required>
+    </div>
+    <input name="email" type="email" placeholder="이메일 *" autocomplete="email" required>
+    <input name="company" placeholder="회사 / 소속 (선택)" autocomplete="organization">
+    <textarea name="message" placeholder="어떤 일로 연락 주셨는지 적어주세요. *" required></textarea>
+    <button type="submit" class="btn" style="width:100%">문의 보내기 →</button>
+    <div class="fnote" id="fnote"></div>
+  </form>
+
+  <div class="row" style="margin-top:18px">
+    <a class="btn ghost" href="https://sonarstudio.kr/#contact">영상 제작 문의는 여기 →</a>
   </div>
 </div>
 
@@ -372,7 +401,7 @@ body{padding-bottom:86px}
 
 <footer><div class="wrap">
   <p><b>주식회사 에이아이지스택</b> · AIGSTACK</p>
-  <p>사업자등록번호 291-87-03996 · 경기도 성남시 중원구 자혜로64번길 8 · ceo@aigstack.kr</p>
+  <p>사업자등록번호 291-87-03996 · 경기도 성남시 중원구 자혜로64번길 8</p>
   <nav class="flinks">
     <a href="#story">시작</a><a href="#built">만든 것</a><a href="#now">지금</a><a href="#company">회사</a>
     <a href="https://sonarstudio.kr/">소냐스튜디오</a><a href="/pages/biseoin.html">비서IN</a>
@@ -382,5 +411,44 @@ body{padding-bottom:86px}
 </div></footer>
 
 <div class="ctabar" role="complementary" aria-label="문의"><a href="#contact">문의하기 →</a></div>
+
+<script>
+// 유입 경로 기록(first-touch) — 어디서 들어와 문의했는지 남긴다
+(function(){try{
+  var K='aig_attrib',q=new URLSearchParams(location.search),s=sessionStorage,a=null;
+  try{a=JSON.parse(s.getItem(K)||'null')}catch(e){}
+  if(!a||!a.landing){a={landing:location.pathname,referrer:document.referrer||'',
+    utm_source:q.get('utm_source')||'',utm_medium:q.get('utm_medium')||'',utm_campaign:q.get('utm_campaign')||''};
+    try{s.setItem(K,JSON.stringify(a))}catch(e){}}
+  window.AIG_ATTRIB=a;
+}catch(e){window.AIG_ATTRIB={}}})();
+
+// 문의 폼 → 접수 API (016_inquiry). 성공/실패를 화면에서 끝낸다.
+(function(){
+  var f=document.getElementById('cform'); if(!f) return;
+  var note=document.getElementById('fnote'), btn=f.querySelector('button');
+  var A=window.AIG_ATTRIB||{}, API='https://api.aigstack.kr/submit';
+  f.addEventListener('submit', async function(e){
+    e.preventDefault();
+    var d=Object.fromEntries(new FormData(f).entries());
+    if(!d.name||!d.phone||!d.email||!d.message){
+      note.textContent='이름·연락처·이메일·문의내용은 필수입니다.'; note.style.color='#FF8A75'; return; }
+    note.textContent='보내는 중…'; note.style.color='var(--ink3)'; btn.disabled=true;
+    try{
+      var r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({name:d.name,phone:d.phone,email:d.email,company:d.company||'',
+          solutions:['[aigstack.kr] 회사 문의'],message:d.message,
+          referrer:A.referrer||'',landing:A.landing||'',utm_source:A.utm_source||'',
+          utm_medium:A.utm_medium||'',utm_campaign:A.utm_campaign||''})});
+      var j=await r.json();
+      if(j.ok){ f.reset();
+        note.textContent='✓ '+(j.message||'문의가 접수되었습니다. 24시간 이내 연락드리겠습니다.');
+        note.style.color='#8FD9A4'; }
+      else{ note.textContent=(j.detail||'접수 실패 — 잠시 후 다시 시도해 주세요.'); note.style.color='#FF8A75'; }
+    }catch(err){ note.textContent='전송 오류 — 잠시 후 다시 시도해 주세요.'; note.style.color='#FF8A75'; }
+    btn.disabled=false;
+  });
+})();
+</script>
 </body>
 </html>
