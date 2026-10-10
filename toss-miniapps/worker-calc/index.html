@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>직장인·알바 계산기</title>
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <h1>직장인·알바 계산기</h1>
+        <p>2026년 최저시급 10,320원 기준</p>
+      </header>
+
+      <nav class="tabs" role="tablist">
+        <button role="tab" data-tab="holiday" aria-selected="true">주휴수당</button>
+        <button role="tab" data-tab="monthly">월급 환산</button>
+        <button role="tab" data-tab="leave">연차</button>
+        <button role="tab" data-tab="severance">퇴직금</button>
+      </nav>
+
+      <section class="panel" data-panel="holiday">
+        <label>시급<input data-k="h-wage" inputmode="numeric" value="10,320" /><span>원</span></label>
+        <label>주 근무시간<input data-k="h-hours" inputmode="decimal" value="40" /><span>시간</span></label>
+        <div class="result" data-out="holiday"></div>
+      </section>
+
+      <section class="panel" data-panel="monthly" hidden>
+        <label>시급<input data-k="m-wage" inputmode="numeric" value="10,320" /><span>원</span></label>
+        <label>주 근무시간<input data-k="m-hours" inputmode="decimal" value="40" /><span>시간</span></label>
+        <div class="result" data-out="monthly"></div>
+      </section>
+
+      <section class="panel" data-panel="leave" hidden>
+        <label>입사일<input data-k="l-hire" type="date" /></label>
+        <label>기준일<input data-k="l-asof" type="date" /></label>
+        <div class="result" data-out="leave"></div>
+      </section>
+
+      <section class="panel" data-panel="severance" hidden>
+        <label>입사일<input data-k="s-hire" type="date" /></label>
+        <label>마지막 근무일<input data-k="s-last" type="date" /></label>
+        <label>월 급여(세전)<input data-k="s-pay" inputmode="numeric" value="3,000,000" /><span>원</span></label>
+        <label>연간 상여금<input data-k="s-bonus" inputmode="numeric" value="0" /><span>원</span></label>
+        <label>연간 연차수당<input data-k="s-leavepay" inputmode="numeric" value="0" /><span>원</span></label>
+        <div class="result" data-out="severance"></div>
+      </section>
+
+      <div id="ad-banner" class="ad"></div>
+
+      <footer class="note">
+        근로기준법·근로자퇴직급여보장법의 일반 기준으로 계산한 참고용 금액이에요.
+        회사 규정이나 개별 사정에 따라 실제 금액은 다를 수 있어요.
+      </footer>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "worker-calc",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build && ait build",
+    "build:web": "tsc --noEmit && vite build",
+    "test": "vitest run",
+    "deploy": "ait deploy"
+  },
+  "devDependencies": {
+    "@apps-in-toss/web-framework": "^3.8.0",
+    "typescript": "5.9",
+    "vite": "^6.4.4",
+    "vitest": "^3.2.7"
+  }
+}
